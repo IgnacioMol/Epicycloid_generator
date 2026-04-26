@@ -1,12 +1,18 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { Canvas } from './features/canvas/canvas';
+import { Controls } from './features/controls/controls';
+import { PatternParams } from './models/pattern-params.model';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [Canvas, Controls],
+  templateUrl: './app.html'
 })
-export class App {
-  protected readonly title = signal('epicycloid-generator');
+export class AppComponent {
+
+  currentParams!: PatternParams;
+
+  onParamsChange(params: PatternParams) {
+    this.currentParams = params;
+  }
 }
