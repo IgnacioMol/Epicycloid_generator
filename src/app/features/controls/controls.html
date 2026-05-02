@@ -1,81 +1,344 @@
 <div>
   <h4 class="mb-4 fw-semibold" style="color: #a0a8d0;">Panel de Control</h4>
 
-  <!-- ── MODO DE VISUALIZACIÓN ── -->
-  <div class="mb-4 p-3 rounded" style="background:#1a1a32; border:1px solid #3a3a60;">
-    <p class="mb-2 small text-uppercase fw-semibold" style="color:#5a62a0; letter-spacing:.08em;">
-      Modo de visualización
-    </p>
+  <!-- ── AVISO DE BLOQUEO ── -->
+  @if (isPlaying) {
+    <div class="lock-banner mb-3 px-3 py-2 rounded d-flex align-items-center gap-2">
+      <span style="font-size:1rem;">🔒</span>
+      <span class="small">Simulación en curso — pausa para editar</span>
+    </div>
+  }
 
-    <button
-      class="btn w-100 fw-semibold py-2"
-      [class.btn-primary]="params.visualizationMode === 'lines'"
-      [class.btn-outline-primary]="params.visualizationMode === 'curve'"
-      (click)="toggleMode()"
-    >
-      @if (params.visualizationMode === 'curve') {
-        ⟳ Curva Epicicloidal
-      } @else {
-        ⟷ Intersección de Líneas
-      }
-    </button>
+  <!-- ── ZONA BLOQUEADA DURANTE PLAY ── -->
+  <div [class.params-locked]="isPlaying">
 
-    <p class="mt-2 mb-0 small" style="color:#7070a0; line-height:1.4;">
-      @if (params.visualizationMode === 'curve') {
-        La órbita 2 gira alrededor de la órbita 1. Se traza el camino del punto extremo.
-      } @else {
-        Ambas órbitas parten del centro. Se dibuja la línea entre los dos planetas.
-      }
-    </p>
-  </div>
+    <!-- ── MODO DE VISUALIZACIÓN ── -->
+    <div class="mb-4 p-3 rounded" style="background:#1a1a32; border:1px solid #3a3a60;">
+      <p class="mb-2 small text-uppercase fw-semibold" style="color:#5a62a0; letter-spacing:.08em;">
+        Modo de visualización
+      </p>
 
-  <!-- ── ÓRBITA 1 ── -->
-  <h6 class="text-uppercase mb-2" style="color:#6090cc; letter-spacing:.08em;">Órbita 1</h6>
+      <button
+        class="btn w-100 fw-semibold py-2"
+        [class.btn-primary]="params.visualizationMode === 'lines'"
+        [class.btn-outline-primary]="params.visualizationMode === 'curve'"
+        (click)="toggleMode()"
+      >
+        @if (params.visualizationMode === 'curve') {
+          ⟳ Curva Epicicloidal
+        } @else {
+          ⟷ Intersección de Líneas
+        }
+      </button>
 
-  <div class="mb-3">
-    <label class="form-label small">Radio</label>
-    <input type="range" class="form-range">
-  </div>
-  <div class="mb-3">
-    <label class="form-label small">Velocidad</label>
-    <input type="range" class="form-range">
-  </div>
+      <p class="mt-2 mb-0 small" style="color:#7070a0; line-height:1.4;">
+        @if (params.visualizationMode === 'curve') {
+          La órbita 2 gira alrededor de la órbita 1. Se traza el camino del punto extremo.
+        } @else {
+          Ambas órbitas parten del centro. Se dibuja la línea entre los dos planetas.
+        }
+      </p>
+    </div>
 
-  <!-- ── ÓRBITA 2 ── -->
-  <h6 class="text-uppercase mb-2 mt-4" style="color:#cc6060; letter-spacing:.08em;">Órbita 2</h6>
+    <!-- ── ÓRBITA 1 ── -->
+    <h6 class="text-uppercase mb-3" style="color:#6090cc; letter-spacing:.08em;">Órbita 1</h6>
 
-  <div class="mb-3">
-    <label class="form-label small">Radio</label>
-    <input type="range" class="form-range">
-  </div>
-  <div class="mb-3">
-    <label class="form-label small">Velocidad</label>
-    <input type="range" class="form-range">
-  </div>
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="form-label small mb-0">Radio</label>
+        <input type="number" class="param-number-input"
+               min="10" max="500" step="5"
+               [(ngModel)]="params.orbit1Radius"
+               (ngModelChange)="onParamChange()">
+      </div>
+      <input type="range" class="form-range"
+             min="10" max="500" step="5"
+             [(ngModel)]="params.orbit1Radius"
+             (ngModelChange)="onParamChange()">
+    </div>
 
-  <!-- ── VISUAL ── -->
-  <h6 class="text-uppercase mb-2 mt-4" style="color:#a0a8d0; letter-spacing:.08em;">Visual</h6>
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="form-label small mb-0">Velocidad angular</label>
+        <div class="d-flex align-items-center gap-1">
+          <input type="number" class="param-number-input"
+                 min="0" max="100" step="0.1"
+                 [(ngModel)]="params.orbit1SpeedRpm"
+                 (ngModelChange)="onParamChange()">
+          <span class="param-unit">RPM</span>
+        </div>
+      </div>
+      <input type="range" class="form-range"
+             min="0" max="100" step="0.1"
+             [(ngModel)]="params.orbit1SpeedRpm"
+             (ngModelChange)="onParamChange()">
+    </div>
 
-  <div class="mb-3">
-    <label class="form-label small">Color de trazo</label>
-    <input type="color" class="form-control form-control-color w-100" value="#ffffff">
-  </div>
-  <div class="mb-3">
-    <label class="form-label small">Grosor</label>
-    <input type="range" class="form-range">
-  </div>
+    <div class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="form-label small mb-0">Fase inicial</label>
+        <div class="d-flex align-items-center gap-1">
+          <input type="number" class="param-number-input"
+                 min="0" max="360" step="1"
+                 [(ngModel)]="params.initialAngle1"
+                 (ngModelChange)="onParamChange()">
+          <span class="param-unit">°</span>
+        </div>
+      </div>
+      <input type="range" class="form-range"
+             min="0" max="360" step="1"
+             [(ngModel)]="params.initialAngle1"
+             (ngModelChange)="onParamChange()">
+    </div>
 
-  <!-- ── ACCIONES ── -->
-  <div class="d-grid gap-2 mt-4">
+    <!-- ── ÓRBITA 2 ── -->
+    <h6 class="text-uppercase mb-3 mt-2" style="color:#cc6060; letter-spacing:.08em;">Órbita 2</h6>
+
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="form-label small mb-0">Radio</label>
+        <input type="number" class="param-number-input"
+               min="10" max="500" step="5"
+               [(ngModel)]="params.orbit2Radius"
+               (ngModelChange)="onParamChange()">
+      </div>
+      <input type="range" class="form-range"
+             min="10" max="500" step="5"
+             [(ngModel)]="params.orbit2Radius"
+             (ngModelChange)="onParamChange()">
+    </div>
+
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="form-label small mb-0">Velocidad angular</label>
+        <div class="d-flex align-items-center gap-1">
+          <input type="number" class="param-number-input"
+                 min="0" max="100" step="0.1"
+                 [(ngModel)]="params.orbit2SpeedRpm"
+                 (ngModelChange)="onParamChange()">
+          <span class="param-unit">RPM</span>
+        </div>
+      </div>
+      <input type="range" class="form-range"
+             min="0" max="100" step="0.1"
+             [(ngModel)]="params.orbit2SpeedRpm"
+             (ngModelChange)="onParamChange()">
+    </div>
+
+    <div class="mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="form-label small mb-0">Fase inicial</label>
+        <div class="d-flex align-items-center gap-1">
+          <input type="number" class="param-number-input"
+                 min="0" max="360" step="1"
+                 [(ngModel)]="params.initialAngle2"
+                 (ngModelChange)="onParamChange()">
+          <span class="param-unit">°</span>
+        </div>
+      </div>
+      <input type="range" class="form-range"
+             min="0" max="360" step="1"
+             [(ngModel)]="params.initialAngle2"
+             (ngModelChange)="onParamChange()">
+    </div>
+
+    <!-- ── VISUAL ── -->
+    <h6 class="text-uppercase mb-3 mt-2" style="color:#a0a8d0; letter-spacing:.08em;">Visual</h6>
+
+    <div class="mb-3">
+      <label class="form-label small d-block mb-1">Color de trazo</label>
+      <input type="color" class="form-control form-control-color w-100"
+             [(ngModel)]="params.lineColor"
+             (ngModelChange)="onParamChange()">
+    </div>
+
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="form-label small mb-0">Opacidad</label>
+        <div class="d-flex align-items-center gap-1">
+          <input type="number" class="param-number-input"
+                 min="0.05" max="1" step="0.05"
+                 [(ngModel)]="params.lineAlpha"
+                 (ngModelChange)="onParamChange()">
+          <span class="param-unit">/ 1</span>
+        </div>
+      </div>
+      <input type="range" class="form-range"
+             min="0.05" max="1" step="0.05"
+             [(ngModel)]="params.lineAlpha"
+             (ngModelChange)="onParamChange()">
+    </div>
+
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="form-label small mb-0">Grosor de trazo</label>
+        <input type="number" class="param-number-input"
+               min="0.5" max="10" step="0.5"
+               [(ngModel)]="params.strokeWeight"
+               (ngModelChange)="onParamChange()">
+      </div>
+      <input type="range" class="form-range"
+             min="0.5" max="10" step="0.5"
+             [(ngModel)]="params.strokeWeight"
+             (ngModelChange)="onParamChange()">
+    </div>
+
+    <!-- lineInterval: solo visible en modo Intersección de Líneas -->
+    @if (params.visualizationMode === 'lines') {
+      <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <label class="form-label small mb-0">Intervalo entre líneas</label>
+          <div class="d-flex align-items-center gap-1">
+            <input type="number" class="param-number-input"
+                   min="0" max="60" step="0.001"
+                   [(ngModel)]="params.lineInterval"
+                   (ngModelChange)="onParamChange()">
+            <span class="param-unit">s</span>
+          </div>
+        </div>
+        <input type="range" class="form-range"
+               min="0" max="10" step="0.05"
+               [(ngModel)]="params.lineInterval"
+               (ngModelChange)="onParamChange()">
+        <p class="mt-1 mb-0 small" style="color:#5a62a0;">
+          {{ formatInterval(params.lineInterval) }}
+          @if (params.lineInterval === 0) { — una línea por fotograma }
+        </p>
+      </div>
+    }
+
+    <!-- ── PARÁMETROS AVANZADOS ── -->
+    <details class="mb-4">
+      <summary class="text-uppercase small fw-semibold mb-3"
+               style="cursor:pointer; color:#5a62a0; letter-spacing:.08em; list-style:none;">
+        ▸ Parámetros avanzados
+      </summary>
+
+      <div class="mt-3 ps-1">
+        <p class="small mb-3" style="color:#5a62a0;">
+          Factor elíptico: 1.0 = círculo. Inclinación: rotación del plano de la órbita.
+        </p>
+
+        <!-- Órbita 1 avanzado -->
+        <h6 class="small mb-2" style="color:#6090cc;">Órbita 1</h6>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-label small mb-0">Factor elíptico X</label>
+            <input type="number" class="param-number-input"
+                   min="0.1" max="2" step="0.05"
+                   [(ngModel)]="params.orbit1EllipseX"
+                   (ngModelChange)="onParamChange()">
+          </div>
+          <input type="range" class="form-range"
+                 min="0.1" max="2" step="0.05"
+                 [(ngModel)]="params.orbit1EllipseX"
+                 (ngModelChange)="onParamChange()">
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-label small mb-0">Factor elíptico Y</label>
+            <input type="number" class="param-number-input"
+                   min="0.1" max="2" step="0.05"
+                   [(ngModel)]="params.orbit1EllipseY"
+                   (ngModelChange)="onParamChange()">
+          </div>
+          <input type="range" class="form-range"
+                 min="0.1" max="2" step="0.05"
+                 [(ngModel)]="params.orbit1EllipseY"
+                 (ngModelChange)="onParamChange()">
+        </div>
+
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-label small mb-0">Inclinación</label>
+            <div class="d-flex align-items-center gap-1">
+              <input type="number" class="param-number-input"
+                     min="0" max="360" step="1"
+                     [(ngModel)]="params.orbit1Angle"
+                     (ngModelChange)="onParamChange()">
+              <span class="param-unit">°</span>
+            </div>
+          </div>
+          <input type="range" class="form-range"
+                 min="0" max="360" step="1"
+                 [(ngModel)]="params.orbit1Angle"
+                 (ngModelChange)="onParamChange()">
+        </div>
+
+        <!-- Órbita 2 avanzado -->
+        <h6 class="small mb-2" style="color:#cc6060;">Órbita 2</h6>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-label small mb-0">Factor elíptico X</label>
+            <input type="number" class="param-number-input"
+                   min="0.1" max="2" step="0.05"
+                   [(ngModel)]="params.orbit2EllipseX"
+                   (ngModelChange)="onParamChange()">
+          </div>
+          <input type="range" class="form-range"
+                 min="0.1" max="2" step="0.05"
+                 [(ngModel)]="params.orbit2EllipseX"
+                 (ngModelChange)="onParamChange()">
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-label small mb-0">Factor elíptico Y</label>
+            <input type="number" class="param-number-input"
+                   min="0.1" max="2" step="0.05"
+                   [(ngModel)]="params.orbit2EllipseY"
+                   (ngModelChange)="onParamChange()">
+          </div>
+          <input type="range" class="form-range"
+                 min="0.1" max="2" step="0.05"
+                 [(ngModel)]="params.orbit2EllipseY"
+                 (ngModelChange)="onParamChange()">
+        </div>
+
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <label class="form-label small mb-0">Inclinación</label>
+            <div class="d-flex align-items-center gap-1">
+              <input type="number" class="param-number-input"
+                     min="0" max="360" step="1"
+                     [(ngModel)]="params.orbit2Angle"
+                     (ngModelChange)="onParamChange()">
+              <span class="param-unit">°</span>
+            </div>
+          </div>
+          <input type="range" class="form-range"
+                 min="0" max="360" step="1"
+                 [(ngModel)]="params.orbit2Angle"
+                 (ngModelChange)="onParamChange()">
+        </div>
+
+      </div>
+    </details>
+
+  </div><!-- /params-locked -->
+
+  <!-- ── ACCIONES (siempre habilitadas) ── -->
+  <div class="d-grid gap-2 mt-2">
     <div class="row g-2">
       <div class="col-6">
-        <button class="btn btn-success btn-sm w-100" (click)="dispatch('play')">▶ Play</button>
+        <button class="btn btn-success btn-sm w-100"
+                [disabled]="isPlaying"
+                (click)="play()">
+          ▶ Play
+        </button>
       </div>
       <div class="col-6">
-        <button class="btn btn-warning btn-sm w-100" (click)="dispatch('pause')">⏸ Pausa</button>
+        <button class="btn btn-warning btn-sm w-100"
+                [disabled]="!isPlaying"
+                (click)="pause()">
+          ⏸ Pausa
+        </button>
       </div>
     </div>
-    <button class="btn btn-outline-secondary btn-sm" (click)="dispatch('clear')">⬜ Limpiar lienzo</button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="clear()">⬜ Limpiar lienzo</button>
     <button class="btn btn-outline-danger btn-sm" (click)="reset()">↺ Reset</button>
   </div>
 </div>
