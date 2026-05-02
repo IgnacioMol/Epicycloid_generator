@@ -1,29 +1,34 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PatternService } from '../../core/pattern.service';
+import { CanvasAction, DEFAULT_PARAMS, PatternService } from '../../core/pattern.service';
 import { PatternParams } from '../../models/pattern-params.model';
 
 @Component({
   selector: 'app-controls',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './controls.html'
+  templateUrl: './controls.html',
 })
 export class Controls {
-
-  params: PatternParams = {
-    R: 100,
-    r: 40,
-    d: 60,
-    speed: 0.01,
-    color: '#ffffff',
-    strokeWeight: 1,
-    phase: 0
-  };
+  params: PatternParams = { ...DEFAULT_PARAMS };
 
   constructor(private patternService: PatternService) {}
 
-  update() {
+  toggleMode(): void {
+    this.params = {
+      ...this.params,
+      visualizationMode: this.params.visualizationMode === 'curve' ? 'lines' : 'curve',
+    };
     this.patternService.updateParams(this.params);
+  }
+
+  dispatch(action: CanvasAction): void {
+    this.patternService.dispatch(action);
+  }
+
+  reset(): void {
+    this.params = { ...DEFAULT_PARAMS };
+    this.patternService.updateParams(this.params);
+    this.patternService.dispatch('reset');
   }
 }

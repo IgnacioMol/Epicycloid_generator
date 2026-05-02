@@ -1,15 +1,13 @@
-<div class="container-fluid vh-100">
-  <div class="row h-100">
+<div class="app-layout">
 
-    <!-- IZQUIERDA: VISUALIZACIÓN -->
-    <div class="col-md-8 bg-dark d-flex justify-content-center align-items-center p-3">
-      <app-canvas></app-canvas>
-    </div>
-
-    <!-- DERECHA: PANEL DE CONTROL -->
-    <div class="col-md-4 bg-light p-4 overflow-auto">
-      <app-controls></app-controls>
-    </div>
-
+  <!-- IZQUIERDA: LIENZO (70%) -->
+  <div class="app-canvas-panel">
+    <app-canvas></app-canvas>
   </div>
+
+  <!-- DERECHA: CONTROLES (30%) -->
+  <div class="app-controls-panel p-4">
+    <app-controls></app-controls>
+  </div>
+
 </div>

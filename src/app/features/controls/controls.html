@@ -1,63 +1,81 @@
 <div>
-  <h3 class="mb-4">Panel de Control</h3>
+  <h4 class="mb-4 fw-semibold" style="color: #a0a8d0;">Panel de Control</h4>
 
-  <!-- ORBITA 1 -->
-  <h5>Órbita 1</h5>
+  <!-- ── MODO DE VISUALIZACIÓN ── -->
+  <div class="mb-4 p-3 rounded" style="background:#1a1a32; border:1px solid #3a3a60;">
+    <p class="mb-2 small text-uppercase fw-semibold" style="color:#5a62a0; letter-spacing:.08em;">
+      Modo de visualización
+    </p>
+
+    <button
+      class="btn w-100 fw-semibold py-2"
+      [class.btn-primary]="params.visualizationMode === 'lines'"
+      [class.btn-outline-primary]="params.visualizationMode === 'curve'"
+      (click)="toggleMode()"
+    >
+      @if (params.visualizationMode === 'curve') {
+        ⟳ Curva Epicicloidal
+      } @else {
+        ⟷ Intersección de Líneas
+      }
+    </button>
+
+    <p class="mt-2 mb-0 small" style="color:#7070a0; line-height:1.4;">
+      @if (params.visualizationMode === 'curve') {
+        La órbita 2 gira alrededor de la órbita 1. Se traza el camino del punto extremo.
+      } @else {
+        Ambas órbitas parten del centro. Se dibuja la línea entre los dos planetas.
+      }
+    </p>
+  </div>
+
+  <!-- ── ÓRBITA 1 ── -->
+  <h6 class="text-uppercase mb-2" style="color:#6090cc; letter-spacing:.08em;">Órbita 1</h6>
 
   <div class="mb-3">
-    <label class="form-label">Radio</label>
+    <label class="form-label small">Radio</label>
+    <input type="range" class="form-range">
+  </div>
+  <div class="mb-3">
+    <label class="form-label small">Velocidad</label>
     <input type="range" class="form-range">
   </div>
 
+  <!-- ── ÓRBITA 2 ── -->
+  <h6 class="text-uppercase mb-2 mt-4" style="color:#cc6060; letter-spacing:.08em;">Órbita 2</h6>
+
   <div class="mb-3">
-    <label class="form-label">Velocidad</label>
+    <label class="form-label small">Radio</label>
+    <input type="range" class="form-range">
+  </div>
+  <div class="mb-3">
+    <label class="form-label small">Velocidad</label>
     <input type="range" class="form-range">
   </div>
 
-  <!-- ORBITA 2 -->
-  <h5 class="mt-4">Órbita 2</h5>
+  <!-- ── VISUAL ── -->
+  <h6 class="text-uppercase mb-2 mt-4" style="color:#a0a8d0; letter-spacing:.08em;">Visual</h6>
 
   <div class="mb-3">
-    <label class="form-label">Radio</label>
+    <label class="form-label small">Color de trazo</label>
+    <input type="color" class="form-control form-control-color w-100" value="#ffffff">
+  </div>
+  <div class="mb-3">
+    <label class="form-label small">Grosor</label>
     <input type="range" class="form-range">
   </div>
 
-  <div class="mb-3">
-    <label class="form-label">Velocidad</label>
-    <input type="range" class="form-range">
-  </div>
-
-  <!-- ELIPSE -->
-  <h5 class="mt-4">Deformación</h5>
-
-  <div class="mb-3">
-    <label class="form-label">Escala X</label>
-    <input type="range" class="form-range">
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Escala Y</label>
-    <input type="range" class="form-range">
-  </div>
-
-  <!-- VISUAL -->
-  <h5 class="mt-4">Visualización</h5>
-
-  <div class="mb-3">
-    <label class="form-label">Color</label>
-    <input type="color" class="form-control form-control-color">
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Grosor</label>
-    <input type="range" class="form-range">
-  </div>
-
-  <!-- BOTONES -->
+  <!-- ── ACCIONES ── -->
   <div class="d-grid gap-2 mt-4">
-    <button class="btn btn-primary">Play</button>
-    <button class="btn btn-secondary">Pause</button>
-    <button class="btn btn-danger">Reset</button>
+    <div class="row g-2">
+      <div class="col-6">
+        <button class="btn btn-success btn-sm w-100" (click)="dispatch('play')">▶ Play</button>
+      </div>
+      <div class="col-6">
+        <button class="btn btn-warning btn-sm w-100" (click)="dispatch('pause')">⏸ Pausa</button>
+      </div>
+    </div>
+    <button class="btn btn-outline-secondary btn-sm" (click)="dispatch('clear')">⬜ Limpiar lienzo</button>
+    <button class="btn btn-outline-danger btn-sm" (click)="reset()">↺ Reset</button>
   </div>
-
 </div>

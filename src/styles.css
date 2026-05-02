@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-canvas-panel {
+  flex: 0 0 70%;
+  height: 100%;
+  background: #0a0a14;
+  overflow: hidden;
+}
+
+.app-controls-panel {
+  flex: 0 0 30%;
+  height: 100%;
+  background: #12121e;
+  overflow-y: auto;
+  border-left: 1px solid #2a2a45;
+  color: #e0e0f0;
+}
