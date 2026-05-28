@@ -48,3 +48,10 @@
 details summary::-webkit-details-marker {
   display: none;
 }
+
+.param-hint {
+  font-family: monospace;
+  font-size: 0.68rem;
+  color: #44496a;
+  margin: 3px 0 0 0;
+}

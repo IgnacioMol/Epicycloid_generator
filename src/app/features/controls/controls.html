@@ -44,34 +44,33 @@
     <h6 class="text-uppercase mb-3" style="color:#6090cc; letter-spacing:.08em;">Órbita 1</h6>
 
     <div class="mb-3">
-      <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="d-flex justify-content-between align-items-center">
         <label class="form-label small mb-0">Radio</label>
-        <input type="number" class="param-number-input"
-               min="10" max="500" step="5"
-               [(ngModel)]="params.orbit1Radius"
-               (ngModelChange)="onParamChange()">
+        <div class="d-flex align-items-center gap-1">
+          <input type="number" class="param-number-input"
+                 min="10" max="500" step="5"
+                 [(ngModel)]="params.orbit1Radius"
+                 (ngModelChange)="onParamChange()"
+                 (blur)="onParamChange()">
+          <span class="param-unit">px</span>
+        </div>
       </div>
-      <input type="range" class="form-range"
-             min="10" max="500" step="5"
-             [(ngModel)]="params.orbit1Radius"
-             (ngModelChange)="onParamChange()">
+      <p class="param-hint">10 – 500 px</p>
     </div>
 
     <div class="mb-3">
-      <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="d-flex justify-content-between align-items-center">
         <label class="form-label small mb-0">Velocidad angular</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
                  min="0" max="100" step="0.1"
                  [(ngModel)]="params.orbit1SpeedRpm"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (blur)="onParamChange()">
           <span class="param-unit">RPM</span>
         </div>
       </div>
-      <input type="range" class="form-range"
-             min="0" max="100" step="0.1"
-             [(ngModel)]="params.orbit1SpeedRpm"
-             (ngModelChange)="onParamChange()">
+      <p class="param-hint">0 – 100 RPM</p>
     </div>
 
     <div class="mb-4">
@@ -81,7 +80,8 @@
           <input type="number" class="param-number-input"
                  min="0" max="360" step="1"
                  [(ngModel)]="params.initialAngle1"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (blur)="onParamChange()">
           <span class="param-unit">°</span>
         </div>
       </div>
@@ -95,34 +95,33 @@
     <h6 class="text-uppercase mb-3 mt-2" style="color:#cc6060; letter-spacing:.08em;">Órbita 2</h6>
 
     <div class="mb-3">
-      <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="d-flex justify-content-between align-items-center">
         <label class="form-label small mb-0">Radio</label>
-        <input type="number" class="param-number-input"
-               min="10" max="500" step="5"
-               [(ngModel)]="params.orbit2Radius"
-               (ngModelChange)="onParamChange()">
+        <div class="d-flex align-items-center gap-1">
+          <input type="number" class="param-number-input"
+                 min="10" max="500" step="5"
+                 [(ngModel)]="params.orbit2Radius"
+                 (ngModelChange)="onParamChange()"
+                 (blur)="onParamChange()">
+          <span class="param-unit">px</span>
+        </div>
       </div>
-      <input type="range" class="form-range"
-             min="10" max="500" step="5"
-             [(ngModel)]="params.orbit2Radius"
-             (ngModelChange)="onParamChange()">
+      <p class="param-hint">10 – 500 px</p>
     </div>
 
     <div class="mb-3">
-      <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="d-flex justify-content-between align-items-center">
         <label class="form-label small mb-0">Velocidad angular</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
                  min="0" max="100" step="0.1"
                  [(ngModel)]="params.orbit2SpeedRpm"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (blur)="onParamChange()">
           <span class="param-unit">RPM</span>
         </div>
       </div>
-      <input type="range" class="form-range"
-             min="0" max="100" step="0.1"
-             [(ngModel)]="params.orbit2SpeedRpm"
-             (ngModelChange)="onParamChange()">
+      <p class="param-hint">0 – 100 RPM</p>
     </div>
 
     <div class="mb-4">
@@ -132,7 +131,8 @@
           <input type="number" class="param-number-input"
                  min="0" max="360" step="1"
                  [(ngModel)]="params.initialAngle2"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (blur)="onParamChange()">
           <span class="param-unit">°</span>
         </div>
       </div>
@@ -153,55 +153,50 @@
     </div>
 
     <div class="mb-3">
-      <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="d-flex justify-content-between align-items-center">
         <label class="form-label small mb-0">Opacidad</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
                  min="0.05" max="1" step="0.05"
                  [(ngModel)]="params.lineAlpha"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (blur)="onParamChange()">
           <span class="param-unit">/ 1</span>
         </div>
       </div>
-      <input type="range" class="form-range"
-             min="0.05" max="1" step="0.05"
-             [(ngModel)]="params.lineAlpha"
-             (ngModelChange)="onParamChange()">
+      <p class="param-hint">0.05 – 1.0</p>
     </div>
 
     <div class="mb-3">
-      <div class="d-flex justify-content-between align-items-center mb-1">
+      <div class="d-flex justify-content-between align-items-center">
         <label class="form-label small mb-0">Grosor de trazo</label>
-        <input type="number" class="param-number-input"
-               min="0.5" max="10" step="0.5"
-               [(ngModel)]="params.strokeWeight"
-               (ngModelChange)="onParamChange()">
+        <div class="d-flex align-items-center gap-1">
+          <input type="number" class="param-number-input"
+                 min="0.5" max="10" step="0.5"
+                 [(ngModel)]="params.strokeWeight"
+                 (ngModelChange)="onParamChange()"
+                 (blur)="onParamChange()">
+          <span class="param-unit">px</span>
+        </div>
       </div>
-      <input type="range" class="form-range"
-             min="0.5" max="10" step="0.5"
-             [(ngModel)]="params.strokeWeight"
-             (ngModelChange)="onParamChange()">
+      <p class="param-hint">0.5 – 10 px</p>
     </div>
 
-    <!-- lineInterval: solo visible en modo Intersección de Líneas -->
     @if (params.visualizationMode === 'lines') {
       <div class="mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-1">
+        <div class="d-flex justify-content-between align-items-center">
           <label class="form-label small mb-0">Intervalo entre líneas</label>
           <div class="d-flex align-items-center gap-1">
             <input type="number" class="param-number-input"
                    min="0" max="60" step="0.001"
                    [(ngModel)]="params.lineInterval"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (blur)="onParamChange()">
             <span class="param-unit">s</span>
           </div>
         </div>
-        <input type="range" class="form-range"
-               min="0" max="10" step="0.05"
-               [(ngModel)]="params.lineInterval"
-               (ngModelChange)="onParamChange()">
-        <p class="mt-1 mb-0 small" style="color:#5a62a0;">
-          {{ formatInterval(params.lineInterval) }}
+        <p class="param-hint">
+          0 – 60 s &nbsp;·&nbsp; {{ formatInterval(params.lineInterval) }}
           @if (params.lineInterval === 0) { — una línea por fotograma }
         </p>
       </div>
@@ -223,31 +218,27 @@
         <h6 class="small mb-2" style="color:#6090cc;">Órbita 1</h6>
 
         <div class="mb-3">
-          <div class="d-flex justify-content-between align-items-center mb-1">
+          <div class="d-flex justify-content-between align-items-center">
             <label class="form-label small mb-0">Factor elíptico X</label>
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit1EllipseX"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (blur)="onParamChange()">
           </div>
-          <input type="range" class="form-range"
-                 min="0.1" max="2" step="0.05"
-                 [(ngModel)]="params.orbit1EllipseX"
-                 (ngModelChange)="onParamChange()">
+          <p class="param-hint">0.1 – 2.0</p>
         </div>
 
         <div class="mb-3">
-          <div class="d-flex justify-content-between align-items-center mb-1">
+          <div class="d-flex justify-content-between align-items-center">
             <label class="form-label small mb-0">Factor elíptico Y</label>
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit1EllipseY"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (blur)="onParamChange()">
           </div>
-          <input type="range" class="form-range"
-                 min="0.1" max="2" step="0.05"
-                 [(ngModel)]="params.orbit1EllipseY"
-                 (ngModelChange)="onParamChange()">
+          <p class="param-hint">0.1 – 2.0</p>
         </div>
 
         <div class="mb-4">
@@ -257,7 +248,8 @@
               <input type="number" class="param-number-input"
                      min="0" max="360" step="1"
                      [(ngModel)]="params.orbit1Angle"
-                     (ngModelChange)="onParamChange()">
+                     (ngModelChange)="onParamChange()"
+                     (blur)="onParamChange()">
               <span class="param-unit">°</span>
             </div>
           </div>
@@ -271,31 +263,27 @@
         <h6 class="small mb-2" style="color:#cc6060;">Órbita 2</h6>
 
         <div class="mb-3">
-          <div class="d-flex justify-content-between align-items-center mb-1">
+          <div class="d-flex justify-content-between align-items-center">
             <label class="form-label small mb-0">Factor elíptico X</label>
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit2EllipseX"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (blur)="onParamChange()">
           </div>
-          <input type="range" class="form-range"
-                 min="0.1" max="2" step="0.05"
-                 [(ngModel)]="params.orbit2EllipseX"
-                 (ngModelChange)="onParamChange()">
+          <p class="param-hint">0.1 – 2.0</p>
         </div>
 
         <div class="mb-3">
-          <div class="d-flex justify-content-between align-items-center mb-1">
+          <div class="d-flex justify-content-between align-items-center">
             <label class="form-label small mb-0">Factor elíptico Y</label>
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit2EllipseY"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (blur)="onParamChange()">
           </div>
-          <input type="range" class="form-range"
-                 min="0.1" max="2" step="0.05"
-                 [(ngModel)]="params.orbit2EllipseY"
-                 (ngModelChange)="onParamChange()">
+          <p class="param-hint">0.1 – 2.0</p>
         </div>
 
         <div class="mb-3">
@@ -305,7 +293,8 @@
               <input type="number" class="param-number-input"
                      min="0" max="360" step="1"
                      [(ngModel)]="params.orbit2Angle"
-                     (ngModelChange)="onParamChange()">
+                     (ngModelChange)="onParamChange()"
+                     (blur)="onParamChange()">
               <span class="param-unit">°</span>
             </div>
           </div>
