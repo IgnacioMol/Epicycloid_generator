@@ -4,6 +4,24 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-05-28 (sesión 2) — Validación doble en inputs y NaN safety
+
+### Cambios realizados
+
+**Doble validación de rango en inputs numéricos (`controls.html` / `controls.ts`)**
+- Todos los inputs `type="number"` del panel de controles (15 en total) ahora disparan `onParamChange()` tanto en `(ngModelChange)` (cada pulsación) como en `(blur)` (al salir del campo).
+- Esto garantiza que el valor siempre quede dentro de rango, tanto mientras el usuario escribe como al perder el foco.
+
+**Manejo de `NaN` / campo vacío (`controls.ts`)**
+- `clampParams()` incorpora una función auxiliar `safe(v, fallback)` que sustituye `null` y `NaN` por el valor por defecto de `DEFAULT_PARAMS` antes de clampar.
+- Sin este cambio, borrar un campo lo hacía colapsar silenciosamente al mínimo del rango.
+
+### Estado al cierre de sesión
+- Panel de controles robusto: ningún campo puede quedar fuera de rango ni en estado inválido.
+- Pendiente: RF6 (guardar imagen), RF7 (presets), RF14 (variación aleatoria), y re-implementación del bug de simulate con la corrección de `ngZone`.
+
+---
+
 ## 2026-05-28 — Refinamiento de UI, simulate N órbitas y documentación
 
 ### Cambios realizados
