@@ -7,7 +7,7 @@ Aplicación web interactiva para generar patrones visuales paramétricos a parti
 El generador crea composiciones artísticas mediante la interferencia entre dos puntos que orbitan independientemente alrededor del mismo centro. El patrón emerge de la línea trazada entre ambos planetas en cada fotograma, produciendo figuras similares al arte de cuerdas (_string art_) y a las curvas de Lissajous.
 
 Dos modos de visualización:
-- **Intersección de líneas** — ambas órbitas parten del centro; se dibuja la línea entre los dos planetas cada fotograma.
+- **Intersección de líneas** — ambas órbitas parten del centro; se dibuja la línea entre los dos planetas en cada fotograma.
 - **Curva epicicloidal** — la órbita 2 gira alrededor del punto extremo de la órbita 1; se traza el camino del punto resultante.
 
 ## Tecnologías
@@ -17,7 +17,7 @@ Dos modos de visualización:
 | Framework | Angular 21 (standalone components) |
 | Gráficos | p5.js 2.2.3 |
 | UI | Bootstrap 5.3 |
-| Estado | RxJS 7 (BehaviorSubject) |
+| Estado | RxJS 7 (BehaviorSubject / Subject) |
 | Tests | Vitest 4 |
 | Despliegue | Vercel |
 
@@ -47,41 +47,68 @@ Abre `http://localhost:4200` en el navegador. El servidor se recarga automática
 
 ### Panel de controles (columna derecha)
 
+Los controles se bloquean mientras hay una simulación en curso. Pulsa **Pausa** para editarlos.
+
+---
+
 **Modo de visualización**
+
 Alterna entre los dos modos con el botón superior del panel. El lienzo se limpia automáticamente al cambiar de modo.
 
-**Órbita 1 / Órbita 2**
+---
+
+**Órbita 1 / Órbita 2** _(secciones colapsables)_
+
 Cada órbita expone tres parámetros básicos:
 - _Radio_ (10–500 px) — tamaño de la órbita.
 - _Velocidad angular_ (0–100 RPM) — velocidad de rotación del planeta.
-- _Fase inicial_ (0–360°) — ángulo de partida del planeta.
+- _Fase inicial_ (0–360°, con slider) — ángulo de partida del planeta.
 
-**Visual**
+---
+
+**Visual** _(sección colapsable)_
+
 - _Color de trazo_ — selector de color para las líneas dibujadas.
 - _Opacidad_ (0.05–1) — transparencia de cada línea; valores bajos crean efecto de acumulación.
 - _Grosor de trazo_ (0.5–10 px) — anchura de las líneas.
 - _Intervalo entre líneas_ (0–60 s, solo en modo _Intersección_) — tiempo entre líneas consecutivas; 0 = una línea por fotograma.
 
+---
+
 **Parámetros avanzados** _(sección colapsable)_
+
 - _Factor elíptico X/Y_ (0.1–2) — distorsiona la órbita circular en una elipse. 1.0 = círculo perfecto.
-- _Inclinación_ (0–360°) — rotación del plano de la órbita.
+- _Inclinación_ (0–360°, con slider) — rotación del plano de la órbita en el espacio 2D.
+
+---
+
+**Simular por órbitas**
+
+Permite ejecutar la simulación durante un número exacto de vueltas de una órbita concreta:
+
+1. Selecciona qué órbita usar como referencia (Órbita 1 o Órbita 2).
+2. Indica el número de vueltas (p. ej. `2.5`).
+3. Pulsa **Simular**. La animación se detiene automáticamente al completar las vueltas indicadas.
+
+---
 
 **Acciones**
+
 | Botón | Función |
 |---|---|
-| ▶ Play | Inicia la animación y el trazado |
+| ▶ Play | Inicia la animación en modo continuo |
 | ⏸ Pausa | Detiene la animación (los parámetros se pueden editar) |
 | ⬜ Limpiar lienzo | Borra el trazado acumulado y reinicia los ángulos |
 | ↺ Reset | Restaura todos los parámetros a sus valores por defecto |
 
-> Los controles se bloquean mientras la simulación está en curso para evitar cambios a mitad de patrón. Pulsa _Pausa_ para editarlos.
+---
 
 ### Canvas (columna izquierda)
 
 Muestra en tiempo real:
 - Las elipses orbitales de guía (azul = órbita 1, rojo = órbita 2).
 - Los planetas con sus brazos radiales.
-- El patrón acumulado en una capa de trazado independiente.
+- El patrón acumulado en una capa de trazado independiente (`p5.Graphics`).
 
 El canvas se redimensiona automáticamente con la ventana.
 
@@ -91,7 +118,7 @@ El canvas se redimensiona automáticamente con la ventana.
 npm run build
 ```
 
-Los artefactos se generan en `dist/epicycloid-generator/browser/`. La build de producción incluye optimizaciones de minificación y tree-shaking de Angular.
+Los artefactos se generan en `dist/epicycloid-generator/browser/`. La build incluye optimizaciones de minificación y tree-shaking de Angular.
 
 Para compilar en modo watch (desarrollo):
 
@@ -101,36 +128,33 @@ npm run watch
 
 ## Despliegue en Vercel
 
-### Opción A — Despliegue desde CLI
+### Opción A — CLI
 
 ```bash
 npm install -g vercel
 vercel
 ```
 
-En el asistente interactivo:
+En el asistente:
 - _Framework Preset_: Angular
 - _Build Command_: `npm run build`
 - _Output Directory_: `dist/epicycloid-generator/browser`
-- _Install Command_: `npm install`
 
-### Opción B — Despliegue desde GitHub
+### Opción B — GitHub
 
 1. Sube el repositorio a GitHub.
-2. Ve a [vercel.com](https://vercel.com) e importa el repositorio.
-3. Vercel detecta Angular automáticamente. Confirma:
-   - _Build Command_: `npm run build`
-   - _Output Directory_: `dist/epicycloid-generator/browser`
-4. Despliega. Cada push a `main` genera un despliegue automático.
+2. Importa el proyecto en [vercel.com](https://vercel.com).
+3. Vercel detecta Angular automáticamente. Confirma el _Output Directory_: `dist/epicycloid-generator/browser`.
+4. Cada push a `main` genera un despliegue automático.
 
-### Opción C — Hosting estático (GitHub Pages, Netlify, etc.)
+### Opción C — Hosting estático
 
 ```bash
 npm run build
-# Sirve el contenido de dist/epicycloid-generator/browser/ como sitio estático
+# Sirve dist/epicycloid-generator/browser/ como sitio estático
 ```
 
-> Si se despliega en una subruta (p. ej. `usuario.github.io/epicycloid-generator/`), añade `--base-href /epicycloid-generator/` al comando de build.
+> Si se despliega en una subruta, añade `--base-href /epicycloid-generator/` al comando de build.
 
 ## Tests
 
@@ -150,7 +174,7 @@ src/
 │   ├── features/
 │   │   ├── canvas/                  # renderizado p5.js
 │   │   ├── controls/                # panel de parámetros
-│   │   └── presets/                 # (en desarrollo)
+│   │   └── presets/                 # (pendiente)
 │   ├── models/
 │   │   └── pattern-params.model.ts  # tipos e interfaces
 │   ├── app.ts                       # componente raíz
@@ -166,7 +190,11 @@ src/
 | Radio órbita 2 | 200 px |
 | Velocidad órbita 1 | 6 RPM |
 | Velocidad órbita 2 | 3 RPM |
+| Fase inicial ambas | 0° |
+| Factor elíptico X/Y | 1.0 (círculo) |
+| Inclinación | 0° |
 | Color de trazo | #ffffff |
 | Opacidad | 0.6 |
 | Grosor | 1 px |
+| Intervalo entre líneas | 0 (continuo) |
 | Modo | Intersección de líneas |
