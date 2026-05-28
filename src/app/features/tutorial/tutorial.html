@@ -1,0 +1,71 @@
+<button class="help-btn" (click)="open()" title="Ayuda / Tutorial">?</button>
+
+@if (visible) {
+  <div class="tutorial-overlay" (click)="close()">
+    <div class="tutorial-card" (click)="$event.stopPropagation()">
+
+      <div class="tutorial-header">
+        <h2 class="tutorial-title">Generador de Epicicloides</h2>
+        <p class="tutorial-subtitle">Guía de inicio rápido</p>
+      </div>
+
+      <ol class="tutorial-steps">
+        <li>
+          <span class="step-icon">⟳</span>
+          <div>
+            <strong>Elige el modo de visualización</strong>
+            <p>
+              <em>Curva epicicloidal</em> — la órbita 2 gira alrededor del extremo de la órbita 1 y se traza su camino.<br>
+              <em>Intersección de líneas</em> — ambas órbitas parten del centro y se dibuja la línea entre los dos planetas.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="step-icon">⚙</span>
+          <div>
+            <strong>Ajusta las órbitas</strong>
+            <p>
+              Modifica el <em>radio</em> y la <em>velocidad (RPM)</em> de cada órbita. La relación entre las dos velocidades determina la forma del patrón. Usa la <em>Fase inicial</em> para desfasar el punto de partida.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="step-icon">▶</span>
+          <div>
+            <strong>Play — y observa cómo se dibuja</strong>
+            <p>
+              La animación dibuja en tiempo real. Puedes cambiar los parámetros de color, opacidad y grosor de trazo mientras está en marcha.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="step-icon">✦</span>
+          <div>
+            <strong>Parámetros avanzados</strong>
+            <p>
+              Despliega la sección <em>Parámetros avanzados</em> para activar factores elípticos (aplasta u estira la órbita) e inclinar el plano orbital.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="step-icon">↺</span>
+          <div>
+            <strong>Limpiar y Reset</strong>
+            <p>
+              <em>Limpiar lienzo</em> borra el trazo acumulado sin perder los parámetros. <em>Reset</em> devuelve todo al estado inicial.
+            </p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="tutorial-footer">
+        <label class="dont-show-label">
+          <input type="checkbox" [(ngModel)]="dontShowAgain">
+          No volver a mostrar
+        </label>
+        <button class="btn-start" (click)="close()">¡Empezar!</button>
+      </div>
+
+    </div>
+  </div>
+}

@@ -4,6 +4,30 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-05-28 (sesión 3) — Tutorial de bienvenida y botón de ayuda
+
+### Cambios realizados
+
+**Nuevo componente: `Tutorial` (`src/app/features/tutorial/`)**
+- Popup modal que aparece automáticamente al cargar la página con cinco pasos de inicio rápido: modo de visualización, ajuste de órbitas, Play, parámetros avanzados y controles de lienzo.
+- Opción "No volver a mostrar" con persistencia en `localStorage` (`epicycloid_tutorial_seen`).
+- Se puede cerrar pulsando el botón "¡Empezar!" o haciendo clic fuera del card.
+- Animaciones de entrada: fade-in en el overlay, slide-up en el card.
+
+**Botón de ayuda `?`**
+- Botón circular fijo en la esquina superior izquierda (`position: fixed`), siempre visible.
+- Al pulsarlo vuelve a abrir el tutorial (resetea también el checkbox "No volver a mostrar").
+
+**Integración en el app raíz**
+- `app.ts`: importa `Tutorial` como standalone component.
+- `app.html`: añade `<app-tutorial>` antes del layout principal.
+
+### Estado al cierre de sesión
+- Tutorial funcional con persistencia de preferencia de usuario.
+- Pendiente: RF6 (guardar imagen), RF7 (presets), RF14 (variación aleatoria), re-implementación del bug de simulate con corrección de `ngZone`.
+
+---
+
 ## 2026-05-28 — Refinamiento de UI, simulate N órbitas y documentación
 
 ### Cambios realizados
