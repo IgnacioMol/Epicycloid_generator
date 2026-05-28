@@ -11,13 +11,16 @@ export const DEFAULT_PARAMS: PatternParams = {
   orbit1EllipseY: 1.0,
   orbit2EllipseX: 1.0,
   orbit2EllipseY: 1.0,
-  orbit1Speed: 0.0105,   // ~TWO_PI/600 — ~1 orbit every 10s at 60fps
-  orbit2Speed: 0.0052,   // half speed — produces complex patterns
+  orbit1Angle: 0,
+  orbit2Angle: 0,
+  orbit1SpeedRpm: 6.0,
+  orbit2SpeedRpm: 3.0,
   initialAngle1: 0,
   initialAngle2: 0,
   lineColor: '#ffffff',
   lineAlpha: 0.6,
   strokeWeight: 1,
+  lineInterval: 0,
   visualizationMode: 'lines',
 };
 

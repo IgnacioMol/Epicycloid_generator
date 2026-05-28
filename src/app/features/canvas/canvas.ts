@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { CanvasAction, DEFAULT_PARAMS, PatternService } from '../../core/pattern.service';
 import { PatternParams, VisualizationMode } from '../../models/pattern-params.model';
 
+const RPM_TO_RAD_PER_FRAME = (Math.PI * 2) / (60 * 60); // at 60 fps
+
 @Component({
   selector: 'app-canvas',
   standalone: true,
@@ -28,6 +30,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
   private activeMode: VisualizationMode = DEFAULT_PARAMS.visualizationMode;
   private clearPending = false;
   private resetPending = false;
+  private framesSinceLastLine = 0;
 
   constructor(private patternService: PatternService) {}
 
@@ -92,15 +95,25 @@ export class Canvas implements AfterViewInit, OnDestroy {
           orbit1EllipseY: eY1,
           orbit2EllipseX: eX2,
           orbit2EllipseY: eY2,
-          orbit1Speed: s1,
-          orbit2Speed: s2,
+          orbit1Angle,
+          orbit2Angle,
+          orbit1SpeedRpm: rpm1,
+          orbit2SpeedRpm: rpm2,
           initialAngle1,
           initialAngle2,
           lineColor,
           lineAlpha,
           strokeWeight: sw,
           visualizationMode: mode,
+          lineInterval,
         } = this.params;
+
+        const s1 = (rpm1 || 0) * RPM_TO_RAD_PER_FRAME;
+        const s2 = (rpm2 || 0) * RPM_TO_RAD_PER_FRAME;
+        const init1 = (initialAngle1 * Math.PI) / 180;
+        const init2 = (initialAngle2 * Math.PI) / 180;
+        const a1 = (orbit1Angle * Math.PI) / 180;
+        const a2 = (orbit2Angle * Math.PI) / 180;
 
         // — Pending actions —
 
@@ -113,6 +126,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
           this.isDrawing = false;
           this.activeMode = mode;
           this.resetPending = false;
+          this.framesSinceLastLine = 0;
         }
 
         if (this.clearPending) {
@@ -121,6 +135,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
           this.angle2 = 0;
           this.firstPoint = true;
           this.clearPending = false;
+          this.framesSinceLastLine = 0;
         }
 
         // On mode switch: clear trail, reset angles, pause
@@ -132,29 +147,32 @@ export class Canvas implements AfterViewInit, OnDestroy {
           this.isPaused = true;
           this.isDrawing = false;
           this.activeMode = mode;
+          this.framesSinceLastLine = 0;
         }
 
-        const init1 = (initialAngle1 * Math.PI) / 180;
-        const init2 = (initialAngle2 * Math.PI) / 180;
         const cx = p.width / 2;
         const cy = p.height / 2;
 
-        // — Compute planet positions —
+        // — Compute planet positions with orbit tilt —
 
         let x1: number, y1: number, x2: number, y2: number;
 
+        const lx1 = R1 * eX1 * Math.cos(this.angle1 + init1);
+        const ly1 = R1 * eY1 * Math.sin(this.angle1 + init1);
+        x1 = lx1 * Math.cos(a1) - ly1 * Math.sin(a1);
+        y1 = lx1 * Math.sin(a1) + ly1 * Math.cos(a1);
+
+        const lx2 = R2 * eX2 * Math.cos(this.angle2 + init2);
+        const ly2 = R2 * eY2 * Math.sin(this.angle2 + init2);
+        const rx2 = lx2 * Math.cos(a2) - ly2 * Math.sin(a2);
+        const ry2 = lx2 * Math.sin(a2) + ly2 * Math.cos(a2);
+
         if (mode === 'curve') {
-          // Orbit 2 revolves around orbit 1's planet (chained epicycloid)
-          x1 = R1 * eX1 * Math.cos(this.angle1 + init1);
-          y1 = R1 * eY1 * Math.sin(this.angle1 + init1);
-          x2 = x1 + R2 * eX2 * Math.cos(this.angle2 + init2);
-          y2 = y1 + R2 * eY2 * Math.sin(this.angle2 + init2);
+          x2 = x1 + rx2;
+          y2 = y1 + ry2;
         } else {
-          // Both orbits centered at origin (Processing prototype model)
-          x1 = R1 * eX1 * Math.cos(this.angle1 + init1);
-          y1 = R1 * eY1 * Math.sin(this.angle1 + init1);
-          x2 = R2 * eX2 * Math.cos(this.angle2 + init2);
-          y2 = R2 * eY2 * Math.sin(this.angle2 + init2);
+          x2 = rx2;
+          y2 = ry2;
         }
 
         // — Render —
@@ -173,22 +191,22 @@ export class Canvas implements AfterViewInit, OnDestroy {
 
         if (mode === 'curve') {
           p.stroke(60, 90, 180);
-          p.ellipse(0, 0, R1 * eX1 * 2, R1 * eY1 * 2);
+          p.push(); p.rotate(a1); p.ellipse(0, 0, R1 * eX1 * 2, R1 * eY1 * 2); p.pop();
           p.stroke(60, 90, 180, 160);
           p.line(0, 0, x1, y1);
 
           p.stroke(180, 60, 60);
-          p.ellipse(x1, y1, R2 * eX2 * 2, R2 * eY2 * 2);
+          p.push(); p.translate(x1, y1); p.rotate(a2); p.ellipse(0, 0, R2 * eX2 * 2, R2 * eY2 * 2); p.pop();
           p.stroke(180, 60, 60, 160);
           p.line(x1, y1, x2, y2);
         } else {
           p.stroke(60, 90, 180);
-          p.ellipse(0, 0, R1 * eX1 * 2, R1 * eY1 * 2);
+          p.push(); p.rotate(a1); p.ellipse(0, 0, R1 * eX1 * 2, R1 * eY1 * 2); p.pop();
           p.stroke(60, 90, 180, 160);
           p.line(0, 0, x1, y1);
 
           p.stroke(180, 60, 60);
-          p.ellipse(0, 0, R2 * eX2 * 2, R2 * eY2 * 2);
+          p.push(); p.rotate(a2); p.ellipse(0, 0, R2 * eX2 * 2, R2 * eY2 * 2); p.pop();
           p.stroke(180, 60, 60, 160);
           p.line(0, 0, x2, y2);
         }
@@ -219,18 +237,20 @@ export class Canvas implements AfterViewInit, OnDestroy {
             trail.noFill();
 
             if (mode === 'curve') {
-              // Trace path of the tip point (x2, y2)
               if (!this.firstPoint) {
                 trail.line(cx + this.prevTipX, cy + this.prevTipY, cx + x2, cy + y2);
               }
               this.prevTipX = x2;
               this.prevTipY = y2;
+              this.firstPoint = false;
             } else {
-              // Draw line between the two independent planets
-              trail.line(cx + x1, cy + y1, cx + x2, cy + y2);
+              // Draw a line only when the interval has elapsed
+              const framesNeeded = lineInterval > 0 ? Math.max(1, Math.round(lineInterval * 60)) : 1;
+              if (this.framesSinceLastLine % framesNeeded === 0) {
+                trail.line(cx + x1, cy + y1, cx + x2, cy + y2);
+              }
+              this.framesSinceLastLine++;
             }
-
-            this.firstPoint = false;
           }
 
           this.angle1 += s1;
