@@ -1,0 +1,50 @@
+.params-locked {
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.2s ease;
+}
+
+.param-number-input {
+  width: 64px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  background: #1a1a32;
+  color: #a0a8d0;
+  border: 1px solid #3a3a60;
+  border-radius: 4px;
+  padding: 1px 5px;
+  text-align: right;
+  /* hide browser spinners */
+  -moz-appearance: textfield;
+}
+
+.param-number-input::-webkit-inner-spin-button,
+.param-number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.param-number-input:focus {
+  outline: none;
+  border-color: #6080c0;
+  color: #d0d8f0;
+  background: #22224a;
+}
+
+.param-unit {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #5a62a0;
+}
+
+.lock-banner {
+  background: #1a1a32;
+  border: 1px solid #4a4a80;
+  color: #8090c0;
+  font-size: 0.82rem;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
