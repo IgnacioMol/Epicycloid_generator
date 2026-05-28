@@ -4,21 +4,27 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
-## 2026-05-28 (sesión 2) — Validación doble en inputs y NaN safety
+## 2026-05-28 (sesión 3) — Tutorial de bienvenida y botón de ayuda
 
 ### Cambios realizados
 
-**Doble validación de rango en inputs numéricos (`controls.html` / `controls.ts`)**
-- Todos los inputs `type="number"` del panel de controles (15 en total) ahora disparan `onParamChange()` tanto en `(ngModelChange)` (cada pulsación) como en `(blur)` (al salir del campo).
-- Esto garantiza que el valor siempre quede dentro de rango, tanto mientras el usuario escribe como al perder el foco.
+**Nuevo componente: `Tutorial` (`src/app/features/tutorial/`)**
+- Popup modal que aparece automáticamente al cargar la página con cinco pasos de inicio rápido: modo de visualización, ajuste de órbitas, Play, parámetros avanzados y controles de lienzo.
+- Opción "No volver a mostrar" con persistencia en `localStorage` (`epicycloid_tutorial_seen`).
+- Se puede cerrar pulsando el botón "¡Empezar!" o haciendo clic fuera del card.
+- Animaciones de entrada: fade-in en el overlay, slide-up en el card.
 
-**Manejo de `NaN` / campo vacío (`controls.ts`)**
-- `clampParams()` incorpora una función auxiliar `safe(v, fallback)` que sustituye `null` y `NaN` por el valor por defecto de `DEFAULT_PARAMS` antes de clampar.
-- Sin este cambio, borrar un campo lo hacía colapsar silenciosamente al mínimo del rango.
+**Botón de ayuda `?`**
+- Botón circular fijo en la esquina superior izquierda (`position: fixed`), siempre visible.
+- Al pulsarlo vuelve a abrir el tutorial (resetea también el checkbox "No volver a mostrar").
+
+**Integración en el app raíz**
+- `app.ts`: importa `Tutorial` como standalone component.
+- `app.html`: añade `<app-tutorial>` antes del layout principal.
 
 ### Estado al cierre de sesión
-- Panel de controles robusto: ningún campo puede quedar fuera de rango ni en estado inválido.
-- Pendiente: RF6 (guardar imagen), RF7 (presets), RF14 (variación aleatoria), y re-implementación del bug de simulate con la corrección de `ngZone`.
+- Tutorial funcional con persistencia de preferencia de usuario.
+- Pendiente: RF6 (guardar imagen), RF7 (presets), RF14 (variación aleatoria), re-implementación del bug de simulate con corrección de `ngZone`.
 
 ---
 
