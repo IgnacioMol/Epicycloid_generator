@@ -1,1 +1,12 @@
-<div #canvasContainer class="canvas-host"></div>
+<div class="canvas-wrapper">
+  <div #canvasContainer class="canvas-host"></div>
+
+  <div class="zoom-controls">
+    <button class="zoom-btn" (click)="zoomIn()" title="Acercar">
+      <i class="fa-solid fa-magnifying-glass-plus"></i>
+    </button>
+    <button class="zoom-btn" (click)="zoomOut()" title="Alejar">
+      <i class="fa-solid fa-magnifying-glass-minus"></i>
+    </button>
+  </div>
+</div>

@@ -5,6 +5,12 @@ import { CanvasAction, DEFAULT_PARAMS, PatternService } from '../../core/pattern
 import { PatternParams, VisualizationMode } from '../../models/pattern-params.model';
 
 const RPM_TO_RAD_PER_FRAME = (Math.PI * 2) / (60 * 60); // at 60 fps
+const ZOOM_STEP = 0.15;
+// TRAIL_SCALE defines how much larger the trail buffer is vs the canvas.
+// At MIN_ZOOM = 1/TRAIL_SCALE the buffer fills the screen exactly, avoiding visible clip edges.
+const TRAIL_SCALE = 3;
+const MIN_ZOOM = 1 / TRAIL_SCALE; // ≈ 0.33
+const MAX_ZOOM = 8;
 
 @Component({
   selector: 'app-canvas',
@@ -32,6 +38,9 @@ export class Canvas implements AfterViewInit, OnDestroy {
   private resetPending = false;
   private framesSinceLastLine = 0;
 
+  // View state
+  private zoom = 1;
+
   constructor(private patternService: PatternService) {}
 
   ngAfterViewInit(): void {
@@ -43,6 +52,14 @@ export class Canvas implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subs.unsubscribe();
     this.sketch?.remove();
+  }
+
+  zoomIn(): void {
+    this.zoom = Math.min(MAX_ZOOM, parseFloat((this.zoom + ZOOM_STEP).toFixed(2)));
+  }
+
+  zoomOut(): void {
+    this.zoom = Math.max(MIN_ZOOM, parseFloat((this.zoom - ZOOM_STEP).toFixed(2)));
   }
 
   private onAction(action: CanvasAction): void {
@@ -66,12 +83,23 @@ export class Canvas implements AfterViewInit, OnDestroy {
   private initSketch(): void {
     this.sketch = new p5((p: p5) => {
       let trail: p5.Graphics | null = null;
+      let trailW = 0;
+      let trailH = 0;
+
+      const makeTrail = (w: number, h: number): p5.Graphics => {
+        trailW = w * TRAIL_SCALE;
+        trailH = h * TRAIL_SCALE;
+        const g = p.createGraphics(trailW, trailH);
+        g.clear();
+        return g;
+      };
+
+      let canvasEl: HTMLElement | null = null;
 
       p.setup = () => {
         const el = this.container.nativeElement;
-        p.createCanvas(el.offsetWidth, el.offsetHeight);
-        trail = p.createGraphics(el.offsetWidth, el.offsetHeight);
-        trail.clear();
+        canvasEl = p.createCanvas(el.offsetWidth, el.offsetHeight).elt as HTMLElement;
+        trail = makeTrail(el.offsetWidth, el.offsetHeight);
         this.activeMode = this.params.visualizationMode;
         p.frameRate(60);
       };
@@ -80,9 +108,22 @@ export class Canvas implements AfterViewInit, OnDestroy {
         const el = this.container.nativeElement;
         p.resizeCanvas(el.offsetWidth, el.offsetHeight);
         trail?.remove();
-        trail = p.createGraphics(el.offsetWidth, el.offsetHeight);
-        trail.clear();
+        trail = makeTrail(el.offsetWidth, el.offsetHeight);
         this.firstPoint = true;
+      };
+
+      p.mouseWheel = (event: any) => {
+        // p5 2.x registers wheel on window — guard against events from other elements
+        // (e.g. tutorial modal scroll, controls panel scroll)
+        if (event.target !== canvasEl) {
+          return;
+        }
+        if (event.delta < 0) {
+          this.zoomIn();
+        } else {
+          this.zoomOut();
+        }
+        return false; // prevent page scroll only when over the canvas
       };
 
       p.draw = () => {
@@ -152,6 +193,9 @@ export class Canvas implements AfterViewInit, OnDestroy {
 
         const cx = p.width / 2;
         const cy = p.height / 2;
+        // Trail buffer center — offsets for writing lines to the oversized buffer
+        const tcx = trailW / 2;
+        const tcy = trailH / 2;
 
         // — Compute planet positions with orbit tilt —
 
@@ -179,13 +223,16 @@ export class Canvas implements AfterViewInit, OnDestroy {
 
         p.background(10, 10, 20);
 
-        // Paste accumulated trail (absolute pixel coords, before translate)
-        p.image(trail, 0, 0);
-
-        // Translate to center for orbital overlay
+        // Zoom transform anchored at screen center.
+        // Trail buffer (3× canvas) is drawn so its center sits at origin (= screen center),
+        // preventing visible clip edges at any zoom ≥ MIN_ZOOM.
+        p.push();
         p.translate(cx, cy);
+        p.scale(this.zoom);
 
-        // Draw orbital guides
+        p.image(trail, -tcx, -tcy);
+
+        // Orbital guides are center-relative — no additional translate needed here
         p.noFill();
         p.strokeWeight(1);
 
@@ -222,6 +269,8 @@ export class Canvas implements AfterViewInit, OnDestroy {
         p.fill(255, 110, 110);
         p.circle(x2, y2, 8);
 
+        p.pop();
+
         // — Update —
 
         if (!this.isPaused) {
@@ -238,16 +287,15 @@ export class Canvas implements AfterViewInit, OnDestroy {
 
             if (mode === 'curve') {
               if (!this.firstPoint) {
-                trail.line(cx + this.prevTipX, cy + this.prevTipY, cx + x2, cy + y2);
+                trail.line(tcx + this.prevTipX, tcy + this.prevTipY, tcx + x2, tcy + y2);
               }
               this.prevTipX = x2;
               this.prevTipY = y2;
               this.firstPoint = false;
             } else {
-              // Draw a line only when the interval has elapsed
               const framesNeeded = lineInterval > 0 ? Math.max(1, Math.round(lineInterval * 60)) : 1;
               if (this.framesSinceLastLine % framesNeeded === 0) {
-                trail.line(cx + x1, cy + y1, cx + x2, cy + y2);
+                trail.line(tcx + x1, tcy + y1, tcx + x2, tcy + y2);
               }
               this.framesSinceLastLine++;
             }

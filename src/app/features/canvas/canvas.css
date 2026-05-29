@@ -4,7 +4,48 @@
   height: 100%;
 }
 
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .canvas-host {
   width: 100%;
   height: 100%;
+}
+
+.zoom-controls {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+
+.zoom-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #3a3a60;
+  background: rgba(18, 18, 30, 0.85);
+  color: #a0a8d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.15s, color 0.15s;
+  padding: 0;
+}
+
+.zoom-btn:hover {
+  background: rgba(60, 60, 100, 0.9);
+  color: #e0e0f0;
+}
+
+.zoom-btn:active {
+  background: rgba(80, 80, 140, 0.95);
 }
