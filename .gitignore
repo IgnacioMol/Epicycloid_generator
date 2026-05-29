@@ -73,3 +73,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 >>>>>>> 3bd48e19cb8931c0892c5b85e7f77d2902b21755
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
