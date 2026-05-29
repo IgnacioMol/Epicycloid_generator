@@ -49,8 +49,11 @@
   padding: 2rem 2.2rem;
   max-width: 540px;
   width: 100%;
+  max-height: min(600px, 90vh);
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
   animation: slideUp 0.28s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes slideUp {
@@ -86,6 +89,22 @@
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.tutorial-steps::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tutorial-steps::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tutorial-steps::-webkit-scrollbar-thumb {
+  background: #3a3a60;
+  border-radius: 2px;
 }
 
 .tutorial-steps li {

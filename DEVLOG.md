@@ -4,6 +4,37 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-05-29 — Zoom en el lienzo (scroll y botones)
+
+### Cambios realizados
+
+**Zoom interactivo en el canvas (`src/app/features/canvas/`)**
+- `canvas.ts`: añadida variable `zoom` (rango 0.33×–8×, paso 0.15). Métodos públicos `zoomIn()` y `zoomOut()`. Handler `p.mouseWheel` con guard de límites del canvas (`p.mouseX/mouseY`) para que el scroll solo haga zoom cuando el puntero está sobre el lienzo y no interfiera con el scroll del panel de controles. Render pipeline: `translate(cx,cy) → scale(zoom)` con trail e imaged como `p.image(trail, -tcx, -tcy)`. Trail buffer creado a **3× el tamaño del canvas** (`TRAIL_SCALE = 3`) para que al zoom mínimo (1/3) el buffer llene exactamente la pantalla y no aparezcan bordes de recorte al alejar la vista.
+- `canvas.html`: envuelto en `.canvas-wrapper` (posición relativa). Añadido panel `.zoom-controls` superpuesto en la esquina inferior derecha con dos botones (`zoomIn` / `zoomOut`) con iconos Font Awesome 6 solid (`fa-solid fa-magnifying-glass-plus/minus`).
+- `canvas.css`: estilos para `.canvas-wrapper`, `.zoom-controls` y `.zoom-btn` (fondo semitransparente, borde, hover).
+
+**Correcciones de esta sesión**
+- Icono de lupa: cambiado de `fa-regular` a `fa-solid` (la variante `regular` requiere FA Pro; `solid` está en la versión gratuita).
+- Recorte de líneas al hacer zoom out: resuelto con el trail buffer 3×.
+- Scroll en controles: resuelto con guard de coordenadas en `mouseWheel` (sustituido posteriormente por guard de `event.target`).
+- Scroll del tutorial interceptado por el zoom: p5 2.x registra `wheel` a nivel `window`, por lo que el handler se disparaba aunque el modal estuviese encima del canvas. Solución: almacenar el elemento canvas nativo en `canvasEl` al crear el sketch y comprobar `event.target !== canvasEl` antes de actuar; si el scroll no viene del canvas se retorna sin `return false`, dejando el comportamiento por defecto del browser intacto.
+- Ventana del tutorial demasiado grande tras añadir el nuevo paso: `tutorial.css` actualizado con `max-height: min(600px, 90vh)` y layout flex-column; `.tutorial-steps` pasa a `overflow-y: auto` con scrollbar fina (4 px) para absorber contenido extra sin agrandar el card.
+
+**Tutorial (`src/app/features/tutorial/`)**
+- `tutorial.html`: añadido paso 4 «Zoom en el lienzo» explicando la rueda del ratón y los botones de lupa.
+- `tutorial.css`: card con altura máxima y scroll interno en la lista de pasos.
+
+**Dependencia externa**
+- `index.html`: añadido Font Awesome 6.7.2 CDN (`all.min.css`).
+
+**Rama de trabajo:** `update/view`
+
+### Estado al cierre de sesión
+- Zoom funcional con scroll del ratón y botones de lupa; no interfiere con el scroll del tutorial ni del panel de controles.
+- Pendiente: RF6 (guardar imagen), RF7 (presets), RF14 (variación aleatoria).
+
+---
+
 ## 2026-05-28 (sesión 3) — Tutorial de bienvenida y botón de ayuda
 
 ### Cambios realizados
