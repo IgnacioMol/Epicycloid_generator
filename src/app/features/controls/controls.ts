@@ -2,17 +2,19 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DEFAULT_PARAMS, PatternService } from '../../core/pattern.service';
 import { PatternParams } from '../../models/pattern-params.model';
+import { ExportModal } from '../export-modal/export-modal';
 
 @Component({
   selector: 'app-controls',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ExportModal],
   templateUrl: './controls.html',
   styleUrl: './controls.css',
 })
 export class Controls {
   params: PatternParams = { ...DEFAULT_PARAMS };
   isPlaying = false;
+  showExportModal = false;
 
   constructor(private patternService: PatternService) {}
 

@@ -2,14 +2,11 @@ import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@ang
 import p5 from 'p5';
 import { Subscription } from 'rxjs';
 import { CanvasAction, DEFAULT_PARAMS, PatternService } from '../../core/pattern.service';
-import { PatternParams, VisualizationMode } from '../../models/pattern-params.model';
+import { LineRecord, PatternParams, VisualizationMode } from '../../models/pattern-params.model';
 
 const RPM_TO_RAD_PER_FRAME = (Math.PI * 2) / (60 * 60); // at 60 fps
 const ZOOM_STEP = 0.15;
-// TRAIL_SCALE defines how much larger the trail buffer is vs the canvas.
-// At MIN_ZOOM = 1/TRAIL_SCALE the buffer fills the screen exactly, avoiding visible clip edges.
-const TRAIL_SCALE = 3;
-const MIN_ZOOM = 1 / TRAIL_SCALE; // ≈ 0.33
+const MIN_ZOOM = 1 / 3;
 const MAX_ZOOM = 8;
 
 @Component({
@@ -82,24 +79,12 @@ export class Canvas implements AfterViewInit, OnDestroy {
 
   private initSketch(): void {
     this.sketch = new p5((p: p5) => {
-      let trail: p5.Graphics | null = null;
-      let trailW = 0;
-      let trailH = 0;
-
-      const makeTrail = (w: number, h: number): p5.Graphics => {
-        trailW = w * TRAIL_SCALE;
-        trailH = h * TRAIL_SCALE;
-        const g = p.createGraphics(trailW, trailH);
-        g.clear();
-        return g;
-      };
-
       let canvasEl: HTMLElement | null = null;
 
       p.setup = () => {
         const el = this.container.nativeElement;
         canvasEl = p.createCanvas(el.offsetWidth, el.offsetHeight).elt as HTMLElement;
-        trail = makeTrail(el.offsetWidth, el.offsetHeight);
+        this.patternService.canvasDimensions = { w: el.offsetWidth, h: el.offsetHeight };
         this.activeMode = this.params.visualizationMode;
         p.frameRate(60);
       };
@@ -107,46 +92,30 @@ export class Canvas implements AfterViewInit, OnDestroy {
       p.windowResized = () => {
         const el = this.container.nativeElement;
         p.resizeCanvas(el.offsetWidth, el.offsetHeight);
-        trail?.remove();
-        trail = makeTrail(el.offsetWidth, el.offsetHeight);
+        this.patternService.canvasDimensions = { w: el.offsetWidth, h: el.offsetHeight };
+        // Line history uses canvas-space coords — resize keeps them valid
         this.firstPoint = true;
       };
 
       p.mouseWheel = (event: any) => {
-        // p5 2.x registers wheel on window — guard against events from other elements
-        // (e.g. tutorial modal scroll, controls panel scroll)
-        if (event.target !== canvasEl) {
-          return;
-        }
-        if (event.delta < 0) {
-          this.zoomIn();
-        } else {
-          this.zoomOut();
-        }
-        return false; // prevent page scroll only when over the canvas
+        if (event.target !== canvasEl) return;
+        if (event.delta < 0) this.zoomIn();
+        else this.zoomOut();
+        return false;
       };
 
       p.draw = () => {
-        if (!this.params || !trail) return;
+        if (!this.params) return;
 
         const {
-          orbit1Radius: R1,
-          orbit2Radius: R2,
-          orbit1EllipseX: eX1,
-          orbit1EllipseY: eY1,
-          orbit2EllipseX: eX2,
-          orbit2EllipseY: eY2,
-          orbit1Angle,
-          orbit2Angle,
-          orbit1SpeedRpm: rpm1,
-          orbit2SpeedRpm: rpm2,
-          initialAngle1,
-          initialAngle2,
-          lineColor,
-          lineAlpha,
-          strokeWeight: sw,
-          visualizationMode: mode,
-          lineInterval,
+          orbit1Radius: R1, orbit2Radius: R2,
+          orbit1EllipseX: eX1, orbit1EllipseY: eY1,
+          orbit2EllipseX: eX2, orbit2EllipseY: eY2,
+          orbit1Angle, orbit2Angle,
+          orbit1SpeedRpm: rpm1, orbit2SpeedRpm: rpm2,
+          initialAngle1, initialAngle2,
+          lineColor, lineAlpha, strokeWeight: sw,
+          visualizationMode: mode, lineInterval,
         } = this.params;
 
         const s1 = (rpm1 || 0) * RPM_TO_RAD_PER_FRAME;
@@ -159,45 +128,36 @@ export class Canvas implements AfterViewInit, OnDestroy {
         // — Pending actions —
 
         if (this.resetPending) {
-          trail.clear();
-          this.angle1 = 0;
-          this.angle2 = 0;
+          this.patternService.lineHistory = [];
+          this.angle1 = 0; this.angle2 = 0;
           this.firstPoint = true;
-          this.isPaused = true;
-          this.isDrawing = false;
+          this.isPaused = true; this.isDrawing = false;
           this.activeMode = mode;
           this.resetPending = false;
           this.framesSinceLastLine = 0;
         }
 
         if (this.clearPending) {
-          trail.clear();
-          this.angle1 = 0;
-          this.angle2 = 0;
+          this.patternService.lineHistory = [];
+          this.angle1 = 0; this.angle2 = 0;
           this.firstPoint = true;
           this.clearPending = false;
           this.framesSinceLastLine = 0;
         }
 
-        // On mode switch: clear trail, reset angles, pause
         if (mode !== this.activeMode) {
-          trail.clear();
-          this.angle1 = 0;
-          this.angle2 = 0;
+          this.patternService.lineHistory = [];
+          this.angle1 = 0; this.angle2 = 0;
           this.firstPoint = true;
-          this.isPaused = true;
-          this.isDrawing = false;
+          this.isPaused = true; this.isDrawing = false;
           this.activeMode = mode;
           this.framesSinceLastLine = 0;
         }
 
         const cx = p.width / 2;
         const cy = p.height / 2;
-        // Trail buffer center — offsets for writing lines to the oversized buffer
-        const tcx = trailW / 2;
-        const tcy = trailH / 2;
 
-        // — Compute planet positions with orbit tilt —
+        // — Compute planet positions —
 
         let x1: number, y1: number, x2: number, y2: number;
 
@@ -223,16 +183,36 @@ export class Canvas implements AfterViewInit, OnDestroy {
 
         p.background(10, 10, 20);
 
-        // Zoom transform anchored at screen center.
-        // Trail buffer (3× canvas) is drawn so its center sits at origin (= screen center),
-        // preventing visible clip edges at any zoom ≥ MIN_ZOOM.
+        // Draw accumulated lines via raw Canvas 2D — vector quality at any zoom level.
+        // p5's push/translate/scale writes directly to the canvas context, so the
+        // transform set here is already active when we use ctx.moveTo/lineTo.
+        const history = this.patternService.lineHistory;
+        if (history.length > 0) {
+          const ctx = (p as any).drawingContext as CanvasRenderingContext2D;
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.scale(this.zoom, this.zoom);
+
+          // Each line needs its own stroke() call so overlapping lines
+          // accumulate alpha correctly (a single batched stroke() paints each
+          // pixel only once, collapsing intersections to the same intensity).
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          for (const ln of history) {
+            ctx.strokeStyle = `rgba(${ln.r},${ln.g},${ln.b},${ln.a / 255})`;
+            ctx.lineWidth = ln.sw;
+            ctx.beginPath();
+            ctx.moveTo(ln.x1, ln.y1);
+            ctx.lineTo(ln.x2, ln.y2);
+            ctx.stroke();
+          }
+          ctx.restore();
+        }
+
+        // Orbital guides and planet dots (p5 methods, same world space)
         p.push();
         p.translate(cx, cy);
         p.scale(this.zoom);
-
-        p.image(trail, -tcx, -tcy);
-
-        // Orbital guides are center-relative — no additional translate needed here
         p.noFill();
         p.strokeWeight(1);
 
@@ -281,13 +261,12 @@ export class Canvas implements AfterViewInit, OnDestroy {
             const b = parseInt(hex.slice(4, 6), 16);
             const a = Math.round(lineAlpha * 255);
 
-            trail.stroke(r, g, b, a);
-            trail.strokeWeight(sw);
-            trail.noFill();
+            const record = (lx1: number, ly1: number, lx2: number, ly2: number): LineRecord =>
+              ({ x1: lx1, y1: ly1, x2: lx2, y2: ly2, r, g, b, a, sw });
 
             if (mode === 'curve') {
               if (!this.firstPoint) {
-                trail.line(tcx + this.prevTipX, tcy + this.prevTipY, tcx + x2, tcy + y2);
+                this.patternService.lineHistory.push(record(this.prevTipX, this.prevTipY, x2, y2));
               }
               this.prevTipX = x2;
               this.prevTipY = y2;
@@ -295,7 +274,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
             } else {
               const framesNeeded = lineInterval > 0 ? Math.max(1, Math.round(lineInterval * 60)) : 1;
               if (this.framesSinceLastLine % framesNeeded === 0) {
-                trail.line(tcx + x1, tcy + y1, tcx + x2, tcy + y2);
+                this.patternService.lineHistory.push(record(x1, y1, x2, y2));
               }
               this.framesSinceLastLine++;
             }
