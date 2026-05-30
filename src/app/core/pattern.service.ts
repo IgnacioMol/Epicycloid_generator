@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { PatternParams } from '../models/pattern-params.model';
+import { LineRecord, PatternParams } from '../models/pattern-params.model';
 
 export type CanvasAction = 'play' | 'pause' | 'clear' | 'reset';
 
@@ -31,6 +31,10 @@ export class PatternService {
 
   params$ = this.paramsSubject.asObservable();
   action$ = this.actionSubject.asObservable();
+
+  // Set by CanvasComponent; shared with ExportModal for rendering
+  lineHistory: LineRecord[] = [];
+  canvasDimensions = { w: 0, h: 0 };
 
   updateParams(params: PatternParams): void {
     this.paramsSubject.next(params);

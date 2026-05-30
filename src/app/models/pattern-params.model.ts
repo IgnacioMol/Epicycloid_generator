@@ -30,3 +30,17 @@ export interface PatternParams {
   // Mode
   visualizationMode: VisualizationMode;
 }
+
+export interface ExportOptions {
+  bgColor: string;       // hex e.g. '#000000' or 'transparent'
+  showGuides: boolean;
+  showCenterDot: boolean;
+}
+
+export interface LineRecord {
+  x1: number; y1: number;
+  x2: number; y2: number;
+  r: number; g: number; b: number;
+  a: number;   // 0-255
+  sw: number;  // strokeWeight
+}

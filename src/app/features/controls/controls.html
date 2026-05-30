@@ -340,5 +340,10 @@
     </div>
     <button class="btn btn-outline-secondary btn-sm" (click)="clear()">⬜ Limpiar lienzo</button>
     <button class="btn btn-outline-danger btn-sm" (click)="reset()">↺ Reset</button>
+    <button class="btn btn-outline-info btn-sm" (click)="showExportModal = true">↓ Exportar imagen</button>
   </div>
 </div>
+
+@if (showExportModal) {
+  <app-export-modal (close)="showExportModal = false"></app-export-modal>
+}

@@ -1,0 +1,128 @@
+<div class="export-overlay" (click)="close.emit()">
+  <div class="export-dialog" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="export-header">
+      <span class="export-title">Exportar imagen</span>
+      <button class="export-close-btn" (click)="close.emit()" title="Cerrar">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div class="export-body">
+
+      <!-- Preview -->
+      <div class="export-preview-area">
+        <p class="export-section-label">Vista previa</p>
+        <div class="preview-checker-wrapper">
+          <canvas #previewCanvas class="preview-canvas"></canvas>
+        </div>
+        <p class="export-resolution-label">{{ exportResolution }}</p>
+      </div>
+
+      <!-- Options -->
+      <div class="export-options-area">
+        <p class="export-section-label">Opciones de exportación</p>
+
+        <!-- Background -->
+        <div class="option-group">
+          <label class="option-label">Fondo</label>
+
+          <div class="option-row">
+            <label class="toggle-label">
+              <input type="checkbox"
+                     [(ngModel)]="isTransparent"
+                     (ngModelChange)="onTransparentToggle()">
+              <span>Transparente</span>
+            </label>
+          </div>
+
+          @if (!isTransparent) {
+            <div class="option-row">
+              <label class="small-label">Color:</label>
+              <input type="color"
+                     class="color-input"
+                     [(ngModel)]="options.bgColor"
+                     (ngModelChange)="onOptionChange()">
+            </div>
+          }
+        </div>
+
+        <!-- Zoom -->
+        <div class="option-group">
+          <label class="option-label">Zoom de exportación</label>
+          <div class="option-row">
+            <input type="range"
+                   class="zoom-slider"
+                   [min]="minZoom" [max]="maxZoom" step="0.05"
+                   [(ngModel)]="exportZoom"
+                   (ngModelChange)="onOptionChange()">
+          </div>
+          <div class="zoom-labels">
+            <span>Alejado</span>
+            <span class="zoom-value">{{ exportZoom.toFixed(2) }}×</span>
+            <span>Acercado</span>
+          </div>
+        </div>
+
+        <!-- Resolution -->
+        <div class="option-group">
+          <label class="option-label">Resolución del archivo</label>
+          <div class="scale-options">
+            @for (s of scaleOptions; track s) {
+              <button class="scale-btn"
+                      [class.scale-btn--active]="exportScale === s"
+                      (click)="exportScale = s; onOptionChange()">
+                {{ s }}×
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Visibility -->
+        <div class="option-group">
+          <label class="option-label">Elementos visibles</label>
+
+          <div class="option-row">
+            <label class="toggle-label">
+              <input type="checkbox"
+                     [(ngModel)]="options.showGuides"
+                     (ngModelChange)="onOptionChange()">
+              <span>Círculos de referencia</span>
+            </label>
+          </div>
+
+          <div class="option-row">
+            <label class="toggle-label">
+              <input type="checkbox"
+                     [(ngModel)]="options.showCenterDot"
+                     (ngModelChange)="onOptionChange()">
+              <span>Punto central</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Filename -->
+    <div class="export-filename-bar">
+      <label class="filename-label">Nombre del archivo</label>
+      <div class="filename-input-row">
+        <input type="text"
+               class="filename-input"
+               [(ngModel)]="fileName"
+               [placeholder]="defaultFileName">
+        <span class="filename-ext">.png</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="export-footer">
+      <button class="btn-cancel" (click)="close.emit()">Cancelar</button>
+      <button class="btn-save" (click)="save()">
+        ↓ Guardar PNG
+      </button>
+    </div>
+
+  </div>
+</div>

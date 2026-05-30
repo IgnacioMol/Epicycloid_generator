@@ -4,6 +4,41 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-05-30 — RF6: Exportación de imagen + corrección de calidad de líneas
+
+### Cambios realizados
+
+**Nuevo componente: `ExportModal` (`src/app/features/export-modal/`)**
+- Modal completo de exportación accesible desde el botón «↓ Exportar imagen» en el panel de controles.
+- **Opciones de exportación:**
+  - Fondo: color libre con selector de color o transparente (checkerboard en la preview).
+  - Zoom de exportación: slider 0.2×–4× para controlar el área visible en la imagen exportada.
+  - Resolución: multiplicador 1×/2×/4× (escala todo el canvas de salida).
+  - Visibilidad de círculos de referencia y punto central en la imagen exportada.
+  - **Nombre del archivo**: campo de texto libre; si se deja vacío se usa `epicycloid_<modo>_<YYYY-MM-DD>.png`.
+- **Vista previa en tiempo real** (máx. 320 px) que refleja todos los cambios de opciones.
+- La imagen se renderiza redibuando el historial de líneas sobre un `<canvas>` offscreen con la API Canvas 2D, garantizando calidad vectorial independiente de la resolución elegida.
+
+**Refactorización del trail buffer → historial vectorial (`canvas.ts`, `pattern.service.ts`)**
+- Eliminado el trail buffer (`p5.Graphics`, `TRAIL_SCALE = 3`) que upscaleaba un bitmap y perdía calidad al hacer zoom in.
+- Reemplazado por `lineHistory: LineRecord[]` en `PatternService`: array de segmentos `{x1,y1,x2,y2,r,g,b,a,sw}` en coordenadas de mundo.
+- En cada frame `p.draw`, las líneas se redibujan con la API Canvas 2D (`ctx.save/translate/scale/restore`) a la transformación activa, obteniendo calidad vectorial a cualquier nivel de zoom.
+- `LineRecord` e `ExportOptions` añadidos a `pattern-params.model.ts`.
+
+**Corrección de bug: alpha incorrecto a zoom > 1**
+- Al agrupar varios segmentos en un único `beginPath … stroke()`, Canvas 2D pinta cada píxel una sola vez dentro de esa llamada (comportamiento de spec), colapsando intersecciones a la misma intensidad plana.
+- Solución: cada `LineRecord` tiene su propio `ctx.beginPath() / ctx.moveTo / ctx.lineTo / ctx.stroke()`. Las líneas superpuestas acumulan alpha correctamente via compositing `source-over`.
+- El fix se aplica tanto en `canvas.ts` (render en tiempo real) como en `export-modal.ts` (render de exportación).
+
+**Rama de trabajo:** `update/view`
+
+### Estado al cierre de sesión
+- RF6 completamente implementado: exportación PNG con opciones de fondo, zoom, resolución, visibilidad y nombre de archivo.
+- Zoom del lienzo sin pérdida de calidad a ningún nivel.
+- Pendiente: RF7 (presets), RF10 (mostrar valores actuales), RF14 (variación aleatoria), RNF10 (validación de inputs), RNF12 (despliegue en Vercel).
+
+---
+
 ## 2026-05-29 — Zoom en el lienzo (scroll y botones)
 
 ### Cambios realizados
