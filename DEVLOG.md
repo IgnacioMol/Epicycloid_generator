@@ -4,6 +4,35 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-02 (sesión 2) — Correcciones de importación JSON + estado final de sesión
+
+### Cambios realizados
+
+**Bug: canvas en blanco tras importar JSON con modo de visualización distinto**
+- Causa raíz: en `onFileSelected`, el orden era `dispatch('import-json')` → `updateParams()`. Al llegar el siguiente frame al canvas, `this.params.visualizationMode` ya era el modo importado pero `this.activeMode` seguía siendo el modo anterior. El bloque `if (mode !== this.activeMode)` en `p.draw()` detectaba el cambio y limpiaba `lineHistory`, borrando el patrón recién importado.
+- Corrección en `controls.ts`: invertir el orden — `updateParams()` antes de `dispatch` — para que `this.params` en canvas ya tenga el modo correcto cuando se ejecuta el handler.
+- Corrección en `canvas.ts`: añadir `this.activeMode = this.params.visualizationMode` en el case `'import-json'`, de forma que en el siguiente frame no se detecte ningún cambio de modo.
+
+**Mejora: selector de fichero sin filtro de extensión**
+- Eliminado `input.accept = '.json,application/json'` para que el patrón pueda importarse con cualquier nombre de archivo.
+
+**Nueva funcionalidad: estado angular final por sesión**
+- `SimulationSession` ampliado con `endAngle1`, `endAngle2`, `endTipX`, `endTipY`, `endFirstPoint`.
+- `PatternService`: nuevo método `setCurrentState()`. `endSession()` y `snapshotActiveSession()` usan esos valores para rellenar los campos `end*`. `clearSessions()` los resetea.
+- `canvas.ts`: llama a `setCurrentState()` tras cada incremento de ángulo en el loop activo. Al recibir `'import-json'`, restaura los ángulos y la posición del extremo de curva desde `patternService.importState`.
+- `controls.ts`: `replayToLines()` calcula y guarda el estado final por sesión. Antes del `dispatch`, copia el estado de la última sesión a `patternService.importState`.
+- Efecto: al importar un JSON y pulsar Play, la animación continúa exactamente desde donde terminó la última sesión exportada.
+- Retrocompatibilidad: JSONs sin campos `end*` usan `?? 0` / `?? true` como fallback.
+
+**Rama de trabajo:** `feature/export_pattern_json`
+
+### Estado al cierre de sesión
+- Importación robusta: el canvas siempre muestra el patrón al importar, independientemente del modo de visualización activo.
+- El dibujo puede continuarse tras importar sin discontinuidad de ángulo ni posición.
+- Pendiente: RF7 (presets), RF14 (variación aleatoria), RNF10 (validación de inputs), RNF12 (despliegue en Vercel).
+
+---
+
 ## 2026-06-02 — Exportación e importación de patrón en JSON
 
 ### Cambios realizados

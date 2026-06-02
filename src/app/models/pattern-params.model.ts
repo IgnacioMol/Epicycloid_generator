@@ -50,4 +50,9 @@ export interface SimulationSession {
   params: PatternParams;
   frameCount: number;
   durationSeconds: number;
+  endAngle1: number;
+  endAngle2: number;
+  endTipX: number;
+  endTipY: number;
+  endFirstPoint: boolean;
 }

@@ -108,15 +108,23 @@ export class Controls {
         }
 
         const computedLines = this.replayToLines(sessions);
-        const lastParams: PatternParams = sessions[sessions.length - 1].params;
+        const lastSession = sessions[sessions.length - 1];
+        const lastParams: PatternParams = lastSession.params;
 
         this.isPlaying = false;
         this.patternService.endSession();
+        this.params = { ...lastParams };
+        this.patternService.updateParams(lastParams);
+        this.patternService.importState = {
+          angle1: lastSession.endAngle1,
+          angle2: lastSession.endAngle2,
+          tipX: lastSession.endTipX,
+          tipY: lastSession.endTipY,
+          firstPoint: lastSession.endFirstPoint,
+        };
         this.patternService.dispatch('import-json');
         this.patternService.lineHistory = computedLines;
         this.patternService.sessions = sessions;
-        this.params = { ...lastParams };
-        this.patternService.updateParams(lastParams);
       } catch {
         // Invalid JSON — silently ignore
       }
@@ -174,6 +182,12 @@ export class Controls {
         angle1 += s1;
         angle2 += s2;
       }
+
+      session.endAngle1 = angle1;
+      session.endAngle2 = angle2;
+      session.endTipX = prevTipX;
+      session.endTipY = prevTipY;
+      session.endFirstPoint = firstPoint;
     }
 
     return lines;
