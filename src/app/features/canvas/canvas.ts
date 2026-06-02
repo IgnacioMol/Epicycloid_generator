@@ -76,13 +76,18 @@ export class Canvas implements AfterViewInit, OnDestroy {
       case 'reset':
         this.resetPending = true;
         break;
-      case 'import-json':
-        this.angle1 = 0; this.angle2 = 0;
-        this.prevTipX = 0; this.prevTipY = 0;
-        this.firstPoint = true;
+      case 'import-json': {
+        const s = this.patternService.importState;
+        this.angle1 = s?.angle1 ?? 0;
+        this.angle2 = s?.angle2 ?? 0;
+        this.prevTipX = s?.tipX ?? 0;
+        this.prevTipY = s?.tipY ?? 0;
+        this.firstPoint = s?.firstPoint ?? true;
         this.framesSinceLastLine = 0;
         this.isPaused = true; this.isDrawing = false;
+        this.activeMode = this.params.visualizationMode;
         break;
+      }
     }
   }
 
@@ -296,6 +301,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
           this.patternService.incrementSessionFrame();
           this.angle1 += s1;
           this.angle2 += s2;
+          this.patternService.setCurrentState(this.angle1, this.angle2, this.prevTipX, this.prevTipY, this.firstPoint);
         }
       };
     }, this.container.nativeElement);

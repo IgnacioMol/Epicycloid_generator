@@ -42,6 +42,16 @@ export class PatternService {
   private _sessionFrameCount = 0;
   private _sessionActive = false;
 
+  // Live canvas state (updated each active frame by canvas.ts)
+  private _stateAngle1 = 0;
+  private _stateAngle2 = 0;
+  private _stateTipX = 0;
+  private _stateTipY = 0;
+  private _stateFirstPoint = true;
+
+  // State to restore in canvas after JSON import
+  importState: { angle1: number; angle2: number; tipX: number; tipY: number; firstPoint: boolean } | null = null;
+
   updateParams(params: PatternParams): void {
     this.paramsSubject.next(params);
   }
@@ -64,6 +74,15 @@ export class PatternService {
     if (this._sessionActive) this._sessionFrameCount++;
   }
 
+  /** Called by canvas each active frame, after angle increments, to track end state. */
+  setCurrentState(angle1: number, angle2: number, tipX: number, tipY: number, firstPoint: boolean): void {
+    this._stateAngle1 = angle1;
+    this._stateAngle2 = angle2;
+    this._stateTipX = tipX;
+    this._stateTipY = tipY;
+    this._stateFirstPoint = firstPoint;
+  }
+
   endSession(): void {
     if (!this._sessionActive || !this._sessionParams) return;
     this._sessionActive = false;
@@ -73,6 +92,11 @@ export class PatternService {
         params: this._sessionParams,
         frameCount: this._sessionFrameCount,
         durationSeconds: parseFloat((this._sessionFrameCount / 60).toFixed(3)),
+        endAngle1: this._stateAngle1,
+        endAngle2: this._stateAngle2,
+        endTipX: this._stateTipX,
+        endTipY: this._stateTipY,
+        endFirstPoint: this._stateFirstPoint,
       });
     }
     this._sessionParams = null;
@@ -87,6 +111,11 @@ export class PatternService {
       params: { ...this._sessionParams },
       frameCount: this._sessionFrameCount,
       durationSeconds: parseFloat((this._sessionFrameCount / 60).toFixed(3)),
+      endAngle1: this._stateAngle1,
+      endAngle2: this._stateAngle2,
+      endTipX: this._stateTipX,
+      endTipY: this._stateTipY,
+      endFirstPoint: this._stateFirstPoint,
     };
   }
 
@@ -95,5 +124,11 @@ export class PatternService {
     this._sessionParams = null;
     this._sessionFrameCount = 0;
     this._sessionActive = false;
+    this._stateAngle1 = 0;
+    this._stateAngle2 = 0;
+    this._stateTipX = 0;
+    this._stateTipY = 0;
+    this._stateFirstPoint = true;
+    this.importState = null;
   }
 }
