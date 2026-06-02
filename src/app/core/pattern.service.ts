@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { LineRecord, PatternParams } from '../models/pattern-params.model';
+import { LineRecord, PatternParams, SimulationSession } from '../models/pattern-params.model';
 
-export type CanvasAction = 'play' | 'pause' | 'clear' | 'reset';
+export type CanvasAction = 'play' | 'pause' | 'clear' | 'reset' | 'import-json';
 
 export const DEFAULT_PARAMS: PatternParams = {
   orbit1Radius: 150,
@@ -36,6 +36,12 @@ export class PatternService {
   lineHistory: LineRecord[] = [];
   canvasDimensions = { w: 0, h: 0 };
 
+  // Session recording
+  sessions: SimulationSession[] = [];
+  private _sessionParams: PatternParams | null = null;
+  private _sessionFrameCount = 0;
+  private _sessionActive = false;
+
   updateParams(params: PatternParams): void {
     this.paramsSubject.next(params);
   }
@@ -46,5 +52,48 @@ export class PatternService {
 
   dispatch(action: CanvasAction): void {
     this.actionSubject.next(action);
+  }
+
+  beginSession(params: PatternParams): void {
+    this._sessionParams = { ...params };
+    this._sessionFrameCount = 0;
+    this._sessionActive = true;
+  }
+
+  incrementSessionFrame(): void {
+    if (this._sessionActive) this._sessionFrameCount++;
+  }
+
+  endSession(): void {
+    if (!this._sessionActive || !this._sessionParams) return;
+    this._sessionActive = false;
+    if (this._sessionFrameCount > 0) {
+      this.sessions.push({
+        sessionIndex: this.sessions.length + 1,
+        params: this._sessionParams,
+        frameCount: this._sessionFrameCount,
+        durationSeconds: parseFloat((this._sessionFrameCount / 60).toFixed(3)),
+      });
+    }
+    this._sessionParams = null;
+    this._sessionFrameCount = 0;
+  }
+
+  /** Returns a snapshot of the active (not yet ended) session, or null if idle. */
+  snapshotActiveSession(): SimulationSession | null {
+    if (!this._sessionActive || !this._sessionParams || this._sessionFrameCount === 0) return null;
+    return {
+      sessionIndex: this.sessions.length + 1,
+      params: { ...this._sessionParams },
+      frameCount: this._sessionFrameCount,
+      durationSeconds: parseFloat((this._sessionFrameCount / 60).toFixed(3)),
+    };
+  }
+
+  clearSessions(): void {
+    this.sessions = [];
+    this._sessionParams = null;
+    this._sessionFrameCount = 0;
+    this._sessionActive = false;
   }
 }

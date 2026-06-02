@@ -62,10 +62,12 @@ export class Canvas implements AfterViewInit, OnDestroy {
   private onAction(action: CanvasAction): void {
     switch (action) {
       case 'play':
+        this.patternService.beginSession(this.params);
         this.isPaused = false;
         this.isDrawing = true;
         break;
       case 'pause':
+        if (!this.isPaused) this.patternService.endSession();
         this.isPaused = !this.isPaused;
         break;
       case 'clear':
@@ -73,6 +75,13 @@ export class Canvas implements AfterViewInit, OnDestroy {
         break;
       case 'reset':
         this.resetPending = true;
+        break;
+      case 'import-json':
+        this.angle1 = 0; this.angle2 = 0;
+        this.prevTipX = 0; this.prevTipY = 0;
+        this.firstPoint = true;
+        this.framesSinceLastLine = 0;
+        this.isPaused = true; this.isDrawing = false;
         break;
     }
   }
@@ -128,6 +137,8 @@ export class Canvas implements AfterViewInit, OnDestroy {
         // — Pending actions —
 
         if (this.resetPending) {
+          this.patternService.endSession();
+          this.patternService.clearSessions();
           this.patternService.lineHistory = [];
           this.angle1 = 0; this.angle2 = 0;
           this.firstPoint = true;
@@ -146,6 +157,8 @@ export class Canvas implements AfterViewInit, OnDestroy {
         }
 
         if (mode !== this.activeMode) {
+          this.patternService.endSession();
+          this.patternService.clearSessions();
           this.patternService.lineHistory = [];
           this.angle1 = 0; this.angle2 = 0;
           this.firstPoint = true;
@@ -280,6 +293,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
             }
           }
 
+          this.patternService.incrementSessionFrame();
           this.angle1 += s1;
           this.angle2 += s2;
         }
