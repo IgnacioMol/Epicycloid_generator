@@ -4,6 +4,55 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-02 — Exportación e importación de patrón en JSON
+
+### Cambios realizados
+
+**Nuevo modelo: `SimulationSession` (`pattern-params.model.ts`)**
+- Interfaz `{ sessionIndex, params, frameCount, durationSeconds }` que representa un bloque continuo de simulación: los parámetros con los que se lanzó y cuántos frames estuvo activa.
+
+**Tracking de sesiones en `PatternService`**
+- Nuevos métodos: `beginSession(params)`, `incrementSessionFrame()`, `endSession()`, `snapshotActiveSession()`, `clearSessions()`.
+- El array `sessions: SimulationSession[]` acumula todas las sesiones completadas. Una sesión comienza cuando el usuario pulsa Play y termina cuando pulsa Pausa, Reset, o cambia de modo de visualización.
+
+**Integración en `canvas.ts`**
+- `play` → llama a `beginSession(params)` con los parámetros actuales.
+- `pause` (si estaba en marcha) → llama a `endSession()`.
+- `reset` / cambio de modo → llama a `endSession()` + `clearSessions()` antes de limpiar el estado visual.
+- Cada frame activo (`!isPaused`) → llama a `incrementSessionFrame()`.
+- Nuevo action `'import-json'`: resetea ángulos, `firstPoint`, contadores y deja `isPaused = true` sin tocar `lineHistory` (permite cargar el historial externamente de forma atómica).
+
+**Exportar patrón (JSON) — `controls.ts` / `controls.html`**
+- Botón «↓ Exportar patrón (JSON)» (deshabilitado si no hay ninguna sesión registrada).
+- Genera un JSON con `metadata` (fecha, total de sesiones, modo) y el array `sessions`, incluyendo un snapshot de la sesión activa si la simulación está en marcha en el momento de exportar.
+- La descarga se dispara con `URL.createObjectURL` + click programático.
+
+**Importar patrón (JSON) — `controls.ts` / `controls.html`**
+- Botón «↑ Importar patrón (JSON)» que abre el selector de fichero nativo (`.json`).
+- Valida estructura mínima (`sessions`, `params`, `frameCount`) y descarta archivos malformados silenciosamente.
+- Reproduce matemáticamente todas las sesiones frame a frame con la misma lógica que `canvas.ts`: ángulos y posición de punta de curva son continuos entre sesiones, igual que en la simulación en vivo.
+- Instantáneo: las líneas se calculan de golpe y se inyectan en `patternService.lineHistory`. Los controles se actualizan con los parámetros de la última sesión importada.
+
+**Rama de trabajo:** `feature/export_pattern_json`
+
+### Estructura del JSON exportado
+```json
+{
+  "metadata": { "exportedAt": "…", "totalSessions": 2, "visualizationMode": "lines" },
+  "sessions": [
+    { "sessionIndex": 1, "frameCount": 360, "durationSeconds": 6.0, "params": { … } },
+    { "sessionIndex": 2, "frameCount": 120, "durationSeconds": 2.0, "params": { … } }
+  ]
+}
+```
+
+### Estado al cierre de sesión
+- Exportación e importación de patrón JSON completamente funcionales.
+- Reproducción matemática exacta: un JSON importado genera el mismo dibujo que la sesión original.
+- Pendiente: RF7 (presets), RF14 (variación aleatoria), RNF10 (validación de inputs), RNF12 (despliegue en Vercel).
+
+---
+
 ## 2026-05-30 — RF6: Exportación de imagen + corrección de calidad de líneas
 
 ### Cambios realizados

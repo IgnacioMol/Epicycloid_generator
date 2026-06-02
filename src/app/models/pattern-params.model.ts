@@ -44,3 +44,10 @@ export interface LineRecord {
   a: number;   // 0-255
   sw: number;  // strokeWeight
 }
+
+export interface SimulationSession {
+  sessionIndex: number;
+  params: PatternParams;
+  frameCount: number;
+  durationSeconds: number;
+}
