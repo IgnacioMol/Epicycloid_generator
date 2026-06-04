@@ -26,7 +26,7 @@ La aplicación cubre dos casos de uso diferenciados:
 | Estado compartido | RxJS (`BehaviorSubject` / `Subject`) | Comunicación desacoplada entre Controls y Canvas sin referencias directas |
 | Estilos | Bootstrap 5.3 + CSS encapsulado | Layout de columnas responsive; estilos de componente sin colisiones |
 | Tests | Vitest 4 + jsdom | Tests unitarios de lógica de servicio en entorno simulado de DOM |
-| Despliegue | Vercel | Build estático Angular, sin backend; CI/CD automático desde `main` |
+| Despliegue | Netlify | Build estático Angular, sin backend; CI/CD automático desde `main` |
 
 ---
 
@@ -445,7 +445,7 @@ El zoom se gestiona íntegramente en `canvas.ts` sin afectar a `lineHistory`:
 | RNF9 | Responsive desktop/tablet | ✅ | Bootstrap col-md-8/4, canvas windowResized |
 | RNF10 | Manejo de errores de entrada | ❌ | No implementado (inputs sin validación mínima/máxima activa) |
 | RNF11 | Chrome, Firefox, Edge, Opera | ✅ | Canvas 2D API estándar; sin APIs propietarias |
-| RNF12 | Despliegue en Vercel | ❌ | Pendiente de subir a `main` |
+| RNF12 | Despliegue en Netlify | ✅ | Desplegado en Netlify; CI/CD automático desde `main` |
 
 ---
 
@@ -487,7 +487,6 @@ Los ángulos acumulados (`angle1`, `angle2`) no se resetean al pausar — solo a
 | Presets (localStorage) | RF7 | Media | El componente `presets/` existe como placeholder. Necesita UI de lista, guardado con nombre, `localStorage` serialization |
 | Variación aleatoria | RF14 | Media-alta | Parámetros con rangos aleatorios controlados por seed o sliders de variación |
 | Validación de inputs | RNF10 | Baja | Clamp en `onParamChange()` o `min/max` en los inputs (prevenir valores fuera de rango) |
-| Despliegue en Vercel | RNF12 | Baja | `git push` a `main` + configuración de Output Directory en Vercel |
 
 ---
 

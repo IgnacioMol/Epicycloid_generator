@@ -19,7 +19,7 @@ Dos modos de visualización:
 | UI | Bootstrap 5.3 |
 | Estado | RxJS 7 (BehaviorSubject / Subject) |
 | Tests | Vitest 4 |
-| Despliegue | Vercel |
+| Despliegue | Netlify |
 
 ## Requisitos previos
 
@@ -100,6 +100,9 @@ Permite ejecutar la simulación durante un número exacto de vueltas de una órb
 | ⏸ Pausa | Detiene la animación (los parámetros se pueden editar) |
 | ⬜ Limpiar lienzo | Borra el trazado acumulado y reinicia los ángulos |
 | ↺ Reset | Restaura todos los parámetros a sus valores por defecto |
+| ↓ Exportar imagen | Abre el modal de exportación PNG |
+| ↓ Exportar patrón (JSON) | Guarda todas las sesiones de simulación en un archivo JSON |
+| ↑ Importar patrón (JSON) | Carga un JSON y reconstruye el dibujo al instante |
 
 ---
 
@@ -108,9 +111,11 @@ Permite ejecutar la simulación durante un número exacto de vueltas de una órb
 Muestra en tiempo real:
 - Las elipses orbitales de guía (azul = órbita 1, rojo = órbita 2).
 - Los planetas con sus brazos radiales.
-- El patrón acumulado en una capa de trazado independiente (`p5.Graphics`).
+- El patrón acumulado, renderizado con calidad vectorial a cualquier nivel de zoom.
 
 El canvas se redimensiona automáticamente con la ventana.
+
+**Zoom** — usa la rueda del ratón sobre el lienzo o los botones **＋** / **−** de la esquina inferior derecha. Rango: 0.33× – 8×. El zoom no afecta al dibujo acumulado, solo a la vista.
 
 ## Build de producción
 
@@ -126,26 +131,24 @@ Para compilar en modo watch (desarrollo):
 npm run watch
 ```
 
-## Despliegue en Vercel
+## Despliegue en Netlify
 
-### Opción A — CLI
-
-```bash
-npm install -g vercel
-vercel
-```
-
-En el asistente:
-- _Framework Preset_: Angular
-- _Build Command_: `npm run build`
-- _Output Directory_: `dist/epicycloid-generator/browser`
-
-### Opción B — GitHub
+### Opción A — GitHub (recomendado)
 
 1. Sube el repositorio a GitHub.
-2. Importa el proyecto en [vercel.com](https://vercel.com).
-3. Vercel detecta Angular automáticamente. Confirma el _Output Directory_: `dist/epicycloid-generator/browser`.
+2. Importa el proyecto en [netlify.com](https://netlify.com).
+3. Configura:
+   - _Build Command_: `npm run build`
+   - _Publish Directory_: `dist/epicycloid-generator/browser`
 4. Cada push a `main` genera un despliegue automático.
+
+### Opción B — CLI
+
+```bash
+npm install -g netlify-cli
+npm run build
+netlify deploy --prod --dir=dist/epicycloid-generator/browser
+```
 
 ### Opción C — Hosting estático
 
@@ -153,8 +156,6 @@ En el asistente:
 npm run build
 # Sirve dist/epicycloid-generator/browser/ como sitio estático
 ```
-
-> Si se despliega en una subruta, añade `--base-href /epicycloid-generator/` al comando de build.
 
 ## Tests
 
@@ -170,13 +171,15 @@ Ejecuta los tests unitarios con Vitest en entorno jsdom.
 src/
 ├── app/
 │   ├── core/
-│   │   └── pattern.service.ts       # estado global vía RxJS
+│   │   └── pattern.service.ts       # estado global vía RxJS (params, acciones, sesiones)
 │   ├── features/
-│   │   ├── canvas/                  # renderizado p5.js
-│   │   ├── controls/                # panel de parámetros
-│   │   └── presets/                 # (pendiente)
+│   │   ├── canvas/                  # sketch p5.js + zoom interactivo
+│   │   ├── controls/                # panel de parámetros + export/import JSON
+│   │   ├── export-modal/            # modal de exportación PNG
+│   │   ├── tutorial/                # tutorial de bienvenida
+│   │   └── presets/                 # (pendiente — RF7)
 │   ├── models/
-│   │   └── pattern-params.model.ts  # tipos e interfaces
+│   │   └── pattern-params.model.ts  # PatternParams, SimulationSession, LineRecord
 │   ├── app.ts                       # componente raíz
 │   └── app.config.ts
 └── styles.css

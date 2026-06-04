@@ -30,14 +30,19 @@ Allow users to interactively manipulate mathematical parameters (radii, angular 
 
 ### Done
 - Full `PatternParams` model (radii, RPM speeds, initial angles, ellipse factors, orbit tilt, lineColor, lineAlpha, strokeWeight, lineInterval, visualizationMode)
-- Canvas rendering: trail layer (`p5.Graphics`), both visualization modes, orbital guides, planet dots, responsive resize
+- Canvas rendering: historial vectorial (`lineHistory: LineRecord[]`) con Canvas 2D API, ambos modos, guías orbitales, puntos planeta, resize responsive
 - Controls panel: all params bound via `[(ngModel)]`, collapsible sections (Orbit 1, Orbit 2, Visual, Parámetros avanzados)
 - Play / Pause / Clear / Reset actions
 - Simulate N orbits: run exactly N revolutions of a selected orbit then auto-stop
-- Angular ↔ p5.js integration (instance mode, `ngZone.runOutsideAngular`, `OnDestroy` cleanup)
+- Angular ↔ p5.js integration (instance mode, `OnDestroy` cleanup)
+- Save as image (RF6) — ExportModal: fondo, zoom, resolución ×1/×2/×4, nombre de archivo, preview en tiempo real
+- Zoom interactivo del canvas (rueda del ratón + botones ＋/−, rango 0.33×–8×)
+- Tutorial de bienvenida con persistencia `localStorage` y botón `?` de reapertura
+- Exportación de patrón a JSON: sesiones independientes con parámetros, frameCount y estado angular final
+- Importación de JSON: reproducción matemática exacta + restauración del estado angular para continuar el dibujo
+- Despliegue en Netlify (RNF12)
 
 ### Not yet done
-- Save as image (RF6)
 - Presets — named parameter sets saved to `localStorage` (RF7)
 - Random variation mode (RF14)
 - Error handling for invalid inputs (RNF10)
@@ -48,4 +53,4 @@ Allow users to interactively manipulate mathematical parameters (radii, angular 
 
 ## Deployment target
 
-Vercel (public hosting, no backend required). Each push to `main` auto-deploys.
+Netlify (public hosting, no backend required). Each push to `main` auto-deploys.

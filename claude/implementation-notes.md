@@ -51,30 +51,37 @@ interface PatternParams {
 
 Speed conversion: `RPM_TO_RAD_PER_FRAME = (2π) / (60 * 60)` at 60 fps.
 
-## Trail rendering
+## Line history rendering
 
-A separate `p5.Graphics` offscreen buffer accumulates the drawn lines. The main canvas clears every frame (so orbit guides and planet dots refresh), then the trail is pasted on top with `p.image(trail, 0, 0)`.
+All drawn segments are stored as `LineRecord[]` in `PatternService.lineHistory`. Each record holds world-space coordinates + color + alpha + strokeWeight. The main canvas clears every frame; the history is redrawn via raw Canvas 2D API each frame.
 
 ```typescript
-let trail: p5.Graphics;
-
-p.setup = () => {
-  p.createCanvas(w, h);
-  trail = p.createGraphics(w, h);
-  trail.clear();
-};
-
 p.draw = () => {
   p.background(10, 10, 20);   // clears frame
-  p.image(trail, 0, 0);       // paste accumulated pattern
-  // ... draw orbital guides, planet dots ...
-  if (!isPaused && isDrawing) {
-    trail.line(...);           // accumulates — never auto-cleared
+
+  const ctx = (p as any).drawingContext as CanvasRenderingContext2D;
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(zoom, zoom);
+  for (const ln of patternService.lineHistory) {
+    ctx.strokeStyle = `rgba(${ln.r},${ln.g},${ln.b},${ln.a / 255})`;
+    ctx.lineWidth = ln.sw;
+    ctx.beginPath();
+    ctx.moveTo(ln.x1, ln.y1);
+    ctx.lineTo(ln.x2, ln.y2);
+    ctx.stroke();              // individual stroke per segment — accumulates alpha correctly
   }
+  ctx.restore();
+  // ... draw orbital guides, planet dots (p5 API) ...
 };
 ```
 
-On window resize: recreate the `trail` buffer (resizing loses its content — the trail is intentionally cleared on resize).
+**Por qué un `stroke()` individual por segmento:** Canvas 2D spec pinta cada píxel exactamente una vez dentro de un solo `beginPath → stroke`. Sin esto, líneas superpuestas colapsan a la misma intensidad en lugar de acumular alpha.
+
+**Ventajas frente al `p5.Graphics` trail anterior:**
+- Calidad vectorial a cualquier nivel de zoom (no degradación de bitmap)
+- `ExportModal` puede redibujar el historial en un canvas offscreen de resolución arbitraria
+- El JSON export/import puede reproducir el patrón matemáticamente sin depender del buffer gráfico
 
 ## Angular ↔ p5.js zone integration
 
@@ -164,9 +171,13 @@ ngOnDestroy() {
 }
 ```
 
-## Save as image (RF6 — not yet implemented)
+## Save as image (RF6 — implementado via ExportModal)
 
-p5 provides `p.saveCanvas('filename', 'png')`. Should save only the drawing area (no UI panel). Expose via a public method on Canvas component or through a `'save'` action in PatternService.
+El componente `ExportModal` redibuja `patternService.lineHistory` sobre un `<canvas>` offscreen con Canvas 2D API (no usa `p5.saveCanvas`). Esto garantiza calidad vectorial independiente de la resolución del canvas en pantalla.
+
+Opciones disponibles: fondo (color libre o transparente), zoom de exportación (0.2×–4×), multiplicador de resolución (1×/2×/4×), visibilidad de guías y punto central, nombre de archivo libre.
+
+La preview en tiempo real se renderiza en un `<canvas>` de máx. 320 px actualizando con cada cambio de opción.
 
 ## Presets (RF7 — not yet implemented)
 

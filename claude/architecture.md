@@ -1,79 +1,106 @@
 # Architecture
 
+> Para un análisis exhaustivo ver `web-structure-analysis.md`. Este archivo es el resumen de referencia rápida.
+
 ## Folder structure
 
 ```
 src/app/
-├── app.ts                        # Root component — layout shell only
-├── app.html                      # Bootstrap grid: left=canvas (col-8), right=controls (col-4)
-├── app.routes.ts                 # Empty routes (single-page, no routing needed)
-├── app.config.ts                 # provideBrowserGlobalErrorListeners, provideRouter
+├── app.ts / app.html / app.css      # Root — layout Bootstrap col-8 / col-4
+├── app.config.ts                    # Bootstrap de Angular (providers globales)
+├── app.routes.ts                    # Sin routing (SPA de una sola vista)
 │
 ├── core/
-│   ├── pattern.service.ts        # Singleton state: BehaviorSubject<PatternParams>
-│   └── pattern.ts                # Empty Injectable (placeholder, not used yet)
+│   └── pattern.service.ts           # Singleton: params$, action$, lineHistory, sessions
 │
 ├── features/
 │   ├── canvas/
-│   │   ├── canvas.ts             # p5.js sketch lives here; subscribes to PatternService
-│   │   ├── canvas.html           # Currently a placeholder div, not yet wired to p5
+│   │   ├── canvas.ts                # Sketch p5.js + simulación + zoom
+│   │   ├── canvas.html              # <div #canvasContainer> + botones de zoom
 │   │   └── canvas.css
 │   ├── controls/
-│   │   ├── controls.ts           # Owns local PatternParams copy, calls patternService.updateParams()
-│   │   ├── controls.html         # Slider/input placeholders (not yet bound to params)
+│   │   ├── controls.ts              # Panel de parámetros + export/import JSON
+│   │   ├── controls.html            # ngModel bindings + botones de acción
 │   │   └── controls.css
-│   └── presets/
-│       ├── presets.ts            # Empty placeholder component
-│       ├── presets.html
-│       └── presets.css
+│   ├── tutorial/
+│   │   ├── tutorial.ts              # Modal de bienvenida (localStorage)
+│   │   ├── tutorial.html
+│   │   └── tutorial.css
+│   └── export-modal/
+│       ├── export-modal.ts          # Modal de exportación PNG
+│       ├── export-modal.html
+│       └── export-modal.css
 │
 └── models/
-    └── pattern-params.model.ts   # PatternParams interface
+    └── pattern-params.model.ts      # PatternParams, SimulationSession, LineRecord,
+                                     # ExportOptions, VisualizationMode
 ```
 
 ## Data flow
 
 ```
 Controls component
-  └─ updates PatternParams locally
-  └─ calls PatternService.updateParams(params)
-         └─ BehaviorSubject emits new value
-                └─ Canvas component subscribes via params$
-                       └─ p5 draw() loop reads this.params each frame
+  └─ [(ngModel)] bindings → onParamChange()
+  └─ patternService.updateParams(params)
+       └─ BehaviorSubject<PatternParams> emits
+            └─ Canvas: params$.subscribe(p => this.params = p)
+                     └─ p.draw() loop reads this.params each frame
+
+Controls → patternService.dispatch(action)
+  └─ Subject<CanvasAction> emits ('play'|'pause'|'clear'|'reset'|'import-json')
+       └─ Canvas: action$.subscribe(a => this.onAction(a))
 ```
 
-## PatternParams model (current state)
+## PatternParams model (current)
 
 ```typescript
 interface PatternParams {
-  orbit1Radius: number;
+  orbit1Radius: number;        // 10–500 px
   orbit2Radius: number;
-  orbit1Speed: number;    // radians per frame
-  orbit2Speed: number;
-  color: string;          // hex line color
-  strokeWeight: number;
-  phase: number;
+  orbit1EllipseX: number;      // 0.1–2
+  orbit1EllipseY: number;
+  orbit2EllipseX: number;
+  orbit2EllipseY: number;
+  orbit1Angle: number;         // 0–360° orbit tilt
+  orbit2Angle: number;
+  orbit1SpeedRpm: number;      // 0–100 RPM
+  orbit2SpeedRpm: number;
+  initialAngle1: number;       // 0–360° phase
+  initialAngle2: number;
+  lineColor: string;           // '#rrggbb'
+  lineAlpha: number;           // 0–1
+  strokeWeight: number;        // 0.5–10 px
+  lineInterval: number;        // seconds between lines (0 = every frame)
+  visualizationMode: 'curve' | 'lines';
 }
 ```
 
-Needs expansion with: `orbit1EllipseX/Y`, `orbit2EllipseX/Y`, `initialAngle1/2`, `lineAlpha`, `showOrbits`, `showPlanets`, `showCenter`. See `implementation-notes.md` for the full target interface.
+Speed conversion: `RPM_TO_RAD_PER_FRAME = (2π) / (60 * 60)` at 60 fps.
 
 ## p5.js integration pattern
 
-p5 is instantiated in **instance mode** inside `canvas.ts ngOnInit()`:
+Always instance mode inside `ngAfterViewInit`:
 
 ```typescript
-this.sketch = new p5((p: p5) => {
-  p.setup = () => { ... };
-  p.draw = () => { ... };
-}, this.container.nativeElement);
+ngAfterViewInit(): void {
+  this.subs.add(this.patternService.params$.subscribe(p => this.params = p));
+  this.subs.add(this.patternService.action$.subscribe(a => this.onAction(a)));
+  this.initSketch();
+}
+
+// Destroy on component destroy to prevent memory leaks
+ngOnDestroy() {
+  this.subs.unsubscribe();
+  this.sketch?.remove();
+}
 ```
 
-The sketch closure captures `this` (the Angular component), so it reads `this.params` directly each frame. This is the correct pattern for Angular — avoids global p5 sketch conflicts.
+## Session tracking (JSON export/import)
 
-## Known issues / next steps
+Each Play→Pause block is a `SimulationSession` stored in `PatternService.sessions[]`. On export, all sessions serialize to JSON with params + frameCount + end angular state. On import, `replayToLines()` in Controls reproduces all segments mathematically and restores end state so drawing can continue seamlessly.
 
-- Controls sliders are not yet bound via `[(ngModel)]` — they don't emit updates to PatternService.
-- Canvas draw loop uses "orbit2 centered on orbit1's point" — **incorrect**. Per the Processing prototype, both orbits are independent (both centered at origin), and the artwork is a line drawn between the two planets each frame.
-- Missing `p5.Graphics` trail layer — currently drawing directly on the canvas background. Needs a separate offscreen buffer so background can be cleared per frame without erasing the pattern.
-- PatternParams missing ellipse factors, initial angles, alpha, and display toggles.
+## Known active limitations
+
+- If reference orbit speed = 0 RPM, simulate mode's angle accumulator never reaches target (no guard in UI yet)
+- `lineHistory` is redrawn fully every frame — large patterns (>100k segments) may impact performance
+- On window resize, `lineHistory` coordinates remain valid but visual continuity of the curve tip is reset (`firstPoint = true`)
