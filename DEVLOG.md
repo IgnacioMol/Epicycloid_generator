@@ -4,6 +4,21 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-04 — Redacción del Capítulo 4 de la memoria (Análisis)
+
+### Cambios realizados
+
+**Nuevo documento: `claude/memoria-cap4-analisis.md`**
+- Borrador completo del apartado 4 (Análisis) de la memoria, adaptado a la naturaleza de la app (SPA web sin login, sin backend, un único actor «Usuario»).
+- 4.1 Diagrama de casos de uso: 12 casos de uso modelados (Configurar parámetros, Reproducir, Pausar, Simular por N órbitas, Alternar modo, Ajustar zoom, Limpiar, Reset, Exportar PNG, Exportar JSON, Importar JSON, Tutorial). Dos relaciones `«include»` (opciones de exportación; reconstrucción matemática en import).
+- 4.1.1 Flujos de eventos: tabla por cada caso de uso (incluye flujo alternativo del bug RPM=0 en simular).
+- 4.2 Clases conceptual, 4.3 Secuencias (CU1, CU2/CU4, CU9, CU11), 4.4 Trazabilidad RF↔CU (RF7/RF14 marcados como no implementados; RF11/RF12 como técnicos).
+- Anexo con código PlantUML para las 6 figuras (casos de uso, clases, 4 secuencias).
+- Decisión consciente: NO se replica el patrón «Iniciar sesión» con extension points del TFG de referencia (no aplica: app de vista única sin autenticación).
+
+### Estado al cierre de sesión
+- Documento listo para integrar en la memoria. Pendiente (opcional): renderizar los PNG de los diagramas y confirmar si «Ajustar zoom» se mantiene como caso de uso o se trata como interacción de vista.
+
 ## 2026-06-02 (sesión 2) — Correcciones de importación JSON + estado final de sesión
 
 ### Cambios realizados

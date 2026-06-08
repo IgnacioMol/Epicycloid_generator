@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git push *)",
       "Read(//c/Users/Nacho/Downloads/**)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "Bash(grep -iE \"memoria|capitulo|chapter|\\\\.tex$|analisis|requisit\")"
     ]
   }
 }
