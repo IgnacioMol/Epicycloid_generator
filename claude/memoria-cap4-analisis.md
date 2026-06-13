@@ -401,6 +401,20 @@ Config "1" *-- "1" Visual
 @enduml
 ```
 
+**Figura 4.3 — Configurar parámetros (CU1)**
+
+```plantuml
+@startuml SecConfigurar
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : modificar parámetro
+S --> Usuario : actualizar vista
+@enduml
+```
+
+**Figura 4.4 — Reproducir animación (CU2)**
+
 ```plantuml
 @startuml SecReproducir
 actor Usuario
@@ -412,5 +426,33 @@ loop mientras la animación está activa
 end
 Usuario -> S : pausar
 S --> Usuario : detener y conservar el dibujo
+@enduml
+```
+
+**Figura 4.5 — Exportar imagen (CU8)**
+
+```plantuml
+@startuml SecExportarImagen
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : solicitar exportar imagen
+S --> Usuario : mostrar previsualización
+Usuario -> S : configurar opciones (fondo, zoom, resolución, guías)
+Usuario -> S : confirmar descarga
+S --> Usuario : entregar imagen
+@enduml
+```
+
+**Figura 4.6 — Importar patrón (CU10)**
+
+```plantuml
+@startuml SecImportar
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : seleccionar archivo de patrón
+S -> S : reconstruir el dibujo
+S --> Usuario : mostrar composición y actualizar parámetros
 @enduml
 ```
