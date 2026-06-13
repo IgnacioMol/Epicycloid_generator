@@ -105,7 +105,7 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **ID del caso de uso** | CU6 — Restablecer parámetros |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario restaura todos los parámetros a sus valores por defecto. |
-| **Requisitos cumplidos** | RF15 |
+| **Requisitos cumplidos** | RF4 |
 | **Precondiciones** | Ninguna. |
 | **Flujo de eventos** | 1. El usuario pulsa «Reset». 2. El sistema restaura los valores por defecto y borra el dibujo. |
 | **Postcondiciones** | Los parámetros vuelven a sus valores iniciales y el lienzo queda limpio. |
@@ -117,7 +117,7 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **ID del caso de uso** | CU7 — Ajustar zoom |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario acerca o aleja la vista del lienzo. |
-| **Requisitos cumplidos** | RF13 |
+| **Requisitos cumplidos** | RF11 |
 | **Precondiciones** | Ninguna. |
 | **Flujo de eventos** | 1. El usuario usa la rueda del ratón sobre el lienzo o los botones ＋/−. 2. El sistema acerca o aleja la vista dentro del rango permitido. |
 | **Postcondiciones** | La vista se reescala; la composición no se altera. |
@@ -141,7 +141,7 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **ID del caso de uso** | CU9 — Exportar patrón |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario guarda el estado completo del dibujo en un archivo, para poder recuperarlo más adelante. |
-| **Requisitos cumplidos** | RF1, RF2 |
+| **Requisitos cumplidos** | RF7 |
 | **Precondiciones** | Existe una composición (en curso o ya realizada). |
 | **Flujo de eventos** | 1. El usuario solicita exportar el patrón. 2. El sistema reúne la información necesaria para reproducir la composición y la entrega como archivo descargable. |
 | **Postcondiciones** | El usuario obtiene un archivo reutilizable. |
@@ -153,7 +153,7 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **ID del caso de uso** | CU10 — Importar patrón |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario carga un archivo de patrón previamente exportado y recupera el dibujo. **Incluye** «Reconstruir el dibujo». |
-| **Requisitos cumplidos** | RF1, RF2 |
+| **Requisitos cumplidos** | RF7 |
 | **Precondiciones** | El usuario dispone de un archivo de patrón válido. |
 | **Flujo de eventos** | 1. El usuario selecciona un archivo de patrón. 2. El sistema reconstruye la composición a partir de la información del archivo (caso de uso incluido). 3. El sistema actualiza los parámetros mostrados al estado del patrón cargado. |
 | **Postcondiciones** | La composición importada se muestra y el usuario puede continuarla. |
@@ -198,23 +198,20 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 
 | Requisito | Descripción | Casos de uso relacionados |
 |---|---|---|
-| RF1 | Generar composiciones a partir de patrones orbitales paramétricos | CU2, CU9, CU10 |
-| RF2 | Modificar parámetros en tiempo real | CU1, CU9, CU10 |
-| RF3 | El lienzo se actualiza dinámicamente sin recargar la página | CU1, CU2 |
-| RF4 | Iniciar, pausar y reiniciar la animación | CU2, CU3 |
-| RF5 | Limpiar el lienzo y empezar desde cero | CU5 |
+| RF1 | Generación de composiciones epicicloidales mediante algoritmos parametrizables | CU2 |
+| RF2 | Modificar en tiempo real los parámetros que definen los patrones | CU1 |
+| RF3 | Actualizar dinámicamente la representación gráfica sin recargar la página | CU1, CU2 |
+| RF4 | Iniciar, pausar y reiniciar la animación | CU2, CU3, CU6 |
+| RF5 | Limpiar el lienzo y generar una nueva composición desde cero | CU5 |
 | RF6 | Guardar la composición como imagen | CU8 |
-| RF7 | Guardar y recuperar presets de parámetros con nombre | *No implementado — sin caso de uso asociado* |
-| RF8 | Alternar entre modo curva y modo líneas | CU4 |
+| RF7 | Almacenar configuraciones de parámetros y recuperarlas posteriormente | CU9, CU10 |
+| RF8 | Alternar entre modos de visualización (curva e intersección de líneas) | CU4 |
 | RF9 | Controles interactivos (sliders, selectores, campos numéricos) | CU1 |
-| RF10 | Mostrar los valores actuales de los parámetros | CU1 |
-| RF11 | Integración correcta entre el framework y la librería gráfica | *Requisito técnico — se justifica en diseño/implementación* |
-| RF12 | Componentes modulares y reutilizables | *Requisito técnico — se justifica en diseño/implementación* |
-| RF13 | Lienzo responsivo y con zoom | CU7 |
-| RF14 | Variación aleatoria automática de parámetros | *No implementado — sin caso de uso asociado* |
-| RF15 | Restaurar los parámetros por defecto | CU6 |
+| RF10 | Mostrar en pantalla los valores actuales de los parámetros | CU1 |
+| RF11 | Visualización responsiva del lienzo, adaptándose a la ventana del navegador | CU7 |
+| RF12 | Generación de variaciones automáticas mediante valores aleatorios controlados | *No implementado — sin caso de uso asociado* |
 
-Como se observa en la matriz, todos los requisitos funcionales implementados tienen al menos un caso de uso asociado, lo que garantiza que las funcionalidades esperadas han sido contempladas durante el análisis. Los requisitos RF7 y RF14 no disponen de caso de uso por tratarse de funcionalidades no implementadas (trabajo futuro), mientras que RF11 y RF12 son requisitos de naturaleza técnica que se justifican en los apartados de diseño e implementación.
+Como se observa en la matriz, todos los requisitos funcionales implementados tienen al menos un caso de uso asociado, lo que garantiza que las funcionalidades previstas han sido contempladas durante el análisis. El único requisito sin caso de uso es RF12 (variación automática de parámetros), por tratarse de una funcionalidad no implementada y propuesta como trabajo futuro. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema —la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana—, que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo.
 
 ---
 
