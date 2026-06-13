@@ -224,7 +224,7 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 | RF11 | Visualización responsiva del lienzo, adaptándose a la ventana del navegador | CU7 |
 | RF12 | Generación de variaciones automáticas mediante valores aleatorios controlados | CU12 |
 
-Como se observa en la matriz, todos los requisitos funcionales tienen al menos un caso de uso asociado, lo que garantiza que la totalidad de las funcionalidades previstas han sido contempladas durante el análisis. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema —la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana—, que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo.
+Como se observa en la matriz, todos los requisitos funcionales tienen al menos un caso de uso asociado, lo que garantiza que la totalidad de las funcionalidades previstas han sido contempladas durante el análisis. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema (la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana), que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo.
 
 ---
 
