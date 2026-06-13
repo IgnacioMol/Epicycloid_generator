@@ -231,9 +231,118 @@ Como se observa en la matriz, todos los requisitos funcionales implementados tie
 
 ---
 
-# Anexo — Código PlantUML de los diagramas
+# Anexo — Construcción de los diagramas en Visual Paradigm
 
-> Puedes generar las imágenes pegando este código en https://www.plantuml.com/plantuml o en la extensión PlantUML de VS Code. También puedes reproducirlos en Visual Paradigm siguiendo la misma estructura.
+> Especificación de cada diagrama (elementos + relaciones) pensada para reproducirlos en **Visual Paradigm**. Al final se incluye, de forma opcional, el código PlantUML equivalente por si quieres una vista previa rápida.
+
+## A.1. Diagrama de casos de uso (Figura 4.1)
+
+**Pasos en Visual Paradigm:**
+1. `File → New → Use Case Diagram`.
+2. Arrastra un **Actor** desde la paleta a la izquierda y renómbralo `Usuario`.
+3. Arrastra un **System (rectángulo de frontera)** y nómbralo `Epicycloid Generator`. Coloca dentro todos los óvalos de caso de uso.
+4. Crea los 12 **Use Case** (óvalos) dentro del rectángulo:
+   - Configurar parámetros
+   - Reproducir animación
+   - Pausar animación
+   - Simular por número de órbitas
+   - Alternar modo de visualización
+   - Ajustar zoom
+   - Limpiar lienzo
+   - Restablecer parámetros
+   - Exportar imagen PNG
+   - Exportar patrón JSON
+   - Importar patrón JSON
+   - Consultar tutorial
+5. Une el actor `Usuario` con cada uno de los 12 casos de uso mediante una **Association** (línea continua sin flecha).
+6. Crea dos casos de uso adicionales que representan comportamiento incluido:
+   - Configurar opciones de exportación
+   - Reconstruir patrón matemáticamente
+7. Traza las relaciones de inclusión con **Include** (flecha discontinua con punta abierta y estereotipo `«include»`, que VP añade solo):
+   - `Exportar imagen PNG` ──«include»──▶ `Configurar opciones de exportación`
+   - `Importar patrón JSON` ──«include»──▶ `Reconstruir patrón matemáticamente`
+
+> **Nota:** la flecha `«include»` parte del caso de uso base (Exportar/Importar) y apunta al caso de uso incluido. El usuario NO se conecta a los casos de uso incluidos (solo a los 12 principales).
+
+> **Recomendación de maquetación:** sitúa el actor a la izquierda, los 12 casos de uso en columna dentro del rectángulo, y los dos casos incluidos a la derecha de sus casos base para que las flechas `«include»` queden cortas y legibles.
+
+## A.2. Diagrama de clases conceptual (Figura 4.2)
+
+**Pasos en Visual Paradigm:**
+1. `File → New → Class Diagram`.
+2. Crea las clases (rectángulos) con sus atributos. No hace falta tipar ni poner operaciones salvo en `PatternService`:
+   - `Aplicacion`
+   - `PanelControles`
+   - `Lienzo`
+   - `PatternService` — operaciones: `updateParams()`, `dispatch()`, `beginSession()`, `endSession()`
+   - `PatternParams` — atributos: radios, factores elípticos X/Y, inclinaciones, velocidades RPM, fases iniciales, lineColor, lineAlpha, strokeWeight, lineInterval, visualizationMode
+   - `SimulationSession` — atributos: sessionIndex, frameCount, durationSeconds, endAngle1/2, endTipX/Y
+   - `LineRecord` — atributos: x1, y1, x2, y2, r, g, b, a, sw
+   - `CanvasAction` (créala como **Enumeration**) — literales: play, pause, clear, reset, import-json
+3. Traza las relaciones:
+   - `Aplicacion` ◆── `PanelControles` (**Composition**, 1 a 1)
+   - `Aplicacion` ◆── `Lienzo` (**Composition**, 1 a 1)
+   - `PanelControles` ──▶ `PatternService` (**Association** dirigida, 1 a 1)
+   - `Lienzo` ──▶ `PatternService` (**Association** dirigida, 1 a 1)
+   - `PatternService` ──▶ `PatternParams` (**Association**, 1 a 1, rol «activo»)
+   - `PatternService` ──▶ `SimulationSession` (**Association**, 1 a *)
+   - `PatternService` ──▶ `LineRecord` (**Association**, 1 a *)
+   - `PatternService` ┄┄▶ `CanvasAction` (**Dependency**, flecha discontinua)
+   - `SimulationSession` ◆── `PatternParams` (**Composition**, 1 a 1, «instantánea»)
+
+> Ajusta las multiplicidades en los extremos de cada conector (botón derecho → Multiplicity) según la tabla anterior.
+
+## A.3. Diagramas de secuencia (Figuras 4.3–4.6)
+
+**Pasos en Visual Paradigm:** `File → New → Sequence Diagram`. Para cada diagrama coloca un **Actor** (`Usuario`) y los **LifeLine** necesarios, y traza los **Message** (flechas) en el orden indicado. Usa **mensaje síncrono** (flecha rellena) para llamadas y, donde se indique, un **Combined Fragment** tipo `loop`.
+
+- **Fig. 4.3 — Configurar parámetros (CU1):** líneas de vida `Usuario`, `PanelControles`, `PatternService`, `Lienzo`.
+  1. Usuario → PanelControles: modifica control (ngModel)
+  2. PanelControles → PatternService: updateParams(params)
+  3. PatternService → PatternService: params$.next(params) *(mensaje a sí mismo)*
+  4. PatternService → Lienzo: params (suscripción)
+  5. Lienzo → Lienzo: aplica params en draw()
+
+- **Fig. 4.4 — Reproducir / Simular (CU2/CU4):** añade un **fragmento `loop`** «cada fotograma activo».
+  1. Usuario → PanelControles: pulsa Play / Simular
+  2. PanelControles → PatternService: dispatch('play')
+  3. PatternService → Lienzo: action 'play'
+  4. PatternService → PatternService: beginSession(params)
+  5. *(loop)* Lienzo → Lienzo: calcula posiciones P1, P2
+  6. *(loop)* Lienzo → PatternService: lineHistory.push(LineRecord)
+  7. *(loop)* Lienzo → PatternService: incrementSessionFrame()
+  8. Usuario → PanelControles: pulsa Pausa (o N vueltas completadas)
+  9. PanelControles → PatternService: dispatch('pause')
+  10. PatternService → PatternService: endSession()
+
+- **Fig. 4.5 — Exportar imagen PNG (CU9):** líneas de vida `Usuario`, `PanelControles`, `ExportModal`, `PatternService`.
+  1. Usuario → PanelControles: pulsa "Exportar imagen"
+  2. PanelControles → ExportModal: abre modal
+  3. ExportModal → PatternService: lee lineHistory
+  4. ExportModal → ExportModal: redibuja en canvas offscreen
+  5. ExportModal → Usuario: previsualización (mensaje de retorno)
+  6. Usuario → ExportModal: configura opciones (fondo, zoom, resolución, guías)
+  7. Usuario → ExportModal: pulsa "Guardar PNG"
+  8. ExportModal → ExportModal: canvas.toDataURL('image/png')
+  9. ExportModal → Usuario: descarga PNG (mensaje de retorno)
+
+- **Fig. 4.6 — Importar patrón JSON (CU11):** líneas de vida `Usuario`, `PanelControles`, `PatternService`, `Lienzo`.
+  1. Usuario → PanelControles: selecciona archivo JSON
+  2. PanelControles → PanelControles: replayToLines(sessions) *(añade una nota: «recalcula trazas con las mismas fórmulas que la simulación»)*
+  3. PanelControles → PatternService: updateParams(últimaSesión.params)
+  4. PanelControles → PatternService: importState = estado angular final
+  5. PanelControles → PatternService: dispatch('import-json')
+  6. PatternService → Lienzo: action 'import-json'
+  7. Lienzo → Lienzo: restaura angle1/2, prevTip, firstPoint
+  8. PanelControles → PatternService: lineHistory = trazasReconstruidas
+
+> **Orden crítico (justifícalo en el texto):** en la Fig. 4.6, el mensaje 3 (`updateParams`) debe ir siempre antes del mensaje 5 (`dispatch('import-json')`). Si se invierte, el lienzo aún tiene el modo de visualización antiguo, detecta un cambio de modo al recibir los parámetros y borra el historial recién reconstruido.
+
+---
+
+## A.4. (Opcional) Código PlantUML equivalente para vista previa rápida
+
+> Solo si quieres ver el resultado antes de montarlo en Visual Paradigm. Pégalo en https://www.plantuml.com/plantuml o en la extensión PlantUML de VS Code.
 
 ## Figura 4.1 — Diagrama de casos de uso
 
