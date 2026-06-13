@@ -19,6 +19,10 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 ### Estado al cierre de sesión
 - Documento listo para integrar en la memoria. Pendiente (opcional): renderizar los PNG de los diagramas y confirmar si «Ajustar zoom» se mantiene como caso de uso o se trata como interacción de vista.
 
+### Actualización posterior
+- El feature «Simular por número de órbitas» ya no existe en la UI (controls.html). Se eliminó del Capítulo 4: casos de uso renumerados a CU1–CU11, y actualizadas trazabilidad, secuencias y diagramas (VP + PlantUML). El anexo se reorientó a instrucciones de construcción en Visual Paradigm (PlantUML queda como vista previa opcional).
+- Memoria de proyecto actualizada: «Simulate N orbits» marcado como eliminado y retirado el gotcha de RPM=0 asociado.
+
 ## 2026-06-02 (sesión 2) — Correcciones de importación JSON + estado final de sesión
 
 ### Cambios realizados
