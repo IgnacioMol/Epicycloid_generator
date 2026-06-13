@@ -78,6 +78,7 @@ Con un número muy elevado de líneas en pantalla la simulación se ralentizaba 
 - Memoria de proyecto actualizada: «Simulate N orbits» marcado como eliminado y retirado el gotcha de RPM=0 asociado.
 - Capítulo 4 reescrito a nivel CONCEPTUAL (sin código, sin nombres de tecnologías): flujos de eventos en lenguaje de dominio, diagrama de clases como modelo de dominio (Composición, Sesión, Configuración de patrón, Órbita, Parámetros visuales, Traza) y diagramas de secuencia del sistema (Usuario ↔ Sistema como caja negra). Guardado como feedback en memoria.
 - Trazabilidad reajustada a la nueva lista de 12 RF: RF7 (exportar/importar patrón) ahora implementado → CU9/CU10; RF12 (variación aleatoria) único no implementado. Decisiones de criterio pendientes de confirmar: RF4«reiniciar»→CU6 y RF11«responsivo»→CU7.
+- **Actualización 2026-06-13:** RF12 (variación aleatoria) ya está implementado. Capítulo 4 actualizado: nuevo caso de uso CU12 «Generar variación aleatoria» (RF12), añadido al listado, a la matriz de trazabilidad (RF12 → CU12, ya sin requisitos sin caso de uso), al diagrama de casos de uso (anexo VP + PlantUML, conteo 11→12) y reflejada la validación de rangos (RNF10) como flujo alternativo de CU1.
 
 ## 2026-06-02 (sesión 2) — Correcciones de importación JSON + estado final de sesión
 

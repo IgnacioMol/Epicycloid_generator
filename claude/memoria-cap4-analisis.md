@@ -15,7 +15,7 @@ A diferencia de otras aplicaciones, *Epicycloid Generator* es una aplicación we
 
 Esta herramienta se emplea principalmente durante las etapas de análisis y diseño de un sistema, ya que ayuda a organizar y comprender mejor su desarrollo. El diagrama de casos de uso es una representación gráfica que muestra de forma clara cómo los usuarios (también llamados actores) se relacionan con el sistema, identificando las distintas acciones o funcionalidades que pueden llevar a cabo.
 
-En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Limpiar lienzo», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen», «Exportar patrón», «Importar patrón» y «Consultar tutorial».
+En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Generar variación aleatoria», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Limpiar lienzo», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen», «Exportar patrón», «Importar patrón» y «Consultar tutorial».
 
 A diferencia de aplicaciones con navegación entre múltiples pantallas, aquí todas las funcionalidades conviven en una única vista (el lienzo a la izquierda y el panel de controles a la derecha), por lo que no existe un caso de uso de navegación entre pantallas ni de inicio de sesión. El usuario accede directamente a cualquier acción.
 
@@ -48,7 +48,7 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Precondiciones** | La animación está pausada. |
 | **Flujo de eventos** | 1. El usuario abre uno de los grupos de parámetros (Órbita 1, Órbita 2, Visual, Avanzados). 2. El usuario modifica el valor de un control. 3. El sistema registra el nuevo valor y lo refleja inmediatamente en la vista. |
 | **Postcondiciones** | Los parámetros activos quedan actualizados y reflejados en el lienzo. |
-| **Flujo alternativo** | 2a. Si la animación está en curso, los controles no están disponibles; el usuario debe pausar antes de poder modificar parámetros. |
+| **Flujo alternativo** | 2a. Si la animación está en curso, los controles no están disponibles; el usuario debe pausar antes de poder modificar parámetros. 2b. Si el usuario introduce un valor fuera del rango permitido, el sistema lo ajusta automáticamente al límite más cercano (mínimo o máximo). |
 
 **CU2: Reproducir animación**
 
@@ -171,6 +171,19 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Flujo de eventos** | 1. En la primera visita, el sistema muestra el tutorial automáticamente. 2. El usuario lee la guía y la cierra (opcionalmente indicando que no desea volver a verla). 3. Posteriormente, el usuario puede reabrirlo cuando quiera. |
 | **Postcondiciones** | El usuario conoce el funcionamiento básico de la aplicación. |
 
+**CU12: Generar variación aleatoria**
+
+| Campo | Contenido |
+|---|---|
+| **ID del caso de uso** | CU12 — Generar variación aleatoria |
+| **Actor principal** | Usuario |
+| **Descripción** | El usuario solicita generar una composición «única» asignando de forma automática valores aleatorios al conjunto de parámetros que definen el patrón, conservando el modo de visualización elegido. |
+| **Requisitos cumplidos** | RF12 |
+| **Precondiciones** | La animación está pausada. |
+| **Flujo de eventos** | 1. El usuario solicita aleatorizar los parámetros. 2. El sistema asigna a cada parámetro un valor aleatorio comprendido dentro de su rango permitido (variación *controlada*). 3. El sistema refleja inmediatamente la nueva configuración en la vista. |
+| **Postcondiciones** | Los parámetros quedan actualizados con valores aleatorios válidos, listos para reproducirse. |
+| **Flujo alternativo** | 1a. Si la animación está en curso, la acción no está disponible; el usuario debe pausar antes de generar una variación. |
+
 ## 4.2. Diagrama de clases conceptual
 
 En esta sección se presenta el diagrama de clases conceptual de la aplicación, elaborado como parte del análisis previo al diseño. Su objetivo es ofrecer una visión general que ayude a comprender la estructura lógica del sistema desde una perspectiva orientada a objetos. Se trata de un **modelo de dominio**: representa los conceptos del problema (composiciones, órbitas, sesiones, trazas) y sus relaciones, sin entrar en cómo se implementan.
@@ -209,9 +222,9 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 | RF9 | Controles interactivos (sliders, selectores, campos numéricos) | CU1 |
 | RF10 | Mostrar en pantalla los valores actuales de los parámetros | CU1 |
 | RF11 | Visualización responsiva del lienzo, adaptándose a la ventana del navegador | CU7 |
-| RF12 | Generación de variaciones automáticas mediante valores aleatorios controlados | *No implementado — sin caso de uso asociado* |
+| RF12 | Generación de variaciones automáticas mediante valores aleatorios controlados | CU12 |
 
-Como se observa en la matriz, todos los requisitos funcionales implementados tienen al menos un caso de uso asociado, lo que garantiza que las funcionalidades previstas han sido contempladas durante el análisis. El único requisito sin caso de uso es RF12 (variación automática de parámetros), por tratarse de una funcionalidad no implementada y propuesta como trabajo futuro. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema —la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana—, que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo.
+Como se observa en la matriz, todos los requisitos funcionales tienen al menos un caso de uso asociado, lo que garantiza que la totalidad de las funcionalidades previstas han sido contempladas durante el análisis. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema —la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana—, que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo.
 
 ---
 
@@ -225,8 +238,9 @@ Como se observa en la matriz, todos los requisitos funcionales implementados tie
 1. `File → New → Use Case Diagram`.
 2. Arrastra un **Actor** y renómbralo `Usuario`.
 3. Arrastra un **System (rectángulo de frontera)** y nómbralo `Epicycloid Generator`. Dentro irán todos los óvalos.
-4. Crea los 11 **Use Case** (óvalos):
+4. Crea los 12 **Use Case** (óvalos):
    - Configurar parámetros
+   - Generar variación aleatoria
    - Reproducir animación
    - Pausar animación
    - Alternar modo de visualización
@@ -237,7 +251,7 @@ Como se observa en la matriz, todos los requisitos funcionales implementados tie
    - Exportar patrón
    - Importar patrón
    - Consultar tutorial
-5. Une `Usuario` con cada uno de los 11 casos de uso mediante una **Association** (línea continua sin flecha).
+5. Une `Usuario` con cada uno de los 12 casos de uso mediante una **Association** (línea continua sin flecha).
 6. Crea dos casos de uso incluidos:
    - Configurar opciones de exportación
    - Reconstruir el dibujo
@@ -245,7 +259,7 @@ Como se observa en la matriz, todos los requisitos funcionales implementados tie
    - `Exportar imagen` ──«include»──▶ `Configurar opciones de exportación`
    - `Importar patrón` ──«include»──▶ `Reconstruir el dibujo`
 
-> **Nota:** la flecha `«include»` parte del caso base (Exportar/Importar) hacia el incluido. El usuario NO se conecta a los casos incluidos (solo a los 11 principales).
+> **Nota:** la flecha `«include»` parte del caso base (Exportar/Importar) hacia el incluido. El usuario NO se conecta a los casos incluidos (solo a los 12 principales).
 
 ## A.2. Diagrama de clases conceptual (Figura 4.2)
 
@@ -311,6 +325,7 @@ actor Usuario as U
 
 rectangle "Epicycloid Generator" {
   usecase "Configurar parámetros" as CU1
+  usecase "Generar variación aleatoria" as CU12
   usecase "Reproducir animación" as CU2
   usecase "Pausar animación" as CU3
   usecase "Alternar modo de visualización" as CU4
@@ -326,6 +341,7 @@ rectangle "Epicycloid Generator" {
 }
 
 U --> CU1
+U --> CU12
 U --> CU2
 U --> CU3
 U --> CU4
