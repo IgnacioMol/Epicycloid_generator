@@ -22,6 +22,12 @@ export class Canvas implements AfterViewInit, OnDestroy {
   private params: PatternParams = { ...DEFAULT_PARAMS };
   private subs = new Subscription();
 
+  // Offscreen trail layer: accumulates drawn lines so each frame only paints
+  // the NEW segments instead of repainting the whole history (O(1) vs O(N)).
+  private trailLayer!: p5.Graphics;
+  private renderedLineCount = 0;
+  private trailDirty = true; // force a full rebuild (zoom/resize/clear/reset/mode/import)
+
   // Animation state — read by sketch closure each frame
   private isPaused = true;
   private isDrawing = false;
@@ -53,10 +59,12 @@ export class Canvas implements AfterViewInit, OnDestroy {
 
   zoomIn(): void {
     this.zoom = Math.min(MAX_ZOOM, parseFloat((this.zoom + ZOOM_STEP).toFixed(2)));
+    this.trailDirty = true;
   }
 
   zoomOut(): void {
     this.zoom = Math.max(MIN_ZOOM, parseFloat((this.zoom - ZOOM_STEP).toFixed(2)));
+    this.trailDirty = true;
   }
 
   private onAction(action: CanvasAction): void {
@@ -86,6 +94,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
         this.framesSinceLastLine = 0;
         this.isPaused = true; this.isDrawing = false;
         this.activeMode = this.params.visualizationMode;
+        this.trailDirty = true;
         break;
       }
     }
@@ -99,6 +108,9 @@ export class Canvas implements AfterViewInit, OnDestroy {
         const el = this.container.nativeElement;
         canvasEl = p.createCanvas(el.offsetWidth, el.offsetHeight).elt as HTMLElement;
         this.patternService.canvasDimensions = { w: el.offsetWidth, h: el.offsetHeight };
+        this.trailLayer = p.createGraphics(el.offsetWidth, el.offsetHeight);
+        this.trailLayer.pixelDensity(p.pixelDensity()); // match main canvas crispness
+        this.trailDirty = true;
         this.activeMode = this.params.visualizationMode;
         p.frameRate(60);
       };
@@ -106,9 +118,11 @@ export class Canvas implements AfterViewInit, OnDestroy {
       p.windowResized = () => {
         const el = this.container.nativeElement;
         p.resizeCanvas(el.offsetWidth, el.offsetHeight);
+        this.trailLayer.resizeCanvas(el.offsetWidth, el.offsetHeight);
         this.patternService.canvasDimensions = { w: el.offsetWidth, h: el.offsetHeight };
         // Line history uses canvas-space coords — resize keeps them valid
         this.firstPoint = true;
+        this.trailDirty = true; // re-rasterize the trail at the new canvas size
       };
 
       p.mouseWheel = (event: any) => {
@@ -151,6 +165,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
           this.activeMode = mode;
           this.resetPending = false;
           this.framesSinceLastLine = 0;
+          this.trailDirty = true;
         }
 
         if (this.clearPending) {
@@ -159,6 +174,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
           this.firstPoint = true;
           this.clearPending = false;
           this.framesSinceLastLine = 0;
+          this.trailDirty = true;
         }
 
         if (mode !== this.activeMode) {
@@ -170,6 +186,7 @@ export class Canvas implements AfterViewInit, OnDestroy {
           this.isPaused = true; this.isDrawing = false;
           this.activeMode = mode;
           this.framesSinceLastLine = 0;
+          this.trailDirty = true;
         }
 
         const cx = p.width / 2;
@@ -199,24 +216,24 @@ export class Canvas implements AfterViewInit, OnDestroy {
 
         // — Render —
 
-        p.background(10, 10, 20);
-
-        // Draw accumulated lines via raw Canvas 2D — vector quality at any zoom level.
-        // p5's push/translate/scale writes directly to the canvas context, so the
-        // transform set here is already active when we use ctx.moveTo/lineTo.
+        // Accumulated lines live on an offscreen layer. Each frame we paint only
+        // the lines added since last frame (O(1)); a full rebuild happens only on
+        // zoom/resize/clear/reset/mode/import (trailDirty), or if history shrank.
         const history = this.patternService.lineHistory;
-        if (history.length > 0) {
-          const ctx = (p as any).drawingContext as CanvasRenderingContext2D;
+        const g = this.trailLayer;
+
+        // Each line needs its own stroke() call so overlapping lines accumulate
+        // alpha correctly (a single batched stroke() collapses intersections).
+        // Vectors are re-rasterized at the current zoom, so quality is preserved.
+        const paintLines = (from: number, to: number) => {
+          const ctx = (g as any).drawingContext as CanvasRenderingContext2D;
           ctx.save();
           ctx.translate(cx, cy);
           ctx.scale(this.zoom, this.zoom);
-
-          // Each line needs its own stroke() call so overlapping lines
-          // accumulate alpha correctly (a single batched stroke() paints each
-          // pixel only once, collapsing intersections to the same intensity).
           ctx.lineCap = 'round';
           ctx.lineJoin = 'round';
-          for (const ln of history) {
+          for (let i = from; i < to; i++) {
+            const ln = history[i];
             ctx.strokeStyle = `rgba(${ln.r},${ln.g},${ln.b},${ln.a / 255})`;
             ctx.lineWidth = ln.sw;
             ctx.beginPath();
@@ -225,7 +242,20 @@ export class Canvas implements AfterViewInit, OnDestroy {
             ctx.stroke();
           }
           ctx.restore();
+        };
+
+        if (this.trailDirty || history.length < this.renderedLineCount) {
+          g.clear();
+          paintLines(0, history.length);
+          this.renderedLineCount = history.length;
+          this.trailDirty = false;
+        } else if (history.length > this.renderedLineCount) {
+          paintLines(this.renderedLineCount, history.length);
+          this.renderedLineCount = history.length;
         }
+
+        p.background(10, 10, 20);
+        p.image(g, 0, 0, p.width, p.height);
 
         // Orbital guides and planet dots (p5 methods, same world space)
         p.push();

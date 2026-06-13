@@ -4,7 +4,13 @@
       "Bash(git push *)",
       "Read(//c/Users/Nacho/Downloads/**)",
       "Bash(git merge *)",
-      "Bash(grep -iE \"memoria|capitulo|chapter|\\\\.tex$|analisis|requisit\")"
+      "Bash(grep -iE \"memoria|capitulo|chapter|\\\\.tex$|analisis|requisit\")",
+      "PowerShell(npx tsc --noEmit -p tsconfig.app.json)",
+      "Bash(echo \"=== EXIT: $? ===\")",
+      "Bash(git stash *)",
+      "Bash(echo \"EXIT_MERGE=$?\")",
+      "Bash(git --no-pager diff .claude/settings.json)",
+      "Bash(git add *)"
     ]
   }
 }
