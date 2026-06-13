@@ -4,6 +4,23 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-13 (sesión 3) — Optimización del renderizado de líneas (RNF5/RNF8)
+
+### Problema
+Con un número muy elevado de líneas en pantalla la simulación se ralentizaba mucho. Causa: en `canvas.ts`, cada fotograma (60 fps) hacía `background()` y **repintaba TODO el historial de líneas** una a una (`O(N)` por frame). El coste por frame crecía sin límite a medida que se acumulaban líneas, aunque el patrón ya estuviera quieto.
+
+### Solución
+- `canvas.ts`: las líneas se acumulan en una **capa fuera de pantalla** (`p5.Graphics` → `trailLayer`). Cada frame solo se pintan los segmentos nuevos desde el frame anterior (`O(1)`); el lienzo principal hace `background()` + `image(trailLayer)` + guías/planetas encima.
+- Reconstrucción completa de la capa (`trailDirty`) solo en eventos puntuales: zoom, redimensionado de ventana, limpiar, reset, cambio de modo e importación. `renderedLineCount` lleva la cuenta de las líneas ya volcadas en la capa.
+- Calidad de zoom intacta: al reconstruir, los vectores se re-rasterizan a la escala actual (no se escala un bitmap). `trailLayer.pixelDensity(p.pixelDensity())` iguala la nitidez del lienzo principal.
+- Cada línea sigue pintándose con su propio `stroke()` para que la acumulación de alfa en las intersecciones se mantenga idéntica.
+
+### Estado al cierre de sesión
+- Rendimiento ya no degrada con el número de líneas (frame O(1)); mejora RNF5 (rendimiento fluido) y RNF8 (uso de CPU).
+- Pendiente: RF7 (presets), RNF12 (despliegue en Netlify).
+
+---
+
 ## 2026-06-13 (sesión 2) — Ajuste de rangos y validación de inputs (RNF10)
 
 ### Cambios realizados
