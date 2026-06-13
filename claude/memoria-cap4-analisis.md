@@ -1,28 +1,28 @@
 # Capítulo 4 — Análisis
 
 > Borrador del apartado de análisis de la memoria del TFG *Epicycloid Generator*.
-> Incluye texto redactado + especificación de los diagramas para Visual Paradigm.
+> **Nivel conceptual**: describe QUÉ hace el sistema y cómo interactúa el usuario, sin detalles de implementación (esto va antes del capítulo de implementación). Los diagramas no contienen funciones reales ni tecnologías.
 
 ---
 
-El presente apartado tiene como objetivo analizar de manera estructurada la aplicación web desarrollada, utilizando herramientas de modelado que permitan comprender tanto los requisitos del sistema como su comportamiento interno. Para ello se ha empleado Visual Paradigm como entorno de modelado UML, que ha facilitado la elaboración de los diferentes diagramas que sustentan esta fase de análisis.
+El presente apartado tiene como objetivo analizar de manera estructurada la aplicación web desarrollada, utilizando herramientas de modelado que permitan comprender tanto los requisitos del sistema como su comportamiento. Para ello se ha empleado Visual Paradigm como entorno de modelado UML, que ha facilitado la elaboración de los diferentes diagramas que sustentan esta fase de análisis.
 
-En primer lugar, se presenta el diagrama de casos de uso, acompañado de sus correspondientes flujos de eventos, que permiten identificar y describir las interacciones entre el usuario y el sistema, detallando el comportamiento esperado ante distintos escenarios. A continuación, se expone el diagrama de clases conceptual, donde se definen las entidades principales del dominio y sus relaciones, sirviendo como base para el diseño orientado a objetos. Por último, se incluyen los diagramas de secuencia del sistema, que ilustran el flujo de mensajes entre los componentes durante la ejecución de los casos de uso más significativos, permitiendo visualizar la lógica de interacción de la aplicación.
+En primer lugar, se presenta el diagrama de casos de uso, acompañado de sus correspondientes flujos de eventos, que permiten identificar y describir las interacciones entre el usuario y el sistema, detallando el comportamiento esperado ante distintos escenarios. A continuación, se expone el diagrama de clases conceptual, donde se definen las entidades principales del dominio y sus relaciones, sirviendo como base para el posterior diseño. Por último, se incluyen los diagramas de secuencia del sistema, que ilustran el flujo de mensajes entre el usuario y el sistema durante la ejecución de los casos de uso más significativos, permitiendo visualizar la lógica de interacción de la aplicación.
 
-A diferencia de otras aplicaciones, *Epicycloid Generator* es una aplicación web de página única (SPA) que se ejecuta íntegramente en el navegador, sin backend, sin base de datos y sin sistema de autenticación. En consecuencia, existe un único actor —el **usuario**— que interactúa de forma directa y anónima con todas las funcionalidades, y todo el estado se gestiona en memoria del cliente y mediante archivos JSON/PNG que el propio usuario exporta e importa.
+A diferencia de otras aplicaciones, *Epicycloid Generator* es una aplicación web de página única que se ejecuta íntegramente en el navegador, sin necesidad de registro ni de conexión a un servidor. En consecuencia, existe un único actor —el **usuario**— que interactúa de forma directa y anónima con todas las funcionalidades.
 
 ## 4.1. Diagrama de casos de uso
 
 Esta herramienta se emplea principalmente durante las etapas de análisis y diseño de un sistema, ya que ayuda a organizar y comprender mejor su desarrollo. El diagrama de casos de uso es una representación gráfica que muestra de forma clara cómo los usuarios (también llamados actores) se relacionan con el sistema, identificando las distintas acciones o funcionalidades que pueden llevar a cabo.
 
-En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Limpiar lienzo», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen PNG», «Exportar patrón JSON», «Importar patrón JSON» y «Consultar tutorial».
+En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Limpiar lienzo», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen», «Exportar patrón», «Importar patrón» y «Consultar tutorial».
 
-A diferencia de aplicaciones con navegación entre múltiples pantallas, aquí todas las funcionalidades conviven en una única vista (lienzo a la izquierda, panel de controles a la derecha), por lo que no existe un caso de uso de navegación entre pantallas ni de inicio de sesión. El usuario accede directamente a cualquier acción.
+A diferencia de aplicaciones con navegación entre múltiples pantallas, aquí todas las funcionalidades conviven en una única vista (el lienzo a la izquierda y el panel de controles a la derecha), por lo que no existe un caso de uso de navegación entre pantallas ni de inicio de sesión. El usuario accede directamente a cualquier acción.
 
-Se han modelado además dos relaciones de inclusión (`«include»`), que representan comportamiento obligatorio compartido por un caso de uso:
+Se han modelado además dos relaciones de inclusión (`«include»`), que representan un comportamiento que forma parte obligatoria de otro caso de uso:
 
-- «Exportar imagen PNG» **incluye** «Configurar opciones de exportación» (fondo, zoom, resolución y guías), ya que el redibujado de la imagen siempre depende de dichas opciones.
-- «Importar patrón JSON» **incluye** «Reconstruir patrón matemáticamente», puesto que la importación siempre dispara la reconstrucción de las trazas a partir de las sesiones del archivo.
+- «Exportar imagen» **incluye** «Configurar opciones de exportación» (fondo, zoom, resolución y guías), ya que la imagen resultante siempre depende de dichas opciones.
+- «Importar patrón» **incluye** «Reconstruir el dibujo», puesto que la importación siempre conlleva regenerar la composición a partir de la información del archivo.
 
 *(Aquí va la Figura 4.1: Diagrama de Casos de Uso — ver especificación para Visual Paradigm al final del documento.)*
 
@@ -43,12 +43,12 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 |---|---|
 | **ID del caso de uso** | CU1 — Configurar parámetros |
 | **Actor principal** | Usuario |
-| **Descripción** | El usuario ajusta los parámetros matemáticos y visuales de la simulación (radios, velocidades, fases, factores elípticos, inclinación, color, opacidad, grosor e intervalo). |
+| **Descripción** | El usuario ajusta los parámetros matemáticos y visuales de la composición (radios, velocidades, fases, factores elípticos, inclinación, color, opacidad, grosor e intervalo). |
 | **Requisitos cumplidos** | RF2, RF9, RF10 |
-| **Precondiciones** | La simulación está pausada (los controles están habilitados). |
-| **Flujo de eventos** | 1. El usuario despliega una de las secciones colapsables del panel (Órbita 1, Órbita 2, Visual, Avanzados). 2. El usuario modifica el valor de un control (slider, campo numérico o selector de color). 3. El sistema actualiza el modelo mediante enlace bidireccional y emite los nuevos parámetros a través del servicio. 4. El lienzo recibe los parámetros y los aplica en el siguiente fotograma. |
+| **Precondiciones** | La animación está pausada. |
+| **Flujo de eventos** | 1. El usuario abre uno de los grupos de parámetros (Órbita 1, Órbita 2, Visual, Avanzados). 2. El usuario modifica el valor de un control. 3. El sistema registra el nuevo valor y lo refleja inmediatamente en la vista. |
 | **Postcondiciones** | Los parámetros activos quedan actualizados y reflejados en el lienzo. |
-| **Flujo alternativo** | 2a. Si la simulación está en curso, los controles aparecen deshabilitados; el usuario debe pulsar Pausa antes de poder modificar parámetros. |
+| **Flujo alternativo** | 2a. Si la animación está en curso, los controles no están disponibles; el usuario debe pausar antes de poder modificar parámetros. |
 
 **CU2: Reproducir animación**
 
@@ -56,11 +56,11 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 |---|---|
 | **ID del caso de uso** | CU2 — Reproducir animación |
 | **Actor principal** | Usuario |
-| **Descripción** | El usuario inicia la animación; el lienzo comienza a acumular trazas según los parámetros activos. |
+| **Descripción** | El usuario inicia la animación; el sistema comienza a acumular trazas según los parámetros activos. |
 | **Requisitos cumplidos** | RF1, RF3, RF4 |
 | **Precondiciones** | Existen parámetros válidos (siempre los hay, por defecto). |
-| **Flujo de eventos** | 1. El usuario pulsa el botón «Play». 2. El sistema abre una nueva sesión de simulación. 3. En cada fotograma, el sistema calcula la posición de los planetas, añade la traza al historial y la dibuja. 4. Los controles se deshabilitan mientras la animación está activa. |
-| **Postcondiciones** | La animación está en marcha y el historial de líneas crece fotograma a fotograma. |
+| **Flujo de eventos** | 1. El usuario pulsa «Play». 2. El sistema anima la geometría y va añadiendo las trazas resultantes al lienzo. 3. Los controles se bloquean mientras la animación está activa. |
+| **Postcondiciones** | La animación está en marcha y la composición crece progresivamente. |
 
 **CU3: Pausar animación**
 
@@ -71,8 +71,8 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Descripción** | El usuario detiene la animación en curso. |
 | **Requisitos cumplidos** | RF4 |
 | **Precondiciones** | La animación está en marcha. |
-| **Flujo de eventos** | 1. El usuario pulsa «Pausa». 2. El sistema cierra la sesión activa y la almacena en el historial de sesiones. 3. Los controles vuelven a habilitarse. |
-| **Postcondiciones** | La simulación queda detenida; el dibujo acumulado se conserva. |
+| **Flujo de eventos** | 1. El usuario pulsa «Pausa». 2. El sistema detiene la animación y conserva el dibujo acumulado. 3. Los controles vuelven a estar disponibles. |
+| **Postcondiciones** | La composición queda detenida y editable. |
 
 **CU4: Alternar modo de visualización**
 
@@ -82,9 +82,9 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario cambia entre el modo «intersección de líneas» y el modo «curva epicicloidal». |
 | **Requisitos cumplidos** | RF8 |
-| **Precondiciones** | La simulación está pausada. |
-| **Flujo de eventos** | 1. El usuario pulsa el botón de alternancia de modo. 2. El sistema detecta el cambio de modo y limpia el historial de líneas (las coordenadas de ambos modos no son comparables). 3. El lienzo pasa a dibujar según el nuevo modo. |
-| **Postcondiciones** | El modo de visualización activo queda actualizado y el lienzo, limpio. |
+| **Precondiciones** | La animación está pausada. |
+| **Flujo de eventos** | 1. El usuario selecciona el otro modo de visualización. 2. El sistema limpia el dibujo actual, ya que ambos modos producen composiciones no comparables. 3. La vista pasa a representar el nuevo modo. |
+| **Postcondiciones** | El modo activo queda actualizado y el lienzo, limpio. |
 
 **CU5: Limpiar lienzo**
 
@@ -95,10 +95,10 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Descripción** | El usuario borra el dibujo acumulado sin alterar los parámetros. |
 | **Requisitos cumplidos** | RF5 |
 | **Precondiciones** | Ninguna. |
-| **Flujo de eventos** | 1. El usuario pulsa «Limpiar lienzo». 2. El sistema vacía el historial de líneas y reinicia los ángulos acumulados a 0. |
+| **Flujo de eventos** | 1. El usuario pulsa «Limpiar lienzo». 2. El sistema borra la composición y reinicia el punto de partida de la animación. |
 | **Postcondiciones** | El lienzo queda vacío; los parámetros se mantienen. |
 
-**CU6: Restablecer parámetros (Reset)**
+**CU6: Restablecer parámetros**
 
 | Campo | Contenido |
 |---|---|
@@ -107,7 +107,7 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Descripción** | El usuario restaura todos los parámetros a sus valores por defecto. |
 | **Requisitos cumplidos** | RF15 |
 | **Precondiciones** | Ninguna. |
-| **Flujo de eventos** | 1. El usuario pulsa «Reset». 2. El sistema restaura los parámetros por defecto y borra el historial de líneas. |
+| **Flujo de eventos** | 1. El usuario pulsa «Reset». 2. El sistema restaura los valores por defecto y borra el dibujo. |
 | **Postcondiciones** | Los parámetros vuelven a sus valores iniciales y el lienzo queda limpio. |
 
 **CU7: Ajustar zoom**
@@ -119,45 +119,45 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Descripción** | El usuario acerca o aleja la vista del lienzo. |
 | **Requisitos cumplidos** | RF13 |
 | **Precondiciones** | Ninguna. |
-| **Flujo de eventos** | 1. El usuario gira la rueda del ratón sobre el lienzo o pulsa los botones ＋/−. 2. El sistema aplica el factor de zoom (rango 0,33×–8×) sobre la vista. |
-| **Postcondiciones** | La vista se reescala; las coordenadas del historial y la simulación no se ven afectadas. |
+| **Flujo de eventos** | 1. El usuario usa la rueda del ratón sobre el lienzo o los botones ＋/−. 2. El sistema acerca o aleja la vista dentro del rango permitido. |
+| **Postcondiciones** | La vista se reescala; la composición no se altera. |
 
-**CU8: Exportar imagen PNG**
+**CU8: Exportar imagen**
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU8 — Exportar imagen PNG |
+| **ID del caso de uso** | CU8 — Exportar imagen |
 | **Actor principal** | Usuario |
-| **Descripción** | El usuario guarda la composición actual como una imagen PNG. **Incluye** «Configurar opciones de exportación». |
+| **Descripción** | El usuario guarda la composición actual como una imagen. **Incluye** «Configurar opciones de exportación». |
 | **Requisitos cumplidos** | RF6 |
-| **Precondiciones** | Existe un dibujo en el historial. |
-| **Flujo de eventos** | 1. El usuario pulsa «Exportar imagen». 2. El sistema abre el modal de exportación y muestra una previsualización. 3. El usuario configura fondo, zoom de exportación, resolución y visibilidad de guías (caso de uso incluido). 4. El usuario pulsa «Guardar PNG». 5. El sistema redibuja el historial en un lienzo offscreen y descarga el archivo. |
-| **Postcondiciones** | Se descarga una imagen PNG con la composición. |
+| **Precondiciones** | Existe un dibujo en el lienzo. |
+| **Flujo de eventos** | 1. El usuario solicita exportar la imagen. 2. El sistema muestra una previsualización. 3. El usuario configura fondo, zoom, resolución y visibilidad de guías (caso de uso incluido). 4. El usuario confirma la descarga. 5. El sistema genera y entrega la imagen. |
+| **Postcondiciones** | El usuario obtiene una imagen de la composición. |
 
-**CU9: Exportar patrón JSON**
-
-| Campo | Contenido |
-|---|---|
-| **ID del caso de uso** | CU9 — Exportar patrón JSON |
-| **Actor principal** | Usuario |
-| **Descripción** | El usuario guarda el estado completo del dibujo como un archivo JSON de sesiones. |
-| **Requisitos cumplidos** | RF1, RF2 (persistencia del estado paramétrico) |
-| **Precondiciones** | Existe al menos una sesión registrada o una sesión activa. |
-| **Flujo de eventos** | 1. El usuario pulsa «Exportar patrón (JSON)». 2. El sistema serializa el historial de sesiones (incluida la activa, si la hay) junto con sus metadatos. 3. El sistema descarga el archivo `.json`. |
-| **Postcondiciones** | Se descarga un archivo JSON reproducible. |
-
-**CU10: Importar patrón JSON**
+**CU9: Exportar patrón**
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU10 — Importar patrón JSON |
+| **ID del caso de uso** | CU9 — Exportar patrón |
 | **Actor principal** | Usuario |
-| **Descripción** | El usuario carga un archivo JSON previamente exportado y reconstruye el dibujo. **Incluye** «Reconstruir patrón matemáticamente». |
+| **Descripción** | El usuario guarda el estado completo del dibujo en un archivo, para poder recuperarlo más adelante. |
 | **Requisitos cumplidos** | RF1, RF2 |
-| **Precondiciones** | El usuario dispone de un archivo JSON válido. |
-| **Flujo de eventos** | 1. El usuario pulsa «Importar patrón (JSON)» y selecciona un archivo. 2. El sistema recorre todas las sesiones y recalcula las trazas con las mismas fórmulas que la simulación en tiempo real (caso de uso incluido). 3. El sistema actualiza los parámetros del panel al estado de la última sesión. 4. El sistema restaura el estado angular final para permitir continuar el dibujo. |
-| **Postcondiciones** | El dibujo importado se muestra en el lienzo; el usuario puede pulsar Play para continuarlo. |
-| **Flujo alternativo** | 1a. Si el archivo no es un JSON válido o no tiene la estructura esperada, el sistema descarta la importación. |
+| **Precondiciones** | Existe una composición (en curso o ya realizada). |
+| **Flujo de eventos** | 1. El usuario solicita exportar el patrón. 2. El sistema reúne la información necesaria para reproducir la composición y la entrega como archivo descargable. |
+| **Postcondiciones** | El usuario obtiene un archivo reutilizable. |
+
+**CU10: Importar patrón**
+
+| Campo | Contenido |
+|---|---|
+| **ID del caso de uso** | CU10 — Importar patrón |
+| **Actor principal** | Usuario |
+| **Descripción** | El usuario carga un archivo de patrón previamente exportado y recupera el dibujo. **Incluye** «Reconstruir el dibujo». |
+| **Requisitos cumplidos** | RF1, RF2 |
+| **Precondiciones** | El usuario dispone de un archivo de patrón válido. |
+| **Flujo de eventos** | 1. El usuario selecciona un archivo de patrón. 2. El sistema reconstruye la composición a partir de la información del archivo (caso de uso incluido). 3. El sistema actualiza los parámetros mostrados al estado del patrón cargado. |
+| **Postcondiciones** | La composición importada se muestra y el usuario puede continuarla. |
+| **Flujo alternativo** | 1a. Si el archivo no es válido, el sistema descarta la importación e informa de ello. |
 
 **CU11: Consultar tutorial**
 
@@ -168,27 +168,27 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Descripción** | El usuario consulta la guía de bienvenida que explica los modos y los controles básicos. |
 | **Requisitos cumplidos** | RNF4 |
 | **Precondiciones** | Ninguna. |
-| **Flujo de eventos** | 1. En la primera visita, el sistema muestra el tutorial automáticamente. 2. El usuario lee la guía y la cierra (opcionalmente marcando «No volver a mostrar», que se persiste en `localStorage`). 3. Posteriormente, el usuario puede reabrirlo con el botón «?». |
+| **Flujo de eventos** | 1. En la primera visita, el sistema muestra el tutorial automáticamente. 2. El usuario lee la guía y la cierra (opcionalmente indicando que no desea volver a verla). 3. Posteriormente, el usuario puede reabrirlo cuando quiera. |
 | **Postcondiciones** | El usuario conoce el funcionamiento básico de la aplicación. |
 
 ## 4.2. Diagrama de clases conceptual
 
-En esta sección se presenta el diagrama de clases conceptual de la aplicación, elaborado como parte del análisis previo al diseño e implementación. Su objetivo es ofrecer una visión general que ayude a comprender la estructura lógica del sistema desde una perspectiva orientada a objetos.
+En esta sección se presenta el diagrama de clases conceptual de la aplicación, elaborado como parte del análisis previo al diseño. Su objetivo es ofrecer una visión general que ayude a comprender la estructura lógica del sistema desde una perspectiva orientada a objetos. Se trata de un **modelo de dominio**: representa los conceptos del problema (composiciones, órbitas, sesiones, trazas) y sus relaciones, sin entrar en cómo se implementan.
 
-La aplicación se organiza en torno a un servicio central (`PatternService`) que actúa como única fuente de estado y bus de comunicación entre el panel de controles y el lienzo. El usuario configura un conjunto de **parámetros** (`PatternParams`) que describen completamente el estado matemático y visual de la simulación. Cada bloque de reproducción entre Play y Pausa constituye una **sesión** (`SimulationSession`), que almacena una instantánea de los parámetros usados y el estado angular final. El dibujo acumulado se representa como una colección de **trazas** (`LineRecord`), cada una con sus coordenadas en espacio mundo, color, opacidad y grosor. Las acciones puntuales sobre el lienzo (play, pause, clear, reset, import) se modelan como un tipo enumerado (`CanvasAction`).
+La aplicación gira en torno a una **composición**, que es el dibujo que el usuario construye. Una composición está formada por una o varias **sesiones**, entendiendo por sesión cada bloque de animación comprendido entre que el usuario reproduce y pausa. Cada sesión utiliza una **configuración de patrón**, que describe completamente el estado matemático y visual: el **modo de visualización**, dos **órbitas** (cada una con su radio, factores elípticos, inclinación, velocidad y fase inicial) y un conjunto de **parámetros visuales** (color, opacidad, grosor e intervalo). El resultado de animar una sesión es una colección de **trazas**, los segmentos o puntos que se acumulan en el lienzo.
 
-Las relaciones principales son: la `Aplicación` *contiene* un `PanelControles` y un `Lienzo`; ambos *usan* el `PatternService`; el `PatternService` *gestiona* uno o varios `PatternParams` (el activo), una secuencia de `SimulationSession` y una colección de `LineRecord`; y cada `SimulationSession` *contiene* una instantánea de `PatternParams`.
+Las relaciones principales son: la `Aplicación` *gestiona* una `Composición`; una `Composición` *se compone de* una o varias `Sesión`; cada `Sesión` *usa* una `Configuración de patrón` y *produce* muchas `Traza`; y una `Configuración de patrón` *combina* dos `Órbita` y unos `Parámetros visuales`.
 
 *(Aquí va la Figura 4.2: Diagrama de clases conceptual — ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.3. Diagramas de secuencia del sistema
 
-Los diagramas de secuencia representan de forma visual y ordenada cómo se desarrollan las interacciones entre los distintos elementos del sistema a lo largo del tiempo. Se basan en los casos de uso previamente definidos y permiten detallar el flujo de mensajes entre el usuario y los componentes del sistema (panel de controles, servicio y lienzo). A continuación se muestran los diagramas de los casos de uso más significativos.
+Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones entre el usuario y el sistema a lo largo del tiempo. Se basan en los casos de uso previamente definidos y tratan el sistema como una **caja negra**: muestran las acciones que el usuario realiza y las respuestas que el sistema devuelve, sin detallar su funcionamiento interno (eso corresponde al diseño y la implementación). A continuación se muestran los diagramas de los casos de uso más significativos.
 
-- **Configurar parámetros (CU1):** el usuario modifica un control → el panel actualiza el modelo y llama a `updateParams()` → el servicio emite los parámetros por el `BehaviorSubject` → el lienzo, suscrito, los aplica en el siguiente fotograma.
-- **Reproducir animación (CU2):** el usuario pulsa Play → el panel despacha la acción → el servicio abre sesión → el lienzo, en cada fotograma, calcula posiciones, añade trazas e incrementa el contador de la sesión → al pausar, se cierra la sesión.
-- **Exportar imagen PNG (CU8):** el usuario abre el modal → configura opciones → el modal redibuja el historial sobre un lienzo offscreen y genera el PNG → se descarga.
-- **Importar patrón JSON (CU10):** el usuario selecciona el archivo → el panel ejecuta `replayToLines()` reconstruyendo las trazas → actualiza parámetros → despacha `import-json` → el lienzo restaura el estado angular y sustituye el historial.
+- **Configurar parámetros (CU1):** el usuario solicita modificar un parámetro y el sistema responde actualizando la vista con el nuevo valor.
+- **Reproducir animación (CU2):** el usuario solicita reproducir; el sistema anima y acumula trazas de forma continua hasta que el usuario solicita pausar.
+- **Exportar imagen (CU8):** el usuario solicita exportar; el sistema muestra una previsualización; el usuario ajusta las opciones y confirma; el sistema entrega la imagen.
+- **Importar patrón (CU10):** el usuario selecciona un archivo; el sistema reconstruye el dibujo, lo muestra y actualiza los parámetros visibles.
 
 *(Aquí van las Figuras 4.3 a 4.6 — ver especificación para Visual Paradigm al final del documento.)*
 
@@ -200,19 +200,19 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 |---|---|---|
 | RF1 | Generar composiciones a partir de patrones orbitales paramétricos | CU2, CU9, CU10 |
 | RF2 | Modificar parámetros en tiempo real | CU1, CU9, CU10 |
-| RF3 | Canvas actualiza dinámicamente sin recarga | CU1, CU2 |
+| RF3 | El lienzo se actualiza dinámicamente sin recargar la página | CU1, CU2 |
 | RF4 | Iniciar, pausar y reiniciar la animación | CU2, CU3 |
-| RF5 | Limpiar el canvas y empezar desde cero | CU5 |
-| RF6 | Guardar composición como imagen PNG | CU8 |
-| RF7 | Guardar/recuperar presets con nombre | *No implementado — sin caso de uso asociado* |
+| RF5 | Limpiar el lienzo y empezar desde cero | CU5 |
+| RF6 | Guardar la composición como imagen | CU8 |
+| RF7 | Guardar y recuperar presets de parámetros con nombre | *No implementado — sin caso de uso asociado* |
 | RF8 | Alternar entre modo curva y modo líneas | CU4 |
 | RF9 | Controles interactivos (sliders, selectores, campos numéricos) | CU1 |
-| RF10 | Mostrar valores actuales de los parámetros | CU1 |
-| RF11 | Integración correcta Angular ↔ p5.js | *Requisito técnico — cubierto en diseño/implementación* |
-| RF12 | Componentes Angular modulares y reutilizables | *Requisito técnico — cubierto en diseño/implementación* |
-| RF13 | Canvas responsivo y zoom | CU7 |
+| RF10 | Mostrar los valores actuales de los parámetros | CU1 |
+| RF11 | Integración correcta entre el framework y la librería gráfica | *Requisito técnico — se justifica en diseño/implementación* |
+| RF12 | Componentes modulares y reutilizables | *Requisito técnico — se justifica en diseño/implementación* |
+| RF13 | Lienzo responsivo y con zoom | CU7 |
 | RF14 | Variación aleatoria automática de parámetros | *No implementado — sin caso de uso asociado* |
-| RF15 | Restaurar parámetros por defecto | CU6 |
+| RF15 | Restaurar los parámetros por defecto | CU6 |
 
 Como se observa en la matriz, todos los requisitos funcionales implementados tienen al menos un caso de uso asociado, lo que garantiza que las funcionalidades esperadas han sido contempladas durante el análisis. Los requisitos RF7 y RF14 no disponen de caso de uso por tratarse de funcionalidades no implementadas (trabajo futuro), mientras que RF11 y RF12 son requisitos de naturaleza técnica que se justifican en los apartados de diseño e implementación.
 
@@ -220,15 +220,15 @@ Como se observa en la matriz, todos los requisitos funcionales implementados tie
 
 # Anexo — Construcción de los diagramas en Visual Paradigm
 
-> Especificación de cada diagrama (elementos + relaciones) pensada para reproducirlos en **Visual Paradigm**. Al final se incluye, de forma opcional, el código PlantUML equivalente por si quieres una vista previa rápida.
+> Especificación conceptual de cada diagrama (elementos + relaciones) para reproducirlos en **Visual Paradigm**. No aparece ningún nombre de función ni de tecnología: todo está en lenguaje de dominio, como corresponde a la fase de análisis.
 
 ## A.1. Diagrama de casos de uso (Figura 4.1)
 
 **Pasos en Visual Paradigm:**
 1. `File → New → Use Case Diagram`.
-2. Arrastra un **Actor** desde la paleta a la izquierda y renómbralo `Usuario`.
-3. Arrastra un **System (rectángulo de frontera)** y nómbralo `Epicycloid Generator`. Coloca dentro todos los óvalos de caso de uso.
-4. Crea los 11 **Use Case** (óvalos) dentro del rectángulo:
+2. Arrastra un **Actor** y renómbralo `Usuario`.
+3. Arrastra un **System (rectángulo de frontera)** y nómbralo `Epicycloid Generator`. Dentro irán todos los óvalos.
+4. Crea los 11 **Use Case** (óvalos):
    - Configurar parámetros
    - Reproducir animación
    - Pausar animación
@@ -236,99 +236,75 @@ Como se observa en la matriz, todos los requisitos funcionales implementados tie
    - Limpiar lienzo
    - Restablecer parámetros
    - Ajustar zoom
-   - Exportar imagen PNG
-   - Exportar patrón JSON
-   - Importar patrón JSON
+   - Exportar imagen
+   - Exportar patrón
+   - Importar patrón
    - Consultar tutorial
-5. Une el actor `Usuario` con cada uno de los 11 casos de uso mediante una **Association** (línea continua sin flecha).
-6. Crea dos casos de uso adicionales que representan comportamiento incluido:
+5. Une `Usuario` con cada uno de los 11 casos de uso mediante una **Association** (línea continua sin flecha).
+6. Crea dos casos de uso incluidos:
    - Configurar opciones de exportación
-   - Reconstruir patrón matemáticamente
-7. Traza las relaciones de inclusión con **Include** (flecha discontinua con punta abierta y estereotipo `«include»`, que VP añade solo):
-   - `Exportar imagen PNG` ──«include»──▶ `Configurar opciones de exportación`
-   - `Importar patrón JSON` ──«include»──▶ `Reconstruir patrón matemáticamente`
+   - Reconstruir el dibujo
+7. Traza las relaciones de inclusión con **Include** (flecha discontinua con estereotipo `«include»`, que VP añade solo):
+   - `Exportar imagen` ──«include»──▶ `Configurar opciones de exportación`
+   - `Importar patrón` ──«include»──▶ `Reconstruir el dibujo`
 
-> **Nota:** la flecha `«include»` parte del caso de uso base (Exportar/Importar) y apunta al caso de uso incluido. El usuario NO se conecta a los casos de uso incluidos (solo a los 11 principales).
-
-> **Recomendación de maquetación:** sitúa el actor a la izquierda, los 11 casos de uso en columna dentro del rectángulo, y los dos casos incluidos a la derecha de sus casos base para que las flechas `«include»` queden cortas y legibles.
+> **Nota:** la flecha `«include»` parte del caso base (Exportar/Importar) hacia el incluido. El usuario NO se conecta a los casos incluidos (solo a los 11 principales).
 
 ## A.2. Diagrama de clases conceptual (Figura 4.2)
 
+> Modelo de dominio. Las clases son **conceptos**, no componentes de software. Atributos sin tipo; operaciones solo como acciones del dominio si se desea.
+
 **Pasos en Visual Paradigm:**
 1. `File → New → Class Diagram`.
-2. Crea las clases (rectángulos) con sus atributos. No hace falta tipar ni poner operaciones salvo en `PatternService`:
-   - `Aplicacion`
-   - `PanelControles`
-   - `Lienzo`
-   - `PatternService` — operaciones: `updateParams()`, `dispatch()`, `beginSession()`, `endSession()`
-   - `PatternParams` — atributos: radios, factores elípticos X/Y, inclinaciones, velocidades RPM, fases iniciales, lineColor, lineAlpha, strokeWeight, lineInterval, visualizationMode
-   - `SimulationSession` — atributos: sessionIndex, frameCount, durationSeconds, endAngle1/2, endTipX/Y
-   - `LineRecord` — atributos: x1, y1, x2, y2, r, g, b, a, sw
-   - `CanvasAction` (créala como **Enumeration**) — literales: play, pause, clear, reset, import-json
+2. Crea las clases conceptuales con sus atributos:
+   - `Aplicación`
+   - `Composición`
+   - `Sesión` — atributos: número de orden, duración, número de fotogramas
+   - `Configuración de patrón` — atributo: modo de visualización (curva | líneas)
+   - `Órbita` — atributos: radio, factor elíptico X, factor elíptico Y, inclinación, velocidad, fase inicial
+   - `Parámetros visuales` — atributos: color, opacidad, grosor, intervalo
+   - `Traza` — atributos: punto inicial, punto final, color
 3. Traza las relaciones:
-   - `Aplicacion` ◆── `PanelControles` (**Composition**, 1 a 1)
-   - `Aplicacion` ◆── `Lienzo` (**Composition**, 1 a 1)
-   - `PanelControles` ──▶ `PatternService` (**Association** dirigida, 1 a 1)
-   - `Lienzo` ──▶ `PatternService` (**Association** dirigida, 1 a 1)
-   - `PatternService` ──▶ `PatternParams` (**Association**, 1 a 1, rol «activo»)
-   - `PatternService` ──▶ `SimulationSession` (**Association**, 1 a *)
-   - `PatternService` ──▶ `LineRecord` (**Association**, 1 a *)
-   - `PatternService` ┄┄▶ `CanvasAction` (**Dependency**, flecha discontinua)
-   - `SimulationSession` ◆── `PatternParams` (**Composition**, 1 a 1, «instantánea»)
+   - `Aplicación` ──▶ `Composición` (**Association**, 1 a 1, *gestiona*)
+   - `Composición` ◆── `Sesión` (**Composition**, 1 a 1..*, *se compone de*)
+   - `Sesión` ──▶ `Configuración de patrón` (**Association**, 1 a 1, *usa*)
+   - `Sesión` ──▶ `Traza` (**Association**, 1 a *, *produce*)
+   - `Configuración de patrón` ◆── `Órbita` (**Composition**, 1 a 2, *combina*)
+   - `Configuración de patrón` ◆── `Parámetros visuales` (**Composition**, 1 a 1)
 
-> Ajusta las multiplicidades en los extremos de cada conector (botón derecho → Multiplicity) según la tabla anterior.
+> Ajusta las multiplicidades en los extremos de cada conector (botón derecho → Multiplicity). Fíjate en el `1 a 2` de las órbitas: siempre hay exactamente dos.
 
-## A.3. Diagramas de secuencia (Figuras 4.3–4.6)
+## A.3. Diagramas de secuencia del sistema (Figuras 4.3–4.6)
 
-**Pasos en Visual Paradigm:** `File → New → Sequence Diagram`. Para cada diagrama coloca un **Actor** (`Usuario`) y los **LifeLine** necesarios, y traza los **Message** (flechas) en el orden indicado. Usa **mensaje síncrono** (flecha rellena) para llamadas y, donde se indique, un **Combined Fragment** tipo `loop`.
+**Pasos en Visual Paradigm:** `File → New → Sequence Diagram`. En cada diagrama coloca solo dos líneas de vida: el **Actor** `Usuario` y un objeto `Sistema` (el sistema como caja negra). Traza los **Message** en el orden indicado. Para las respuestas usa **mensaje de retorno** (flecha discontinua) y, donde se indique, un **Combined Fragment** tipo `loop`.
 
-- **Fig. 4.3 — Configurar parámetros (CU1):** líneas de vida `Usuario`, `PanelControles`, `PatternService`, `Lienzo`.
-  1. Usuario → PanelControles: modifica control (ngModel)
-  2. PanelControles → PatternService: updateParams(params)
-  3. PatternService → PatternService: params$.next(params) *(mensaje a sí mismo)*
-  4. PatternService → Lienzo: params (suscripción)
-  5. Lienzo → Lienzo: aplica params en draw()
+- **Fig. 4.3 — Configurar parámetros (CU1):**
+  1. Usuario → Sistema: modificar parámetro
+  2. Sistema ⤍ Usuario: actualizar vista *(retorno)*
 
-- **Fig. 4.4 — Reproducir animación (CU2):** añade un **fragmento `loop`** «cada fotograma activo».
-  1. Usuario → PanelControles: pulsa Play
-  2. PanelControles → PatternService: dispatch('play')
-  3. PatternService → Lienzo: action 'play'
-  4. PatternService → PatternService: beginSession(params)
-  5. *(loop)* Lienzo → Lienzo: calcula posiciones P1, P2
-  6. *(loop)* Lienzo → PatternService: lineHistory.push(LineRecord)
-  7. *(loop)* Lienzo → PatternService: incrementSessionFrame()
-  8. Usuario → PanelControles: pulsa Pausa
-  9. PanelControles → PatternService: dispatch('pause')
-  10. PatternService → PatternService: endSession()
+- **Fig. 4.4 — Reproducir animación (CU2):** con un fragmento `loop` «mientras la animación está activa».
+  1. Usuario → Sistema: reproducir
+  2. *(loop)* Sistema ⤍ Usuario: añadir trazas a la composición
+  3. Usuario → Sistema: pausar
+  4. Sistema ⤍ Usuario: detener y conservar el dibujo *(retorno)*
 
-- **Fig. 4.5 — Exportar imagen PNG (CU8):** líneas de vida `Usuario`, `PanelControles`, `ExportModal`, `PatternService`.
-  1. Usuario → PanelControles: pulsa "Exportar imagen"
-  2. PanelControles → ExportModal: abre modal
-  3. ExportModal → PatternService: lee lineHistory
-  4. ExportModal → ExportModal: redibuja en canvas offscreen
-  5. ExportModal → Usuario: previsualización (mensaje de retorno)
-  6. Usuario → ExportModal: configura opciones (fondo, zoom, resolución, guías)
-  7. Usuario → ExportModal: pulsa "Guardar PNG"
-  8. ExportModal → ExportModal: canvas.toDataURL('image/png')
-  9. ExportModal → Usuario: descarga PNG (mensaje de retorno)
+- **Fig. 4.5 — Exportar imagen (CU8):**
+  1. Usuario → Sistema: solicitar exportar imagen
+  2. Sistema ⤍ Usuario: mostrar previsualización *(retorno)*
+  3. Usuario → Sistema: configurar opciones (fondo, zoom, resolución, guías)
+  4. Usuario → Sistema: confirmar descarga
+  5. Sistema ⤍ Usuario: entregar imagen *(retorno)*
 
-- **Fig. 4.6 — Importar patrón JSON (CU10):** líneas de vida `Usuario`, `PanelControles`, `PatternService`, `Lienzo`.
-  1. Usuario → PanelControles: selecciona archivo JSON
-  2. PanelControles → PanelControles: replayToLines(sessions) *(añade una nota: «recalcula trazas con las mismas fórmulas que la simulación»)*
-  3. PanelControles → PatternService: updateParams(últimaSesión.params)
-  4. PanelControles → PatternService: importState = estado angular final
-  5. PanelControles → PatternService: dispatch('import-json')
-  6. PatternService → Lienzo: action 'import-json'
-  7. Lienzo → Lienzo: restaura angle1/2, prevTip, firstPoint
-  8. PanelControles → PatternService: lineHistory = trazasReconstruidas
-
-> **Orden crítico (justifícalo en el texto):** en la Fig. 4.6, el mensaje 3 (`updateParams`) debe ir siempre antes del mensaje 5 (`dispatch('import-json')`). Si se invierte, el lienzo aún tiene el modo de visualización antiguo, detecta un cambio de modo al recibir los parámetros y borra el historial recién reconstruido.
+- **Fig. 4.6 — Importar patrón (CU10):**
+  1. Usuario → Sistema: seleccionar archivo de patrón
+  2. Sistema → Sistema: reconstruir el dibujo *(mensaje a sí mismo)*
+  3. Sistema ⤍ Usuario: mostrar composición y actualizar parámetros *(retorno)*
 
 ---
 
-## A.4. (Opcional) Código PlantUML equivalente para vista previa rápida
+## A.4. (Opcional) Código PlantUML para vista previa rápida
 
-> Solo si quieres ver el resultado antes de montarlo en Visual Paradigm. Pégalo en https://www.plantuml.com/plantuml o en la extensión PlantUML de VS Code.
+> Solo para previsualizar antes de montarlo en Visual Paradigm. Los mensajes son conceptuales, sin código.
 
 ```plantuml
 @startuml CasosDeUso
@@ -344,11 +320,11 @@ rectangle "Epicycloid Generator" {
   usecase "Limpiar lienzo" as CU5
   usecase "Restablecer parámetros" as CU6
   usecase "Ajustar zoom" as CU7
-  usecase "Exportar imagen PNG" as CU8
+  usecase "Exportar imagen" as CU8
   usecase "Configurar opciones de exportación" as CU8b
-  usecase "Exportar patrón JSON" as CU9
-  usecase "Importar patrón JSON" as CU10
-  usecase "Reconstruir patrón matemáticamente" as CU10b
+  usecase "Exportar patrón" as CU9
+  usecase "Importar patrón" as CU10
+  usecase "Reconstruir el dibujo" as CU10b
   usecase "Consultar tutorial" as CU11
 }
 
@@ -370,23 +346,58 @@ CU10 ..> CU10b : <<include>>
 ```
 
 ```plantuml
+@startuml ClasesConceptual
+skinparam classAttributeIconSize 0
+
+class Aplicación
+class Composición
+class Sesión {
+  número de orden
+  duración
+  número de fotogramas
+}
+class "Configuración de patrón" as Config {
+  modo de visualización
+}
+class Órbita {
+  radio
+  factor elíptico X
+  factor elíptico Y
+  inclinación
+  velocidad
+  fase inicial
+}
+class "Parámetros visuales" as Visual {
+  color
+  opacidad
+  grosor
+  intervalo
+}
+class Traza {
+  punto inicial
+  punto final
+  color
+}
+
+Aplicación "1" --> "1" Composición : gestiona
+Composición "1" *-- "1..*" Sesión : se compone de
+Sesión "1" --> "1" Config : usa
+Sesión "1" --> "*" Traza : produce
+Config "1" *-- "2" Órbita : combina
+Config "1" *-- "1" Visual
+@enduml
+```
+
+```plantuml
 @startuml SecReproducir
 actor Usuario
-participant "PanelControles" as C
-participant "PatternService" as S
-participant "Lienzo" as L
+participant "Sistema" as S
 
-Usuario -> C : pulsa Play
-C -> S : dispatch('play')
-S --> L : action 'play'
-S -> S : beginSession(params)
-loop cada fotograma activo
-  L -> L : calcula posiciones P1, P2
-  L -> S : lineHistory.push(LineRecord)
-  L -> S : incrementSessionFrame()
+Usuario -> S : reproducir
+loop mientras la animación está activa
+  S --> Usuario : añadir trazas a la composición
 end
-Usuario -> C : pulsa Pausa
-C -> S : dispatch('pause')
-S -> S : endSession()
+Usuario -> S : pausar
+S --> Usuario : detener y conservar el dibujo
 @enduml
 ```
