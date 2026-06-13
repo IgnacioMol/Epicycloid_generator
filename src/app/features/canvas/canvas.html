@@ -2,10 +2,10 @@
   <div #canvasContainer class="canvas-host"></div>
 
   <div class="zoom-controls">
-    <button class="zoom-btn" (click)="zoomIn()" title="Acercar">
+    <button class="zoom-btn" (click)="zoomIn()" [title]="'canvas.zoomIn' | t">
       <i class="fa-solid fa-magnifying-glass-plus"></i>
     </button>
-    <button class="zoom-btn" (click)="zoomOut()" title="Alejar">
+    <button class="zoom-btn" (click)="zoomOut()" [title]="'canvas.zoomOut' | t">
       <i class="fa-solid fa-magnifying-glass-minus"></i>
     </button>
   </div>

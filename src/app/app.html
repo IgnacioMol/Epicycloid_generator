@@ -1,5 +1,39 @@
 <app-tutorial></app-tutorial>
 
+<!-- Selector de idioma desplegable -->
+<div class="lang-switch">
+  <button
+    type="button"
+    class="lang-trigger"
+    [attr.aria-label]="i18n.translate('lang.switch')"
+    [attr.aria-expanded]="langMenuOpen"
+    (click)="langMenuOpen = !langMenuOpen"
+  >
+    <span class="lang-globe">🌐</span>
+    <span>{{ currentLanguageLabel }}</span>
+    <span class="lang-caret" [class.lang-caret--open]="langMenuOpen">▾</span>
+  </button>
+
+  @if (langMenuOpen) {
+    <!-- Capa para cerrar el menú al pulsar fuera -->
+    <div class="lang-backdrop" (click)="langMenuOpen = false"></div>
+    <ul class="lang-menu" role="listbox">
+      @for (l of i18n.languages; track l.code) {
+        <li>
+          <button
+            type="button"
+            class="lang-option"
+            role="option"
+            [attr.aria-selected]="i18n.lang() === l.code"
+            [class.lang-option--active]="i18n.lang() === l.code"
+            (click)="selectLang(l.code)"
+          >{{ l.label }}</button>
+        </li>
+      }
+    </ul>
+  }
+</div>
+
 <div class="app-layout">
 
   <!-- IZQUIERDA: LIENZO (70%) -->

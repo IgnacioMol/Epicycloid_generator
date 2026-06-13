@@ -2,11 +2,12 @@ import { Component, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit }
 import { FormsModule } from '@angular/forms';
 import { PatternService } from '../../core/pattern.service';
 import { ExportOptions } from '../../models/pattern-params.model';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
 @Component({
   selector: 'app-export-modal',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './export-modal.html',
   styleUrl: './export-modal.css',
 })

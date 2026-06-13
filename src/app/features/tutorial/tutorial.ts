@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
 const STORAGE_KEY = 'epicycloid_tutorial_seen';
 
 @Component({
   selector: 'app-tutorial',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './tutorial.html',
   styleUrl: './tutorial.css',
 })

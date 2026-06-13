@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DEFAULT_PARAMS, PatternService } from '../../core/pattern.service';
 import { LineRecord, PatternParams, SimulationSession } from '../../models/pattern-params.model';
 import { ExportModal } from '../export-modal/export-modal';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 const RPM_TO_RAD_PER_FRAME = (Math.PI * 2) / (60 * 60);
 
@@ -36,7 +38,7 @@ const PARAM_RANGES: Record<NumericParam, { min: number; max: number; step: numbe
 @Component({
   selector: 'app-controls',
   standalone: true,
-  imports: [FormsModule, ExportModal],
+  imports: [FormsModule, ExportModal, TranslatePipe],
   templateUrl: './controls.html',
   styleUrl: './controls.css',
 })
@@ -44,6 +46,8 @@ export class Controls {
   params: PatternParams = { ...DEFAULT_PARAMS };
   isPlaying = false;
   showExportModal = false;
+
+  private readonly i18n = inject(I18nService);
 
   constructor(public patternService: PatternService) {}
 
@@ -134,7 +138,7 @@ export class Controls {
   }
 
   formatInterval(seconds: number): string {
-    if (seconds <= 0) return 'Continuo';
+    if (seconds <= 0) return this.i18n.translate('controls.continuous');
     return seconds.toFixed(3) + 's';
   }
 

@@ -1,78 +1,62 @@
-<button class="help-btn" (click)="open()" title="Ayuda / Tutorial">?</button>
+<button class="help-btn" (click)="open()" [title]="'tutorial.helpTitle' | t">?</button>
 
 @if (visible) {
   <div class="tutorial-overlay" (click)="close()">
     <div class="tutorial-card" (click)="$event.stopPropagation()">
 
       <div class="tutorial-header">
-        <h2 class="tutorial-title">Generador de Epicicloides</h2>
-        <p class="tutorial-subtitle">Guía de inicio rápido</p>
+        <h2 class="tutorial-title">{{ 'tutorial.title' | t }}</h2>
+        <p class="tutorial-subtitle">{{ 'tutorial.subtitle' | t }}</p>
       </div>
 
       <ol class="tutorial-steps">
         <li>
           <span class="step-icon">⟳</span>
           <div>
-            <strong>Elige el modo de visualización</strong>
-            <p>
-              <em>Curva epicicloidal</em> — la órbita 2 gira alrededor del extremo de la órbita 1 y se traza su camino.<br>
-              <em>Intersección de líneas</em> — ambas órbitas parten del centro y se dibuja la línea entre los dos planetas.
-            </p>
+            <strong>{{ 'tutorial.step1Title' | t }}</strong>
+            <p [innerHTML]="'tutorial.step1Body' | t"></p>
           </div>
         </li>
         <li>
           <span class="step-icon">⚙</span>
           <div>
-            <strong>Ajusta las órbitas</strong>
-            <p>
-              Modifica el <em>radio</em> y la <em>velocidad (RPM)</em> de cada órbita. La relación entre las dos velocidades determina la forma del patrón. Usa la <em>Fase inicial</em> para desfasar el punto de partida.
-            </p>
+            <strong>{{ 'tutorial.step2Title' | t }}</strong>
+            <p [innerHTML]="'tutorial.step2Body' | t"></p>
           </div>
         </li>
         <li>
           <span class="step-icon">▶</span>
           <div>
-            <strong>Play — y observa cómo se dibuja</strong>
-            <p>
-              La animación dibuja en tiempo real. Puedes cambiar los parámetros de color, opacidad y grosor de trazo mientras está en marcha.
-            </p>
+            <strong>{{ 'tutorial.step3Title' | t }}</strong>
+            <p [innerHTML]="'tutorial.step3Body' | t"></p>
           </div>
         </li>
         <li>
           <span class="step-icon">🔍</span>
           <div>
-            <strong>Zoom en el lienzo</strong>
-            <p>
-              Usa la <em>rueda del ratón</em> sobre el lienzo para acercar o alejar la vista. También puedes usar los botones <strong>＋</strong> / <strong>−</strong> de la esquina inferior derecha del lienzo. El zoom no afecta al dibujo acumulado, solo a la vista.
-            </p>
+            <strong>{{ 'tutorial.step4Title' | t }}</strong>
+            <p [innerHTML]="'tutorial.step4Body' | t"></p>
           </div>
         </li>
         <li>
           <span class="step-icon">✦</span>
           <div>
-            <strong>Parámetros avanzados</strong>
-            <p>
-              Despliega la sección <em>Parámetros avanzados</em> para activar factores elípticos (aplasta u estira la órbita) e inclinar el plano orbital.
-            </p>
+            <strong>{{ 'tutorial.step5Title' | t }}</strong>
+            <p [innerHTML]="'tutorial.step5Body' | t"></p>
           </div>
         </li>
         <li>
           <span class="step-icon">↺</span>
           <div>
-            <strong>Limpiar y Reset</strong>
-            <p>
-              <em>Limpiar lienzo</em> borra el trazo acumulado sin perder los parámetros. <em>Reset</em> devuelve todo al estado inicial.
-            </p>
+            <strong>{{ 'tutorial.step6Title' | t }}</strong>
+            <p [innerHTML]="'tutorial.step6Body' | t"></p>
           </div>
         </li>
         <li>
           <span class="step-icon">⇅</span>
           <div>
-            <strong>Guardar y cargar patrones</strong>
-            <p>
-              <em>Exportar patrón (JSON)</em> guarda un archivo con todos los parámetros y el tiempo de ejecución de cada bloque de simulación. Puedes pausar, cambiar parámetros y volver a darle a Play varias veces: cada bloque queda registrado como una <em>instancia</em> independiente en el JSON.<br>
-              <em>Importar patrón (JSON)</em> carga ese archivo y reconstruye el dibujo al instante, exactamente como fue generado.
-            </p>
+            <strong>{{ 'tutorial.step7Title' | t }}</strong>
+            <p [innerHTML]="'tutorial.step7Body' | t"></p>
           </div>
         </li>
       </ol>
@@ -80,9 +64,9 @@
       <div class="tutorial-footer">
         <label class="dont-show-label">
           <input type="checkbox" [(ngModel)]="dontShowAgain">
-          No volver a mostrar
+          {{ 'tutorial.dontShow' | t }}
         </label>
-        <button class="btn-start" (click)="close()">¡Empezar!</button>
+        <button class="btn-start" (click)="close()">{{ 'tutorial.start' | t }}</button>
       </div>
 
     </div>

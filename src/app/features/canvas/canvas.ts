@@ -3,6 +3,7 @@ import p5 from 'p5';
 import { Subscription } from 'rxjs';
 import { CanvasAction, DEFAULT_PARAMS, PatternService } from '../../core/pattern.service';
 import { LineRecord, PatternParams, VisualizationMode } from '../../models/pattern-params.model';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
 const RPM_TO_RAD_PER_FRAME = (Math.PI * 2) / (60 * 60); // at 60 fps
 const ZOOM_STEP = 0.15;
@@ -12,6 +13,7 @@ const MAX_ZOOM = 8;
 @Component({
   selector: 'app-canvas',
   standalone: true,
+  imports: [TranslatePipe],
   templateUrl: './canvas.html',
   styleUrl: './canvas.css',
 })

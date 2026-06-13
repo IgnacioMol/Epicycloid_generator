@@ -3,8 +3,8 @@
 
     <!-- Header -->
     <div class="export-header">
-      <span class="export-title">Exportar imagen</span>
-      <button class="export-close-btn" (click)="close.emit()" title="Cerrar">✕</button>
+      <span class="export-title">{{ 'export.title' | t }}</span>
+      <button class="export-close-btn" (click)="close.emit()" [title]="'export.close' | t">✕</button>
     </div>
 
     <!-- Body -->
@@ -12,7 +12,7 @@
 
       <!-- Preview -->
       <div class="export-preview-area">
-        <p class="export-section-label">Vista previa</p>
+        <p class="export-section-label">{{ 'export.preview' | t }}</p>
         <div class="preview-checker-wrapper">
           <canvas #previewCanvas class="preview-canvas"></canvas>
         </div>
@@ -21,24 +21,24 @@
 
       <!-- Options -->
       <div class="export-options-area">
-        <p class="export-section-label">Opciones de exportación</p>
+        <p class="export-section-label">{{ 'export.options' | t }}</p>
 
         <!-- Background -->
         <div class="option-group">
-          <label class="option-label">Fondo</label>
+          <label class="option-label">{{ 'export.background' | t }}</label>
 
           <div class="option-row">
             <label class="toggle-label">
               <input type="checkbox"
                      [(ngModel)]="isTransparent"
                      (ngModelChange)="onTransparentToggle()">
-              <span>Transparente</span>
+              <span>{{ 'export.transparent' | t }}</span>
             </label>
           </div>
 
           @if (!isTransparent) {
             <div class="option-row">
-              <label class="small-label">Color:</label>
+              <label class="small-label">{{ 'export.colorLabel' | t }}</label>
               <input type="color"
                      class="color-input"
                      [(ngModel)]="options.bgColor"
@@ -49,7 +49,7 @@
 
         <!-- Zoom -->
         <div class="option-group">
-          <label class="option-label">Zoom de exportación</label>
+          <label class="option-label">{{ 'export.exportZoom' | t }}</label>
           <div class="option-row">
             <input type="range"
                    class="zoom-slider"
@@ -58,15 +58,15 @@
                    (ngModelChange)="onOptionChange()">
           </div>
           <div class="zoom-labels">
-            <span>Alejado</span>
+            <span>{{ 'export.zoomFar' | t }}</span>
             <span class="zoom-value">{{ exportZoom.toFixed(2) }}×</span>
-            <span>Acercado</span>
+            <span>{{ 'export.zoomNear' | t }}</span>
           </div>
         </div>
 
         <!-- Resolution -->
         <div class="option-group">
-          <label class="option-label">Resolución del archivo</label>
+          <label class="option-label">{{ 'export.resolution' | t }}</label>
           <div class="scale-options">
             @for (s of scaleOptions; track s) {
               <button class="scale-btn"
@@ -80,14 +80,14 @@
 
         <!-- Visibility -->
         <div class="option-group">
-          <label class="option-label">Elementos visibles</label>
+          <label class="option-label">{{ 'export.visibleElements' | t }}</label>
 
           <div class="option-row">
             <label class="toggle-label">
               <input type="checkbox"
                      [(ngModel)]="options.showGuides"
                      (ngModelChange)="onOptionChange()">
-              <span>Círculos de referencia</span>
+              <span>{{ 'export.referenceCircles' | t }}</span>
             </label>
           </div>
 
@@ -96,7 +96,7 @@
               <input type="checkbox"
                      [(ngModel)]="options.showCenterDot"
                      (ngModelChange)="onOptionChange()">
-              <span>Punto central</span>
+              <span>{{ 'export.centerDot' | t }}</span>
             </label>
           </div>
         </div>
@@ -106,7 +106,7 @@
 
     <!-- Filename -->
     <div class="export-filename-bar">
-      <label class="filename-label">Nombre del archivo</label>
+      <label class="filename-label">{{ 'export.fileName' | t }}</label>
       <div class="filename-input-row">
         <input type="text"
                class="filename-input"
@@ -118,9 +118,9 @@
 
     <!-- Footer -->
     <div class="export-footer">
-      <button class="btn-cancel" (click)="close.emit()">Cancelar</button>
+      <button class="btn-cancel" (click)="close.emit()">{{ 'export.cancel' | t }}</button>
       <button class="btn-save" (click)="save()">
-        ↓ Guardar PNG
+        {{ 'export.savePng' | t }}
       </button>
     </div>
 

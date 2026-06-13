@@ -1,11 +1,11 @@
 <div>
-  <h4 class="mb-4 fw-semibold" style="color: #a0a8d0;">Panel de Control</h4>
+  <h4 class="mb-4 fw-semibold" style="color: #a0a8d0;">{{ 'controls.title' | t }}</h4>
 
   <!-- ── AVISO DE BLOQUEO ── -->
   @if (isPlaying) {
     <div class="lock-banner mb-3 px-3 py-2 rounded d-flex align-items-center gap-2">
       <span style="font-size:1rem;">🔒</span>
-      <span class="small">Simulación en curso — pausa para editar</span>
+      <span class="small">{{ 'controls.lockBanner' | t }}</span>
     </div>
   }
 
@@ -15,7 +15,7 @@
     <!-- ── MODO DE VISUALIZACIÓN ── -->
     <div class="mb-4 p-3 rounded" style="background:#1a1a32; border:1px solid #3a3a60;">
       <p class="mb-2 small text-uppercase fw-semibold" style="color:#5a62a0; letter-spacing:.08em;">
-        Modo de visualización
+        {{ 'controls.visualizationMode' | t }}
       </p>
 
       <button
@@ -25,27 +25,27 @@
         (click)="toggleMode()"
       >
         @if (params.visualizationMode === 'curve') {
-          ⟳ Curva Epicicloidal
+          {{ 'controls.modeCurve' | t }}
         } @else {
-          ⟷ Intersección de Líneas
+          {{ 'controls.modeLines' | t }}
         }
       </button>
 
       <p class="mt-2 mb-0 small" style="color:#7070a0; line-height:1.4;">
         @if (params.visualizationMode === 'curve') {
-          La órbita 2 gira alrededor de la órbita 1. Se traza el camino del punto extremo.
+          {{ 'controls.modeCurveDesc' | t }}
         } @else {
-          Ambas órbitas parten del centro. Se dibuja la línea entre los dos planetas.
+          {{ 'controls.modeLinesDesc' | t }}
         }
       </p>
     </div>
 
     <!-- ── ÓRBITA 1 ── -->
-    <h6 class="text-uppercase mb-3" style="color:#6090cc; letter-spacing:.08em;">Órbita 1</h6>
+    <h6 class="text-uppercase mb-3" style="color:#6090cc; letter-spacing:.08em;">{{ 'controls.orbit1' | t }}</h6>
 
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center mb-1">
-        <label class="form-label small mb-0">Radio</label>
+        <label class="form-label small mb-0">{{ 'controls.radius' | t }}</label>
         <input type="number" class="param-number-input"
                min="50" max="350" step="5"
                [(ngModel)]="params.orbit1Radius"
@@ -60,7 +60,7 @@
 
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center mb-1">
-        <label class="form-label small mb-0">Velocidad angular</label>
+        <label class="form-label small mb-0">{{ 'controls.angularSpeed' | t }}</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
                  min="1" max="50" step="0.1"
@@ -78,7 +78,7 @@
 
     <div class="mb-4">
       <div class="d-flex justify-content-between align-items-center mb-1">
-        <label class="form-label small mb-0">Fase inicial</label>
+        <label class="form-label small mb-0">{{ 'controls.initialPhase' | t }}</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
                  min="0" max="360" step="1"
@@ -95,11 +95,11 @@
     </div>
 
     <!-- ── ÓRBITA 2 ── -->
-    <h6 class="text-uppercase mb-3 mt-2" style="color:#cc6060; letter-spacing:.08em;">Órbita 2</h6>
+    <h6 class="text-uppercase mb-3 mt-2" style="color:#cc6060; letter-spacing:.08em;">{{ 'controls.orbit2' | t }}</h6>
 
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center mb-1">
-        <label class="form-label small mb-0">Radio</label>
+        <label class="form-label small mb-0">{{ 'controls.radius' | t }}</label>
         <input type="number" class="param-number-input"
                min="50" max="350" step="5"
                [(ngModel)]="params.orbit2Radius"
@@ -114,7 +114,7 @@
 
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center mb-1">
-        <label class="form-label small mb-0">Velocidad angular</label>
+        <label class="form-label small mb-0">{{ 'controls.angularSpeed' | t }}</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
                  min="1" max="50" step="0.1"
@@ -132,7 +132,7 @@
 
     <div class="mb-4">
       <div class="d-flex justify-content-between align-items-center mb-1">
-        <label class="form-label small mb-0">Fase inicial</label>
+        <label class="form-label small mb-0">{{ 'controls.initialPhase' | t }}</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
                  min="0" max="360" step="1"
@@ -149,10 +149,10 @@
     </div>
 
     <!-- ── VISUAL ── -->
-    <h6 class="text-uppercase mb-3 mt-2" style="color:#a0a8d0; letter-spacing:.08em;">Visual</h6>
+    <h6 class="text-uppercase mb-3 mt-2" style="color:#a0a8d0; letter-spacing:.08em;">{{ 'controls.visual' | t }}</h6>
 
     <div class="mb-3">
-      <label class="form-label small d-block mb-1">Color de trazo</label>
+      <label class="form-label small d-block mb-1">{{ 'controls.lineColor' | t }}</label>
       <input type="color" class="form-control form-control-color w-100"
              [(ngModel)]="params.lineColor"
              (ngModelChange)="onParamChange()">
@@ -160,7 +160,7 @@
 
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center mb-1">
-        <label class="form-label small mb-0">Opacidad</label>
+        <label class="form-label small mb-0">{{ 'controls.opacity' | t }}</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
                  min="0.05" max="1" step="0.05"
@@ -178,7 +178,7 @@
 
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center mb-1">
-        <label class="form-label small mb-0">Grosor de trazo</label>
+        <label class="form-label small mb-0">{{ 'controls.strokeWeight' | t }}</label>
         <input type="number" class="param-number-input"
                min="0" max="1" step="0.1"
                [(ngModel)]="params.strokeWeight"
@@ -195,7 +195,7 @@
     @if (params.visualizationMode === 'lines') {
       <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-1">
-          <label class="form-label small mb-0">Intervalo entre líneas</label>
+          <label class="form-label small mb-0">{{ 'controls.lineInterval' | t }}</label>
           <div class="d-flex align-items-center gap-1">
             <input type="number" class="param-number-input"
                    min="0" max="1" step="0.001"
@@ -211,7 +211,7 @@
                (ngModelChange)="onParamChange()">
         <p class="mt-1 mb-0 small" style="color:#5a62a0;">
           {{ formatInterval(params.lineInterval) }}
-          @if (params.lineInterval === 0) { — una línea por fotograma }
+          @if (params.lineInterval === 0) { {{ 'controls.lineIntervalFrame' | t }} }
         </p>
       </div>
     }
@@ -220,20 +220,20 @@
     <details class="mb-4">
       <summary class="text-uppercase small fw-semibold mb-3"
                style="cursor:pointer; color:#5a62a0; letter-spacing:.08em; list-style:none;">
-        ▸ Parámetros avanzados
+        ▸ {{ 'controls.advanced' | t }}
       </summary>
 
       <div class="mt-3 ps-1">
         <p class="small mb-3" style="color:#5a62a0;">
-          Factor elíptico: 1.0 = círculo. Inclinación: rotación del plano de la órbita.
+          {{ 'controls.advancedHint' | t }}
         </p>
 
         <!-- Órbita 1 avanzado -->
-        <h6 class="small mb-2" style="color:#6090cc;">Órbita 1</h6>
+        <h6 class="small mb-2" style="color:#6090cc;">{{ 'controls.orbit1' | t }}</h6>
 
         <div class="mb-3">
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <label class="form-label small mb-0">Factor elíptico X</label>
+            <label class="form-label small mb-0">{{ 'controls.ellipseX' | t }}</label>
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit1EllipseX"
@@ -248,7 +248,7 @@
 
         <div class="mb-3">
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <label class="form-label small mb-0">Factor elíptico Y</label>
+            <label class="form-label small mb-0">{{ 'controls.ellipseY' | t }}</label>
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit1EllipseY"
@@ -263,7 +263,7 @@
 
         <div class="mb-4">
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <label class="form-label small mb-0">Inclinación</label>
+            <label class="form-label small mb-0">{{ 'controls.tilt' | t }}</label>
             <div class="d-flex align-items-center gap-1">
               <input type="number" class="param-number-input"
                      min="0" max="360" step="1"
@@ -280,11 +280,11 @@
         </div>
 
         <!-- Órbita 2 avanzado -->
-        <h6 class="small mb-2" style="color:#cc6060;">Órbita 2</h6>
+        <h6 class="small mb-2" style="color:#cc6060;">{{ 'controls.orbit2' | t }}</h6>
 
         <div class="mb-3">
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <label class="form-label small mb-0">Factor elíptico X</label>
+            <label class="form-label small mb-0">{{ 'controls.ellipseX' | t }}</label>
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit2EllipseX"
@@ -299,7 +299,7 @@
 
         <div class="mb-3">
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <label class="form-label small mb-0">Factor elíptico Y</label>
+            <label class="form-label small mb-0">{{ 'controls.ellipseY' | t }}</label>
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit2EllipseY"
@@ -314,7 +314,7 @@
 
         <div class="mb-3">
           <div class="d-flex justify-content-between align-items-center mb-1">
-            <label class="form-label small mb-0">Inclinación</label>
+            <label class="form-label small mb-0">{{ 'controls.tilt' | t }}</label>
             <div class="d-flex align-items-center gap-1">
               <input type="number" class="param-number-input"
                      min="0" max="360" step="1"
@@ -340,33 +340,33 @@
     <button class="btn btn-info btn-sm fw-semibold"
             [disabled]="isPlaying"
             (click)="randomize()">
-      🎲 Aleatorizar parámetros
+      {{ 'controls.randomize' | t }}
     </button>
     <div class="row g-2">
       <div class="col-6">
         <button class="btn btn-success btn-sm w-100"
                 [disabled]="isPlaying"
                 (click)="play()">
-          ▶ Play
+          {{ 'controls.play' | t }}
         </button>
       </div>
       <div class="col-6">
         <button class="btn btn-warning btn-sm w-100"
                 [disabled]="!isPlaying"
                 (click)="pause()">
-          ⏸ Pausa
+          {{ 'controls.pause' | t }}
         </button>
       </div>
     </div>
-    <button class="btn btn-outline-secondary btn-sm" (click)="clear()">⬜ Limpiar lienzo</button>
-    <button class="btn btn-outline-danger btn-sm" (click)="reset()">↺ Reset</button>
-    <button class="btn btn-outline-info btn-sm" (click)="showExportModal = true">↓ Exportar imagen</button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="clear()">{{ 'controls.clearCanvas' | t }}</button>
+    <button class="btn btn-outline-danger btn-sm" (click)="reset()">{{ 'controls.reset' | t }}</button>
+    <button class="btn btn-outline-info btn-sm" (click)="showExportModal = true">{{ 'controls.exportImage' | t }}</button>
     <button class="btn btn-outline-light btn-sm" (click)="exportJson()"
             [disabled]="patternService.sessions.length === 0 && !patternService.snapshotActiveSession()">
-      ↓ Exportar patrón (JSON)
+      {{ 'controls.exportJson' | t }}
     </button>
     <button class="btn btn-outline-warning btn-sm" (click)="triggerImport()">
-      ↑ Importar patrón (JSON)
+      {{ 'controls.importJson' | t }}
     </button>
   </div>
 </div>

@@ -4,6 +4,27 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-13 (sesión 4) — Internacionalización ES/EN (i18n)
+
+### Objetivo
+Soporte multilingüe (español e inglés) con detección automática del idioma del navegador y un selector manual, en la rama `feature/i18n`.
+
+### Decisión de enfoque
+Se descartó el i18n nativo de Angular (`@angular/localize`, compila un build por idioma y no permite cambio en caliente) y las librerías runtime de terceros (Transloco/ngx-translate): el entorno de npm tiene un problema de certificado SSL que hace poco fiable instalar paquetes, y Angular 21 es muy reciente. Se optó por un **servicio i18n propio en tiempo de ejecución basado en señales (signals)**: mismo concepto (runtime + archivos JSON + cambio instantáneo) sin dependencias externas.
+
+### Implementación
+- **Diccionarios JSON**: `src/app/core/i18n/es.json` y `en.json` (claves anidadas por componente), importados directamente (se activó `resolveJsonModule` en `tsconfig.app.json`).
+- **`I18nService`** (`core/i18n/i18n.service.ts`): señal `lang` reactiva; detección inicial (preferencia en `localStorage` → idioma del navegador, español si empieza por `es`, inglés en otro caso); `setLang()`/`toggle()` persisten la elección y actualizan `<html lang>`.
+- **`TranslatePipe`** (`| t`, impuro): traduce claves en plantilla y se reevalúa al cambiar de idioma sin recargar.
+- **Selector de idioma desplegable**: botón fijo junto al de ayuda que despliega la lista de idiomas disponibles (`app.html` + estilos en `styles.css`). La lista se genera a partir de la constante `LANGUAGES` del servicio, de modo que **añadir un idioma nuevo no requiere tocar la interfaz** (solo el array, un JSON y el tipo `Lang`).
+- Textos extraídos en todas las plantillas: `controls`, `tutorial` (cuerpos con HTML vía `[innerHTML]`), `export-modal`, `canvas`; y el texto "Continuo" de `controls.ts`.
+
+### Estado al cierre de sesión
+- Cambio de idioma instantáneo y detección automática funcionando; selector desplegable preparado para escalar a más idiomas; build de producción correcto.
+- Pendiente: RF7 (presets), RNF12 (despliegue en Netlify). Conviene documentar la i18n como requisito (RNF de usabilidad) en la memoria.
+
+---
+
 ## 2026-06-13 (sesión 3) — Optimización del renderizado de líneas (RNF5/RNF8)
 
 ### Problema
