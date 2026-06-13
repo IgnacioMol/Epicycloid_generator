@@ -4,6 +4,43 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-13 (sesión 2) — Ajuste de rangos y validación de inputs (RNF10)
+
+### Cambios realizados
+
+**Nuevos límites min/max de parámetros (`controls.html`)**
+- Grosor de trazo: `0–1` (step 0.1; antes 0.5–10).
+- Intervalo entre líneas: `0–1 s` (antes el número llegaba a 60 y el slider a 10).
+- Velocidad angular (ambas órbitas): `1–50 RPM` (antes 0–100).
+- Radio (ambas órbitas): `50–350` (antes 10–500).
+
+**Validación de rango en todos los inputs (RNF10)**
+- `controls.ts`: nuevo mapa `PARAM_RANGES` (min/max/step de cada parámetro numérico) como única fuente de verdad, reutilizado por la aleatorización y la validación.
+- Nuevo método `clampParams()`: si un valor se sale por arriba o por abajo (o es inválido/NaN), lo fija al máximo o mínimo correspondiente. Se invoca con el evento `(change)` de cada input numérico (al confirmar la edición, no en cada pulsación, para no impedir la escritura).
+- `randomize()` refactorizado para iterar sobre `PARAM_RANGES`, de modo que los nuevos rangos se aplican automáticamente también a la aleatorización.
+
+### Estado al cierre de sesión
+- RNF10 (validación de inputs) completado.
+- Pendiente: RF7 (presets), RNF12 (despliegue en Netlify).
+
+---
+
+## 2026-06-13 — RF12: aleatorización controlada de parámetros
+
+### Cambios realizados
+
+**Nueva funcionalidad: generación de variaciones aleatorias controladas (RF12)**
+- `controls.ts`: nuevo método `randomize()` que asigna un valor aleatorio a cada parámetro del patrón. Cada valor queda dentro de los mismos límites `min`/`max` y alineado al `step` definido en los controles del HTML, garantizando que el resultado sea siempre reproducible manualmente por el usuario (ningún valor "imposible" de introducir).
+- Helpers privados: `randInRange(min, max, step)` (alinea al step y redondea para evitar errores de coma flotante) y `randColor()` (color hexadecimal `#rrggbb` aleatorio).
+- Se conserva el modo de visualización (`visualizationMode`): no es un valor numérico sino la decisión del usuario sobre qué tipo de patrón generar.
+- `controls.html`: nuevo botón "🎲 Aleatorizar parámetros" situado encima de los botones Play/Pausa, deshabilitado mientras la simulación está en curso (`isPlaying`).
+
+### Estado al cierre de sesión
+- RF12 (variación aleatoria) completado.
+- Pendiente: RF7 (presets), RNF10 (validación de inputs), RNF12 (despliegue en Vercel).
+
+---
+
 ## 2026-06-02 (sesión 2) — Correcciones de importación JSON + estado final de sesión
 
 ### Cambios realizados

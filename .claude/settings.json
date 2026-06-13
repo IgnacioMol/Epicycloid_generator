@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git push *)",
       "Read(//c/Users/Nacho/Downloads/**)",
-      "Bash(git merge *)"
+      "Bash(git merge *)",
+      "PowerShell(npx tsc --noEmit -p tsconfig.app.json)"
     ]
   }
 }

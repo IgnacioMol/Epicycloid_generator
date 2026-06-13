@@ -6,6 +6,33 @@ import { ExportModal } from '../export-modal/export-modal';
 
 const RPM_TO_RAD_PER_FRAME = (Math.PI * 2) / (60 * 60);
 
+/** Rango válido (min/max) y paso de cada parámetro numérico, espejo de los controles del HTML. */
+type NumericParam =
+  | 'orbit1Radius' | 'orbit2Radius'
+  | 'orbit1EllipseX' | 'orbit1EllipseY' | 'orbit2EllipseX' | 'orbit2EllipseY'
+  | 'orbit1Angle' | 'orbit2Angle'
+  | 'orbit1SpeedRpm' | 'orbit2SpeedRpm'
+  | 'initialAngle1' | 'initialAngle2'
+  | 'lineAlpha' | 'strokeWeight' | 'lineInterval';
+
+const PARAM_RANGES: Record<NumericParam, { min: number; max: number; step: number }> = {
+  orbit1Radius: { min: 50, max: 350, step: 5 },
+  orbit2Radius: { min: 50, max: 350, step: 5 },
+  orbit1EllipseX: { min: 0.1, max: 2, step: 0.05 },
+  orbit1EllipseY: { min: 0.1, max: 2, step: 0.05 },
+  orbit2EllipseX: { min: 0.1, max: 2, step: 0.05 },
+  orbit2EllipseY: { min: 0.1, max: 2, step: 0.05 },
+  orbit1Angle: { min: 0, max: 360, step: 1 },
+  orbit2Angle: { min: 0, max: 360, step: 1 },
+  orbit1SpeedRpm: { min: 1, max: 50, step: 0.1 },
+  orbit2SpeedRpm: { min: 1, max: 50, step: 0.1 },
+  initialAngle1: { min: 0, max: 360, step: 1 },
+  initialAngle2: { min: 0, max: 360, step: 1 },
+  lineAlpha: { min: 0.05, max: 1, step: 0.05 },
+  strokeWeight: { min: 0, max: 1, step: 0.1 },
+  lineInterval: { min: 0, max: 1, step: 0.05 },
+};
+
 @Component({
   selector: 'app-controls',
   standalone: true,
@@ -51,6 +78,59 @@ export class Controls {
     this.isPlaying = false;
     this.patternService.updateParams(this.params);
     this.patternService.dispatch('reset');
+  }
+
+  /**
+   * Genera un patrón "único" asignando valores aleatorios a cada parámetro,
+   * siempre dentro de los límites min/max y respetando el step de cada control,
+   * de modo que el resultado sea reproducible manualmente por el usuario.
+   * El modo de visualización se conserva (no es un valor numérico, sino la
+   * decisión del usuario sobre qué tipo de patrón quiere generar).
+   */
+  randomize(): void {
+    const next = { ...this.params };
+    for (const key of Object.keys(PARAM_RANGES) as NumericParam[]) {
+      // El intervalo entre líneas se conserva: solo lo cambia el usuario.
+      if (key === 'lineInterval') continue;
+      next[key] = this.randInRange(PARAM_RANGES[key]);
+    }
+    next.lineColor = this.randColor();
+    this.params = next;
+    this.patternService.updateParams({ ...this.params });
+  }
+
+  /**
+   * Comprueba que todos los parámetros numéricos están dentro de su rango válido.
+   * Si un valor se ha salido (por arriba o por abajo) o es inválido, lo fija al
+   * máximo o mínimo correspondiente. Se invoca al confirmar la edición de cualquier input.
+   */
+  clampParams(): void {
+    for (const key of Object.keys(PARAM_RANGES) as NumericParam[]) {
+      const { min, max } = PARAM_RANGES[key];
+      const value = this.params[key];
+      if (typeof value !== 'number' || Number.isNaN(value)) {
+        this.params[key] = min;
+      } else if (value < min) {
+        this.params[key] = min;
+      } else if (value > max) {
+        this.params[key] = max;
+      }
+    }
+    this.patternService.updateParams({ ...this.params });
+  }
+
+  /** Valor aleatorio en [min, max] alineado al step, redondeado para evitar errores de coma flotante. */
+  private randInRange({ min, max, step }: { min: number; max: number; step: number }): number {
+    const steps = Math.round((max - min) / step);
+    const value = min + Math.round(Math.random() * steps) * step;
+    const decimals = (step.toString().split('.')[1] || '').length;
+    return parseFloat(value.toFixed(decimals));
+  }
+
+  /** Color hexadecimal aleatorio en formato '#rrggbb'. */
+  private randColor(): string {
+    const channel = () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
+    return `#${channel()}${channel()}${channel()}`;
   }
 
   formatInterval(seconds: number): string {

@@ -47,12 +47,13 @@
       <div class="d-flex justify-content-between align-items-center mb-1">
         <label class="form-label small mb-0">Radio</label>
         <input type="number" class="param-number-input"
-               min="10" max="500" step="5"
+               min="50" max="350" step="5"
                [(ngModel)]="params.orbit1Radius"
-               (ngModelChange)="onParamChange()">
+               (ngModelChange)="onParamChange()"
+               (change)="clampParams()">
       </div>
       <input type="range" class="form-range"
-             min="10" max="500" step="5"
+             min="50" max="350" step="5"
              [(ngModel)]="params.orbit1Radius"
              (ngModelChange)="onParamChange()">
     </div>
@@ -62,14 +63,15 @@
         <label class="form-label small mb-0">Velocidad angular</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
-                 min="0" max="100" step="0.1"
+                 min="1" max="50" step="0.1"
                  [(ngModel)]="params.orbit1SpeedRpm"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (change)="clampParams()">
           <span class="param-unit">RPM</span>
         </div>
       </div>
       <input type="range" class="form-range"
-             min="0" max="100" step="0.1"
+             min="1" max="50" step="0.1"
              [(ngModel)]="params.orbit1SpeedRpm"
              (ngModelChange)="onParamChange()">
     </div>
@@ -81,7 +83,8 @@
           <input type="number" class="param-number-input"
                  min="0" max="360" step="1"
                  [(ngModel)]="params.initialAngle1"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (change)="clampParams()">
           <span class="param-unit">°</span>
         </div>
       </div>
@@ -98,12 +101,13 @@
       <div class="d-flex justify-content-between align-items-center mb-1">
         <label class="form-label small mb-0">Radio</label>
         <input type="number" class="param-number-input"
-               min="10" max="500" step="5"
+               min="50" max="350" step="5"
                [(ngModel)]="params.orbit2Radius"
-               (ngModelChange)="onParamChange()">
+               (ngModelChange)="onParamChange()"
+               (change)="clampParams()">
       </div>
       <input type="range" class="form-range"
-             min="10" max="500" step="5"
+             min="50" max="350" step="5"
              [(ngModel)]="params.orbit2Radius"
              (ngModelChange)="onParamChange()">
     </div>
@@ -113,14 +117,15 @@
         <label class="form-label small mb-0">Velocidad angular</label>
         <div class="d-flex align-items-center gap-1">
           <input type="number" class="param-number-input"
-                 min="0" max="100" step="0.1"
+                 min="1" max="50" step="0.1"
                  [(ngModel)]="params.orbit2SpeedRpm"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (change)="clampParams()">
           <span class="param-unit">RPM</span>
         </div>
       </div>
       <input type="range" class="form-range"
-             min="0" max="100" step="0.1"
+             min="1" max="50" step="0.1"
              [(ngModel)]="params.orbit2SpeedRpm"
              (ngModelChange)="onParamChange()">
     </div>
@@ -132,7 +137,8 @@
           <input type="number" class="param-number-input"
                  min="0" max="360" step="1"
                  [(ngModel)]="params.initialAngle2"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (change)="clampParams()">
           <span class="param-unit">°</span>
         </div>
       </div>
@@ -159,7 +165,8 @@
           <input type="number" class="param-number-input"
                  min="0.05" max="1" step="0.05"
                  [(ngModel)]="params.lineAlpha"
-                 (ngModelChange)="onParamChange()">
+                 (ngModelChange)="onParamChange()"
+                 (change)="clampParams()">
           <span class="param-unit">/ 1</span>
         </div>
       </div>
@@ -173,12 +180,13 @@
       <div class="d-flex justify-content-between align-items-center mb-1">
         <label class="form-label small mb-0">Grosor de trazo</label>
         <input type="number" class="param-number-input"
-               min="0.5" max="10" step="0.5"
+               min="0" max="1" step="0.1"
                [(ngModel)]="params.strokeWeight"
-               (ngModelChange)="onParamChange()">
+               (ngModelChange)="onParamChange()"
+               (change)="clampParams()">
       </div>
       <input type="range" class="form-range"
-             min="0.5" max="10" step="0.5"
+             min="0" max="1" step="0.1"
              [(ngModel)]="params.strokeWeight"
              (ngModelChange)="onParamChange()">
     </div>
@@ -190,14 +198,15 @@
           <label class="form-label small mb-0">Intervalo entre líneas</label>
           <div class="d-flex align-items-center gap-1">
             <input type="number" class="param-number-input"
-                   min="0" max="60" step="0.001"
+                   min="0" max="1" step="0.001"
                    [(ngModel)]="params.lineInterval"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (change)="clampParams()">
             <span class="param-unit">s</span>
           </div>
         </div>
         <input type="range" class="form-range"
-               min="0" max="10" step="0.05"
+               min="0" max="1" step="0.05"
                [(ngModel)]="params.lineInterval"
                (ngModelChange)="onParamChange()">
         <p class="mt-1 mb-0 small" style="color:#5a62a0;">
@@ -228,7 +237,8 @@
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit1EllipseX"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (change)="clampParams()">
           </div>
           <input type="range" class="form-range"
                  min="0.1" max="2" step="0.05"
@@ -242,7 +252,8 @@
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit1EllipseY"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (change)="clampParams()">
           </div>
           <input type="range" class="form-range"
                  min="0.1" max="2" step="0.05"
@@ -257,7 +268,8 @@
               <input type="number" class="param-number-input"
                      min="0" max="360" step="1"
                      [(ngModel)]="params.orbit1Angle"
-                     (ngModelChange)="onParamChange()">
+                     (ngModelChange)="onParamChange()"
+                     (change)="clampParams()">
               <span class="param-unit">°</span>
             </div>
           </div>
@@ -276,7 +288,8 @@
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit2EllipseX"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (change)="clampParams()">
           </div>
           <input type="range" class="form-range"
                  min="0.1" max="2" step="0.05"
@@ -290,7 +303,8 @@
             <input type="number" class="param-number-input"
                    min="0.1" max="2" step="0.05"
                    [(ngModel)]="params.orbit2EllipseY"
-                   (ngModelChange)="onParamChange()">
+                   (ngModelChange)="onParamChange()"
+                   (change)="clampParams()">
           </div>
           <input type="range" class="form-range"
                  min="0.1" max="2" step="0.05"
@@ -305,7 +319,8 @@
               <input type="number" class="param-number-input"
                      min="0" max="360" step="1"
                      [(ngModel)]="params.orbit2Angle"
-                     (ngModelChange)="onParamChange()">
+                     (ngModelChange)="onParamChange()"
+                     (change)="clampParams()">
               <span class="param-unit">°</span>
             </div>
           </div>
@@ -322,6 +337,11 @@
 
   <!-- ── ACCIONES (siempre habilitadas) ── -->
   <div class="d-grid gap-2 mt-2">
+    <button class="btn btn-info btn-sm fw-semibold"
+            [disabled]="isPlaying"
+            (click)="randomize()">
+      🎲 Aleatorizar parámetros
+    </button>
     <div class="row g-2">
       <div class="col-6">
         <button class="btn btn-success btn-sm w-100"
