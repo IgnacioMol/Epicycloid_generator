@@ -22,6 +22,8 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 ### Actualización posterior
 - El feature «Simular por número de órbitas» ya no existe en la UI (controls.html). Se eliminó del Capítulo 4: casos de uso renumerados a CU1–CU11, y actualizadas trazabilidad, secuencias y diagramas (VP + PlantUML). El anexo se reorientó a instrucciones de construcción en Visual Paradigm (PlantUML queda como vista previa opcional).
 - Memoria de proyecto actualizada: «Simulate N orbits» marcado como eliminado y retirado el gotcha de RPM=0 asociado.
+- Capítulo 4 reescrito a nivel CONCEPTUAL (sin código, sin nombres de tecnologías): flujos de eventos en lenguaje de dominio, diagrama de clases como modelo de dominio (Composición, Sesión, Configuración de patrón, Órbita, Parámetros visuales, Traza) y diagramas de secuencia del sistema (Usuario ↔ Sistema como caja negra). Guardado como feedback en memoria.
+- Trazabilidad reajustada a la nueva lista de 12 RF: RF7 (exportar/importar patrón) ahora implementado → CU9/CU10; RF12 (variación aleatoria) único no implementado. Decisiones de criterio pendientes de confirmar: RF4«reiniciar»→CU6 y RF11«responsivo»→CU7.
 
 ## 2026-06-02 (sesión 2) — Correcciones de importación JSON + estado final de sesión
 
