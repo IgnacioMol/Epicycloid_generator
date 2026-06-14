@@ -15,7 +15,7 @@ A diferencia de otras aplicaciones, *Epicycloid Generator* es una aplicación we
 
 Esta herramienta se emplea principalmente durante las etapas de análisis y diseño de un sistema, ya que ayuda a organizar y comprender mejor su desarrollo. El diagrama de casos de uso es una representación gráfica que muestra de forma clara cómo los usuarios (también llamados actores) se relacionan con el sistema, identificando las distintas acciones o funcionalidades que pueden llevar a cabo.
 
-En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Generar variación aleatoria», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Limpiar lienzo», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen», «Exportar patrón», «Importar patrón», «Consultar tutorial» y «Cambiar idioma».
+En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Generar variación aleatoria», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Deshacer última sesión», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen», «Exportar patrón», «Importar patrón», «Consultar tutorial» y «Cambiar idioma».
 
 A diferencia de aplicaciones con navegación entre múltiples pantallas, aquí todas las funcionalidades conviven en una única vista (el lienzo a la izquierda y el panel de controles a la derecha), por lo que no existe un caso de uso de navegación entre pantallas ni de inicio de sesión. El usuario accede directamente a cualquier acción.
 
@@ -86,17 +86,18 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Flujo de eventos** | 1. El usuario selecciona el otro modo de visualización. 2. El sistema limpia el dibujo actual, ya que ambos modos producen composiciones no comparables. 3. La vista pasa a representar el nuevo modo. |
 | **Postcondiciones** | El modo activo queda actualizado y el lienzo, limpio. |
 
-**CU5: Limpiar lienzo**
+**CU5: Deshacer última sesión**
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU5 — Limpiar lienzo |
+| **ID del caso de uso** | CU5 — Deshacer última sesión |
 | **Actor principal** | Usuario |
-| **Descripción** | El usuario borra el dibujo acumulado sin alterar los parámetros. |
+| **Descripción** | El usuario elimina la última sesión (bloque de animación) dibujada. Cada pulsación sucesiva retira un bloque más, sin afectar al resto de la composición. |
 | **Requisitos cumplidos** | RF5 |
-| **Precondiciones** | Ninguna. |
-| **Flujo de eventos** | 1. El usuario pulsa «Limpiar lienzo». 2. El sistema borra la composición y reinicia el punto de partida de la animación. |
-| **Postcondiciones** | El lienzo queda vacío; los parámetros se mantienen. |
+| **Precondiciones** | Existe al menos una sesión dibujada o una en curso. |
+| **Flujo de eventos** | 1. El usuario solicita deshacer la última sesión. 2. Si hay una animación en curso, el sistema la detiene y la toma como la sesión a eliminar. 3. El sistema elimina la última sesión y reconstruye el dibujo con las sesiones restantes. 4. El sistema restaura los parámetros al estado previo a esa sesión (los de la sesión anterior que permanece en el lienzo). |
+| **Postcondiciones** | La última sesión desaparece del lienzo; las anteriores se conservan y los parámetros reflejan el estado previo a la sesión eliminada. |
+| **Flujo alternativo** | 1a. Si no existe ninguna sesión dibujada, la acción no está disponible. |
 
 **CU6: Restablecer parámetros**
 
@@ -211,15 +212,23 @@ Al margen del contenido artístico, la aplicación mantiene una **preferencia de
 
 ## 4.3. Diagramas de secuencia del sistema
 
-Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones entre el usuario y el sistema a lo largo del tiempo. Se basan en los casos de uso previamente definidos y tratan el sistema como una **caja negra**: muestran las acciones que el usuario realiza y las respuestas que el sistema devuelve, sin detallar su funcionamiento interno (eso corresponde al diseño y la implementación). A continuación se muestran los diagramas de los casos de uso más significativos.
+Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones entre el usuario y el sistema a lo largo del tiempo. Se basan en los casos de uso previamente definidos y tratan el sistema como una **caja negra**: muestran las acciones que el usuario realiza y las respuestas que el sistema devuelve, sin detallar su funcionamiento interno (eso corresponde al diseño y la implementación). A continuación se incluye un diagrama de secuencia del sistema para **cada uno** de los casos de uso identificados (CU1–CU13), ordenados según su numeración. En todos ellos intervienen dos líneas de vida: el actor **Usuario** y el **Sistema** como caja negra.
 
-- **Configurar parámetros (CU1):** el usuario solicita modificar un parámetro y el sistema responde actualizando la vista con el nuevo valor.
-- **Reproducir animación (CU2):** el usuario solicita reproducir; el sistema anima y acumula trazas de forma continua hasta que el usuario solicita pausar.
-- **Exportar imagen (CU8):** el usuario solicita exportar; el sistema muestra una previsualización; el usuario ajusta las opciones y confirma; el sistema entrega la imagen.
-- **Importar patrón (CU10):** el usuario selecciona un archivo; el sistema reconstruye el dibujo, lo muestra y actualiza los parámetros visibles.
-- **Cambiar idioma (CU13):** el usuario selecciona un idioma y el sistema actualiza de inmediato todos los textos de la interfaz, sin recargar la página.
+- **Configurar parámetros (CU1) — Figura 4.3:** el usuario solicita modificar un parámetro y el sistema responde actualizando la vista con el nuevo valor.
+- **Reproducir animación (CU2) — Figura 4.4:** el usuario solicita reproducir; el sistema anima y acumula trazas de forma continua hasta que el usuario solicita pausar.
+- **Pausar animación (CU3) — Figura 4.5:** el usuario solicita pausar y el sistema detiene la animación, conservando el dibujo acumulado.
+- **Alternar modo de visualización (CU4) — Figura 4.6:** el usuario selecciona el otro modo; el sistema limpia el lienzo y pasa a representar el nuevo modo.
+- **Deshacer última sesión (CU5) — Figura 4.7:** el usuario solicita deshacer; el sistema elimina la última sesión dibujada, reconstruye el resto de la composición y restaura los parámetros al estado previo a esa sesión.
+- **Restablecer parámetros (CU6) — Figura 4.8:** el usuario solicita restablecer y el sistema restaura los valores por defecto y limpia el lienzo.
+- **Ajustar zoom (CU7) — Figura 4.9:** el usuario acerca o aleja la vista y el sistema la reescala sin alterar la composición.
+- **Exportar imagen (CU8) — Figura 4.10:** el usuario solicita exportar; el sistema muestra una previsualización; el usuario ajusta las opciones y confirma; el sistema entrega la imagen.
+- **Exportar patrón (CU9) — Figura 4.11:** el usuario solicita exportar el patrón y el sistema entrega un archivo reutilizable con la información de la composición.
+- **Importar patrón (CU10) — Figura 4.12:** el usuario selecciona un archivo; el sistema reconstruye el dibujo, lo muestra y actualiza los parámetros visibles.
+- **Consultar tutorial (CU11) — Figura 4.13:** el usuario abre la guía, el sistema la muestra y el usuario la cierra.
+- **Generar variación aleatoria (CU12) — Figura 4.14:** el usuario solicita aleatorizar y el sistema asigna valores aleatorios válidos y actualiza la vista.
+- **Cambiar idioma (CU13) — Figura 4.15:** el usuario selecciona un idioma y el sistema actualiza de inmediato todos los textos de la interfaz, sin recargar la página.
 
-*(Aquí van las Figuras 4.3 a 4.7 — ver especificación para Visual Paradigm al final del documento.)*
+*(Aquí van las Figuras 4.3 a 4.15 — ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.4. Trazabilidad entre requisitos funcionales y casos de uso
 
@@ -231,7 +240,7 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 | RF2 | Modificar en tiempo real los parámetros que definen los patrones | CU1 |
 | RF3 | Actualizar dinámicamente la representación gráfica sin recargar la página | CU1, CU2 |
 | RF4 | Iniciar, pausar y reiniciar la animación | CU2, CU3, CU6 |
-| RF5 | Limpiar el lienzo y generar una nueva composición desde cero | CU5 |
+| RF5 | Limpiar el lienzo y generar una nueva composición desde cero (mediante el deshacer incremental de sesiones) | CU5 |
 | RF6 | Guardar la composición como imagen | CU8 |
 | RF7 | Almacenar configuraciones de parámetros y recuperarlas posteriormente | CU9, CU10 |
 | RF8 | Alternar entre modos de visualización (curva e intersección de líneas) | CU4 |
@@ -262,7 +271,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - Reproducir animación
    - Pausar animación
    - Alternar modo de visualización
-   - Limpiar lienzo
+   - Deshacer última sesión
    - Restablecer parámetros
    - Ajustar zoom
    - Exportar imagen
@@ -306,9 +315,9 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 
 > Ajusta las multiplicidades en los extremos de cada conector (botón derecho → Multiplicity). Fíjate en el `1 a 2` de las órbitas: siempre hay exactamente dos.
 
-## A.3. Diagramas de secuencia del sistema (Figuras 4.3–4.6)
+## A.3. Diagramas de secuencia del sistema (Figuras 4.3–4.15)
 
-**Pasos en Visual Paradigm:** `File → New → Sequence Diagram`. En cada diagrama coloca solo dos líneas de vida: el **Actor** `Usuario` y un objeto `Sistema` (el sistema como caja negra). Traza los **Message** en el orden indicado. Para las respuestas usa **mensaje de retorno** (flecha discontinua) y, donde se indique, un **Combined Fragment** tipo `loop`.
+**Pasos en Visual Paradigm:** `File → New → Sequence Diagram` (uno por cada caso de uso). En cada diagrama coloca solo dos líneas de vida: el **Actor** `Usuario` y un objeto `Sistema` (el sistema como caja negra). Traza los **Message** en el orden indicado. Para las respuestas usa **mensaje de retorno** (flecha discontinua); donde se indique, un **Combined Fragment** tipo `loop` o un **mensaje a sí mismo** (self-message).
 
 - **Fig. 4.3 — Configurar parámetros (CU1):**
   1. Usuario → Sistema: modificar parámetro
@@ -320,19 +329,52 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
   3. Usuario → Sistema: pausar
   4. Sistema ⤍ Usuario: detener y conservar el dibujo *(retorno)*
 
-- **Fig. 4.5 — Exportar imagen (CU8):**
+- **Fig. 4.5 — Pausar animación (CU3):**
+  1. Usuario → Sistema: pausar
+  2. Sistema ⤍ Usuario: detener la animación y conservar el dibujo *(retorno)*
+
+- **Fig. 4.6 — Alternar modo de visualización (CU4):**
+  1. Usuario → Sistema: seleccionar el otro modo de visualización
+  2. Sistema ⤍ Usuario: limpiar el lienzo y mostrar el nuevo modo *(retorno)*
+
+- **Fig. 4.7 — Deshacer última sesión (CU5):**
+  1. Usuario → Sistema: deshacer la última sesión
+  2. Sistema ⤍ Usuario: eliminar la última sesión, reconstruir el dibujo y restaurar los parámetros previos *(retorno)*
+
+- **Fig. 4.8 — Restablecer parámetros (CU6):**
+  1. Usuario → Sistema: restablecer parámetros
+  2. Sistema ⤍ Usuario: restaurar los valores por defecto y limpiar el lienzo *(retorno)*
+
+- **Fig. 4.9 — Ajustar zoom (CU7):**
+  1. Usuario → Sistema: acercar o alejar la vista
+  2. Sistema ⤍ Usuario: reescalar la vista *(retorno)*
+
+- **Fig. 4.10 — Exportar imagen (CU8):**
   1. Usuario → Sistema: solicitar exportar imagen
   2. Sistema ⤍ Usuario: mostrar previsualización *(retorno)*
   3. Usuario → Sistema: configurar opciones (fondo, zoom, resolución, guías)
   4. Usuario → Sistema: confirmar descarga
   5. Sistema ⤍ Usuario: entregar imagen *(retorno)*
 
-- **Fig. 4.6 — Importar patrón (CU10):**
+- **Fig. 4.11 — Exportar patrón (CU9):**
+  1. Usuario → Sistema: solicitar exportar patrón
+  2. Sistema ⤍ Usuario: entregar el archivo del patrón *(retorno)*
+
+- **Fig. 4.12 — Importar patrón (CU10):**
   1. Usuario → Sistema: seleccionar archivo de patrón
   2. Sistema → Sistema: reconstruir el dibujo *(mensaje a sí mismo)*
   3. Sistema ⤍ Usuario: mostrar composición y actualizar parámetros *(retorno)*
 
-- **Fig. 4.7 — Cambiar idioma (CU13):**
+- **Fig. 4.13 — Consultar tutorial (CU11):**
+  1. Usuario → Sistema: abrir el tutorial
+  2. Sistema ⤍ Usuario: mostrar la guía *(retorno)*
+  3. Usuario → Sistema: cerrar el tutorial
+
+- **Fig. 4.14 — Generar variación aleatoria (CU12):**
+  1. Usuario → Sistema: aleatorizar parámetros
+  2. Sistema ⤍ Usuario: asignar valores aleatorios válidos y actualizar la vista *(retorno)*
+
+- **Fig. 4.15 — Cambiar idioma (CU13):**
   1. Usuario → Sistema: seleccionar idioma de la interfaz
   2. Sistema ⤍ Usuario: mostrar la interfaz con todos los textos en el idioma elegido *(retorno)*
 
@@ -354,7 +396,7 @@ rectangle "Epicycloid Generator" {
   usecase "Reproducir animación" as CU2
   usecase "Pausar animación" as CU3
   usecase "Alternar modo de visualización" as CU4
-  usecase "Limpiar lienzo" as CU5
+  usecase "Deshacer última sesión" as CU5
   usecase "Restablecer parámetros" as CU6
   usecase "Ajustar zoom" as CU7
   usecase "Exportar imagen" as CU8
@@ -460,7 +502,67 @@ S --> Usuario : detener y conservar el dibujo
 @enduml
 ```
 
-**Figura 4.5 — Exportar imagen (CU8)**
+**Figura 4.5 — Pausar animación (CU3)**
+
+```plantuml
+@startuml SecPausar
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : pausar
+S --> Usuario : detener la animación y conservar el dibujo
+@enduml
+```
+
+**Figura 4.6 — Alternar modo de visualización (CU4)**
+
+```plantuml
+@startuml SecAlternarModo
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : seleccionar el otro modo de visualización
+S --> Usuario : limpiar el lienzo y mostrar el nuevo modo
+@enduml
+```
+
+**Figura 4.7 — Deshacer última sesión (CU5)**
+
+```plantuml
+@startuml SecDeshacer
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : deshacer la última sesión
+S --> Usuario : eliminar la última sesión, reconstruir el dibujo y restaurar los parámetros previos
+@enduml
+```
+
+**Figura 4.8 — Restablecer parámetros (CU6)**
+
+```plantuml
+@startuml SecRestablecer
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : restablecer parámetros
+S --> Usuario : restaurar los valores por defecto y limpiar el lienzo
+@enduml
+```
+
+**Figura 4.9 — Ajustar zoom (CU7)**
+
+```plantuml
+@startuml SecZoom
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : acercar o alejar la vista
+S --> Usuario : reescalar la vista
+@enduml
+```
+
+**Figura 4.10 — Exportar imagen (CU8)**
 
 ```plantuml
 @startuml SecExportarImagen
@@ -475,7 +577,19 @@ S --> Usuario : entregar imagen
 @enduml
 ```
 
-**Figura 4.6 — Importar patrón (CU10)**
+**Figura 4.11 — Exportar patrón (CU9)**
+
+```plantuml
+@startuml SecExportarPatron
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : solicitar exportar patrón
+S --> Usuario : entregar el archivo del patrón
+@enduml
+```
+
+**Figura 4.12 — Importar patrón (CU10)**
 
 ```plantuml
 @startuml SecImportar
@@ -488,7 +602,32 @@ S --> Usuario : mostrar composición y actualizar parámetros
 @enduml
 ```
 
-**Figura 4.7 — Cambiar idioma (CU13)**
+**Figura 4.13 — Consultar tutorial (CU11)**
+
+```plantuml
+@startuml SecTutorial
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : abrir el tutorial
+S --> Usuario : mostrar la guía
+Usuario -> S : cerrar el tutorial
+@enduml
+```
+
+**Figura 4.14 — Generar variación aleatoria (CU12)**
+
+```plantuml
+@startuml SecAleatorizar
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : aleatorizar parámetros
+S --> Usuario : asignar valores aleatorios válidos y actualizar la vista
+@enduml
+```
+
+**Figura 4.15 — Cambiar idioma (CU13)**
 
 ```plantuml
 @startuml SecCambiarIdioma
