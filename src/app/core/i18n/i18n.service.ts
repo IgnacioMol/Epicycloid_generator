@@ -1,8 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import es from './es.json';
 import en from './en.json';
+import id from './id.json';
+import cs from './cs.json';
 
-export type Lang = 'es' | 'en';
+export type Lang = 'es' | 'en' | 'id' | 'cs';
 
 /** Una opción de idioma del selector. `label` es el nombre nativo mostrado. */
 export interface LanguageOption {
@@ -20,6 +22,8 @@ export interface LanguageOption {
 export const LANGUAGES: readonly LanguageOption[] = [
   { code: 'es', label: 'Español' },
   { code: 'en', label: 'English' },
+  { code: 'id', label: 'Bahasa Indonesia' },
+  { code: 'cs', label: 'Čeština' },
 ];
 
 /** Idioma por defecto cuando el navegador no coincide con ninguno disponible. */
@@ -28,7 +32,12 @@ const DEFAULT_LANG: Lang = 'en';
 /** Diccionario anidado de traducciones (clave → texto o subobjeto). */
 type Dict = { [key: string]: string | Dict };
 
-const DICTS: Record<Lang, Dict> = { es: es as Dict, en: en as Dict };
+const DICTS: Record<Lang, Dict> = {
+  es: es as Dict,
+  en: en as Dict,
+  id: id as Dict,
+  cs: cs as Dict,
+};
 const STORAGE_KEY = 'epicycloid_lang';
 
 /**

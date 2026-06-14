@@ -1,51 +1,49 @@
-# Requirements
+# Requisitos
 
-## Functional requirements
+> Estado verificado contra el código el 2026-06-14. Numeración alineada con la memoria (cap. 3.1).
 
-| ID | Description | Status |
+## 3.1.1 Requisitos funcionales
+
+| ID | Descripción | Estado |
 |---|---|---|
-| RF1 | Generate visual compositions from parametric orbital patterns | Done — both modes functional |
-| RF2 | User can modify parameters in real time (radii, speeds, orbits, phase, color, stroke…) | Done — all params bound via [(ngModel)]; updates emit to PatternService on every change |
-| RF3 | Canvas updates dynamically on parameter change without page reload | Done — service subscription reactive |
-| RF4 | Start, pause, and restart animation | Done — Play / Pause buttons wired via PatternService.dispatch() |
-| RF5 | Clear canvas and start fresh | Done — Clear button wired |
-| RF6 | Save composition as image (standard format, e.g. PNG) | Done — ExportModal: fondo, zoom, resolución 1×/2×/4×, nombre de archivo, preview en tiempo real |
-| RF7 | Store and recover named parameter presets | Not done — Presets component is empty placeholder |
-| RF8 | Toggle between **epicicloidal curve mode** and **line intersection mode** | Done — toggle button in controls panel, both modes implemented |
-| RF9 | Interactive controls: sliders, selectors, numeric fields | Done — sliders en fases iniciales e inclinación; inputs numéricos en el resto; selector de color nativo |
-| RF10 | Display current parameter values on screen | Done — los inputs numéricos siempre muestran el valor actual; se actualizan en tiempo real |
-| RF11 | Correct Angular ↔ p5.js integration | Done — instance mode, AfterViewInit, responsive, OnDestroy cleanup |
-| RF12 | Modular reusable Angular components | Done — Canvas / Controls / PatternService decoupled correctly |
-| RF13 | Responsive canvas adapting to window size | Done — windowResized handler resizes canvas and trail buffer |
-| RF14 | Automatic pattern variation via controlled random values | Not done |
-| RF15 | Reset parameters to defaults at any time | Done — Reset button restores DEFAULT_PARAMS and clears canvas |
+| RF1 | La aplicación web deberá permitir la generación de composiciones visuales basadas en curvas epicicloidales mediante algoritmos matemáticos parametrizables. | ✅ Hecho — ambos modos (curva e intersección) implementados en `canvas.ts` |
+| RF2 | El usuario deberá poder modificar en tiempo real los parámetros que definen los patrones (radios, velocidades angulares, número de ciclos, fase, color, grosor de trazo, etc.). | ✅ Hecho — todos los parámetros enlazados con `[(ngModel)]`; emiten a `PatternService` en cada cambio. ⚠️ No existe un control explícito de "número de ciclos": la forma se controla con la relación de velocidades, radios y fases |
+| RF3 | El sistema deberá actualizar dinámicamente la representación gráfica sin necesidad de recargar la página al modificarse los parámetros. | ✅ Hecho — suscripción reactiva al servicio |
+| RF4 | La aplicación deberá permitir iniciar, pausar y reiniciar la animación de los patrones generados. | ✅ Hecho — botones Play / Pausa vía `PatternService.dispatch()` |
+| RF5 | El sistema deberá permitir limpiar el lienzo y generar una nueva composición desde cero. | ✅ Hecho — botón Limpiar lienzo |
+| RF6 | El usuario deberá poder guardar la composición generada como imagen en un formato estándar. | ✅ Hecho — `ExportModal`: fondo, zoom, resolución 1×/2×/4×, nombre de archivo, preview en tiempo real, exporta PNG |
+| RF7 | La aplicación deberá permitir almacenar configuraciones de parámetros predefinidas y recuperarlas posteriormente. | ❌ **No hecho** — el componente `Presets` es un placeholder vacío y no está enrutado. (Existe export/import de patrones en JSON, pero no son *presets* con nombre persistidos) |
+| RF8 | El sistema deberá permitir alternar entre distintos modos de visualización (modo curva epicicloidal y modo intersección de líneas). | ✅ Hecho — botón de alternancia en el panel de control; ambos modos implementados |
+| RF9 | La aplicación deberá ofrecer controles interactivos (sliders, selectores, campos numéricos) para facilitar la manipulación de parámetros. | ✅ Hecho — sliders en fases e inclinación; inputs numéricos en el resto; selector de color nativo |
+| RF10 | El sistema deberá mostrar en pantalla los valores actuales de los parámetros utilizados en la generación del patrón. | ✅ Hecho — los inputs numéricos muestran y actualizan el valor actual en tiempo real |
+| RF11 | La aplicación deberá permitir la visualización responsiva del lienzo de dibujo adaptándose al tamaño de la ventana del navegador. | ✅ Hecho — `windowResized` redimensiona lienzo y buffer de estela |
+| RF12 | El sistema deberá permitir la generación de variaciones automáticas de patrones mediante la introducción de valores aleatorios controlados. | ✅ Hecho — `randomize()` en `controls.ts`; valores acotados al min/max/step de cada control |
+| RF13 | La aplicación deberá permitir restablecer los parámetros a sus valores predeterminados en cualquier momento. | ✅ Hecho — botón Reset restaura `DEFAULT_PARAMS` y limpia el lienzo |
+| RF14 | El sistema deberá ofrecer soporte multilingüe, permitiendo al usuario cambiar dinámicamente el idioma de la interfaz mediante el sistema de internacionalización i18n. | ✅ Hecho — i18n en tiempo de ejecución (ES/EN; + ID de prueba), detección automática del idioma del navegador, selector desplegable y cambio sin recargar |
 
-## Non-functional requirements
+## 3.1.2 Requisitos no funcionales
 
-| ID | Description |
-|---|---|
-| RNF1 | Compatible with modern browsers (HTML5, CSS3, ES6+) |
-| RNF2 | Angular as structural framework |
-| RNF3 | p5.js for graphics, correctly integrated in Angular |
-| RNF4 | Intuitive UI for non-technical users |
-| RNF5 | Smooth real-time performance on mid-range devices |
-| RNF6 | Modular, maintainable, scalable Angular architecture |
-| RNF7 | Well-documented and structured source code |
-| RNF8 | Minimize unnecessary CPU use during continuous animation |
-| RNF9 | Responsive layout for desktop and tablet resolutions |
-| RNF10 | Basic error handling for invalid parameter inputs |
-| RNF11 | Compatible with Chrome, Firefox, Edge, and Opera |
-| RNF12 | Deployed on Netlify (public cloud hosting) |
+| ID | Descripción | Estado |
+|---|---|---|
+| RNF1 | La aplicación deberá ser accesible desde navegadores web modernos compatibles con estándares HTML5, CSS3 y ECMAScript 6 o superior. | ✅ Cumplido — stack Angular 21 / ES2022 |
+| RNF2 | El sistema deberá desarrollarse utilizando el framework Angular como base estructural de la aplicación. | ✅ Cumplido — Angular 21 (standalone) |
+| RNF3 | La generación gráfica deberá implementarse mediante la librería p5.js, garantizando su correcta integración en el entorno Angular. | ✅ Cumplido — p5 en *instance mode*, fuera de la zona de Angular (`runOutsideAngular`), limpieza en `OnDestroy` |
+| RNF4 | La aplicación deberá presentar una interfaz de usuario intuitiva y coherente, adecuada para usuarios sin conocimientos técnicos avanzados. | ✅ Cumplido — panel agrupado, tutorial de inicio, controles etiquetados (criterio subjetivo) |
+| RNF5 | El sistema deberá mantener un rendimiento fluido en tiempo real, evitando bloqueos o caídas en dispositivos de gama media. | ✅ Cumplido — renderizado de estela incremental O(1) por frame (capa offscreen) |
+| RNF6 | La arquitectura del proyecto deberá seguir principios de modularidad, mantenibilidad y escalabilidad propios del desarrollo profesional con Angular. | ✅ Cumplido — componentes desacoplados (Canvas / Controls / servicios), módulo i18n aislado |
+| RNF7 | El código fuente deberá estar correctamente documentado y estructurado para facilitar su comprensión, mantenimiento y ampliación futura. | ✅ Cumplido — código comentado en español; estructura por features |
+| RNF8 | La aplicación deberá minimizar el consumo innecesario de recursos del navegador, especialmente en lo relativo al uso de CPU durante la animación continua. | ✅ Cumplido — p5 fuera de la zona (sin CD a 60 fps) + pintado incremental |
+| RNF9 | La interfaz deberá adaptarse correctamente a diferentes resoluciones y tamaños de pantalla, manteniendo la usabilidad en dispositivos de escritorio y tabletas. | ✅ Cumplido — layout responsivo (Bootstrap 5) y lienzo adaptativo |
+| RNF10 | El sistema deberá implementar mecanismos básicos de gestión de errores para evitar comportamientos inesperados ante valores inválidos de entrada. | ✅ Cumplido — `clampParams()` corrige valores fuera de rango/NaN al confirmar la edición |
+| RNF11 | La aplicación deberá ser compatible con los principales navegadores web modernos (Google Chrome, Mozilla Firefox, Microsoft Edge y Opera), garantizando un comportamiento consistente en cada uno de ellos. | ✅ Cumplido por el stack (APIs estándar). ⚠️ Pendiente de verificación manual en cada navegador |
+| RNF12 | La aplicación deberá desplegarse en una plataforma de hosting en la nube, concretamente en Netlify, garantizando su disponibilidad pública mediante acceso web. | 🟡 Configurado — `netlify.toml` con `build` y `publish` (`dist/epicycloid-generator/browser`). ⚠️ Pendiente confirmar que el sitio está publicado y accesible |
 
-## Priority order for implementation
+## Resumen de estado
 
-1. Fix canvas mounting (RF11 blocker) — wire `#canvasContainer` in `canvas.html`
-2. Unify `PatternParams` model and bind controls (RF2, RF3, RF9, RF10)
-3. Play / Pause / Reset / Clear (RF4, RF5, RF15)
-4. Responsive canvas (RF13)
-5. Save as image (RF6)
-6. Line intersection mode (RF8)
-7. Presets (RF7)
-8. Random variation (RF14)
-9. Error handling (RNF10)
-10. Vercel deploy (RNF12)
+- **Funcionales:** 13 de 14 completos. **Falta solo RF7 (presets con nombre persistidos).**
+- **No funcionales:** todos cumplidos salvo **RNF12**, que está *configurado* pero pendiente de confirmar el despliegue público; y **RNF11**, cumplido por stack pero sin verificación manual cruzada de navegadores.
+
+### Lo que queda por hacer
+1. **RF7 — Presets**: implementar el componente `Presets` (guardar/recuperar configuraciones con nombre, p. ej. en `localStorage`) y enrutarlo/integrarlo en la UI.
+2. **RNF12 — Despliegue**: completar y verificar el despliegue en Netlify (el `netlify.toml` ya está listo).
+3. **RNF11 — Verificación**: probar manualmente en Chrome, Firefox, Edge y Opera.
