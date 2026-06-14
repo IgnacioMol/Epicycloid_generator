@@ -15,7 +15,7 @@ A diferencia de otras aplicaciones, *Epicycloid Generator* es una aplicación we
 
 Esta herramienta se emplea principalmente durante las etapas de análisis y diseño de un sistema, ya que ayuda a organizar y comprender mejor su desarrollo. El diagrama de casos de uso es una representación gráfica que muestra de forma clara cómo los usuarios (también llamados actores) se relacionan con el sistema, identificando las distintas acciones o funcionalidades que pueden llevar a cabo.
 
-En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Generar variación aleatoria», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Limpiar lienzo», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen», «Exportar patrón», «Importar patrón» y «Consultar tutorial».
+En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Generar variación aleatoria», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Limpiar lienzo», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen», «Exportar patrón», «Importar patrón», «Consultar tutorial» y «Cambiar idioma».
 
 A diferencia de aplicaciones con navegación entre múltiples pantallas, aquí todas las funcionalidades conviven en una única vista (el lienzo a la izquierda y el panel de controles a la derecha), por lo que no existe un caso de uso de navegación entre pantallas ni de inicio de sesión. El usuario accede directamente a cualquier acción.
 
@@ -105,7 +105,7 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **ID del caso de uso** | CU6 — Restablecer parámetros |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario restaura todos los parámetros a sus valores por defecto. |
-| **Requisitos cumplidos** | RF4 |
+| **Requisitos cumplidos** | RF4, RF13 |
 | **Precondiciones** | Ninguna. |
 | **Flujo de eventos** | 1. El usuario pulsa «Reset». 2. El sistema restaura los valores por defecto y borra el dibujo. |
 | **Postcondiciones** | Los parámetros vuelven a sus valores iniciales y el lienzo queda limpio. |
@@ -184,6 +184,19 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Postcondiciones** | Los parámetros quedan actualizados con valores aleatorios válidos, listos para reproducirse. |
 | **Flujo alternativo** | 1a. Si la animación está en curso, la acción no está disponible; el usuario debe pausar antes de generar una variación. |
 
+**CU13: Cambiar idioma**
+
+| Campo | Contenido |
+|---|---|
+| **ID del caso de uso** | CU13 — Cambiar idioma |
+| **Actor principal** | Usuario |
+| **Descripción** | El usuario cambia el idioma de la interfaz seleccionándolo entre los idiomas disponibles. El cambio afecta a todos los textos de la aplicación. |
+| **Requisitos cumplidos** | RF14 |
+| **Precondiciones** | Ninguna. |
+| **Flujo de eventos** | 1. El usuario abre el selector de idioma. 2. El usuario elige uno de los idiomas disponibles. 3. El sistema actualiza inmediatamente todos los textos de la interfaz al idioma seleccionado y conserva la preferencia para futuras visitas. |
+| **Postcondiciones** | La interfaz se muestra en el idioma elegido, que queda recordado. |
+| **Flujo alternativo** | 1a. **Detección automática:** en el primer acceso, antes de cualquier elección manual, el sistema determina el idioma a partir de la configuración del navegador del usuario y muestra la interfaz en ese idioma; si el idioma del navegador no está disponible, utiliza el idioma predeterminado (inglés). |
+
 ## 4.2. Diagrama de clases conceptual
 
 En esta sección se presenta el diagrama de clases conceptual de la aplicación, elaborado como parte del análisis previo al diseño. Su objetivo es ofrecer una visión general que ayude a comprender la estructura lógica del sistema desde una perspectiva orientada a objetos. Se trata de un **modelo de dominio**: representa los conceptos del problema (composiciones, órbitas, sesiones, trazas) y sus relaciones, sin entrar en cómo se implementan.
@@ -191,6 +204,8 @@ En esta sección se presenta el diagrama de clases conceptual de la aplicación,
 La aplicación gira en torno a una **composición**, que es el dibujo que el usuario construye. Una composición está formada por una o varias **sesiones**, entendiendo por sesión cada bloque de animación comprendido entre que el usuario reproduce y pausa. Cada sesión utiliza una **configuración de patrón**, que describe completamente el estado matemático y visual: el **modo de visualización**, dos **órbitas** (cada una con su radio, factores elípticos, inclinación, velocidad y fase inicial) y un conjunto de **parámetros visuales** (color, opacidad, grosor e intervalo). El resultado de animar una sesión es una colección de **trazas**, los segmentos o puntos que se acumulan en el lienzo.
 
 Las relaciones principales son: la `Aplicación` *gestiona* una `Composición`; una `Composición` *se compone de* una o varias `Sesión`; cada `Sesión` *usa* una `Configuración de patrón` y *produce* muchas `Traza`; y una `Configuración de patrón` *combina* dos `Órbita` y unos `Parámetros visuales`.
+
+Al margen del contenido artístico, la aplicación mantiene una **preferencia de idioma**, que representa el idioma en el que se presentan los textos de la interfaz al usuario. Se trata de un ajuste a nivel de aplicación —independiente de la composición y de sus parámetros— por lo que se modela asociado directamente a la `Aplicación`: esta *recuerda* una `Preferencia de idioma` con el idioma activo seleccionado (o detectado del navegador).
 
 *(Aquí va la Figura 4.2: Diagrama de clases conceptual — ver especificación para Visual Paradigm al final del documento.)*
 
@@ -202,8 +217,9 @@ Los diagramas de secuencia del sistema representan de forma visual y ordenada c�
 - **Reproducir animación (CU2):** el usuario solicita reproducir; el sistema anima y acumula trazas de forma continua hasta que el usuario solicita pausar.
 - **Exportar imagen (CU8):** el usuario solicita exportar; el sistema muestra una previsualización; el usuario ajusta las opciones y confirma; el sistema entrega la imagen.
 - **Importar patrón (CU10):** el usuario selecciona un archivo; el sistema reconstruye el dibujo, lo muestra y actualiza los parámetros visibles.
+- **Cambiar idioma (CU13):** el usuario selecciona un idioma y el sistema actualiza de inmediato todos los textos de la interfaz, sin recargar la página.
 
-*(Aquí van las Figuras 4.3 a 4.6 — ver especificación para Visual Paradigm al final del documento.)*
+*(Aquí van las Figuras 4.3 a 4.7 — ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.4. Trazabilidad entre requisitos funcionales y casos de uso
 
@@ -223,8 +239,10 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 | RF10 | Mostrar en pantalla los valores actuales de los parámetros | CU1 |
 | RF11 | Visualización responsiva del lienzo, adaptándose a la ventana del navegador | CU7 |
 | RF12 | Generación de variaciones automáticas mediante valores aleatorios controlados | CU12 |
+| RF13 | Restablecer los parámetros a sus valores predeterminados | CU6 |
+| RF14 | Soporte multilingüe: cambiar dinámicamente el idioma de la interfaz | CU13 |
 
-Como se observa en la matriz, todos los requisitos funcionales tienen al menos un caso de uso asociado, lo que garantiza que la totalidad de las funcionalidades previstas han sido contempladas durante el análisis. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema (la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana), que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo.
+Como se observa en la matriz, todos los requisitos funcionales tienen al menos un caso de uso asociado, lo que garantiza que la totalidad de las funcionalidades previstas han sido contempladas durante el análisis. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema (la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana), que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo. De forma análoga, RF14 incorpora un comportamiento automático —la detección del idioma del navegador en el primer acceso— que complementa la acción manual de cambio de idioma recogida en CU13.
 
 ---
 
@@ -238,7 +256,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 1. `File → New → Use Case Diagram`.
 2. Arrastra un **Actor** y renómbralo `Usuario`.
 3. Arrastra un **System (rectángulo de frontera)** y nómbralo `Epicycloid Generator`. Dentro irán todos los óvalos.
-4. Crea los 12 **Use Case** (óvalos):
+4. Crea los 13 **Use Case** (óvalos):
    - Configurar parámetros
    - Generar variación aleatoria
    - Reproducir animación
@@ -251,7 +269,8 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - Exportar patrón
    - Importar patrón
    - Consultar tutorial
-5. Une `Usuario` con cada uno de los 12 casos de uso mediante una **Association** (línea continua sin flecha).
+   - Cambiar idioma
+5. Une `Usuario` con cada uno de los 13 casos de uso mediante una **Association** (línea continua sin flecha).
 6. Crea dos casos de uso incluidos:
    - Configurar opciones de exportación
    - Reconstruir el dibujo
@@ -259,7 +278,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - `Exportar imagen` ──«include»──▶ `Configurar opciones de exportación`
    - `Importar patrón` ──«include»──▶ `Reconstruir el dibujo`
 
-> **Nota:** la flecha `«include»` parte del caso base (Exportar/Importar) hacia el incluido. El usuario NO se conecta a los casos incluidos (solo a los 12 principales).
+> **Nota:** la flecha `«include»` parte del caso base (Exportar/Importar) hacia el incluido. El usuario NO se conecta a los casos incluidos (solo a los 13 principales).
 
 ## A.2. Diagrama de clases conceptual (Figura 4.2)
 
@@ -275,7 +294,9 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - `Órbita` — atributos: radio, factor elíptico X, factor elíptico Y, inclinación, velocidad, fase inicial
    - `Parámetros visuales` — atributos: color, opacidad, grosor, intervalo
    - `Traza` — atributos: punto inicial, punto final, color
+   - `Preferencia de idioma` — atributo: idioma activo
 3. Traza las relaciones:
+   - `Aplicación` ──▶ `Preferencia de idioma` (**Association**, 1 a 1, *recuerda*)
    - `Aplicación` ──▶ `Composición` (**Association**, 1 a 1, *gestiona*)
    - `Composición` ◆── `Sesión` (**Composition**, 1 a 1..*, *se compone de*)
    - `Sesión` ──▶ `Configuración de patrón` (**Association**, 1 a 1, *usa*)
@@ -311,6 +332,10 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
   2. Sistema → Sistema: reconstruir el dibujo *(mensaje a sí mismo)*
   3. Sistema ⤍ Usuario: mostrar composición y actualizar parámetros *(retorno)*
 
+- **Fig. 4.7 — Cambiar idioma (CU13):**
+  1. Usuario → Sistema: seleccionar idioma de la interfaz
+  2. Sistema ⤍ Usuario: mostrar la interfaz con todos los textos en el idioma elegido *(retorno)*
+
 ---
 
 ## A.4. (Opcional) Código PlantUML para vista previa rápida
@@ -338,6 +363,7 @@ rectangle "Epicycloid Generator" {
   usecase "Importar patrón" as CU10
   usecase "Reconstruir el dibujo" as CU10b
   usecase "Consultar tutorial" as CU11
+  usecase "Cambiar idioma" as CU13
 }
 
 U --> CU1
@@ -352,6 +378,7 @@ U --> CU8
 U --> CU9
 U --> CU10
 U --> CU11
+U --> CU13
 
 CU8 ..> CU8b : <<include>>
 CU10 ..> CU10b : <<include>>
@@ -391,7 +418,11 @@ class Traza {
   punto final
   color
 }
+class "Preferencia de idioma" as Idioma {
+  idioma activo
+}
 
+Aplicación "1" --> "1" Idioma : recuerda
 Aplicación "1" --> "1" Composición : gestiona
 Composición "1" *-- "1..*" Sesión : se compone de
 Sesión "1" --> "1" Config : usa
@@ -454,5 +485,17 @@ participant "Sistema" as S
 Usuario -> S : seleccionar archivo de patrón
 S -> S : reconstruir el dibujo
 S --> Usuario : mostrar composición y actualizar parámetros
+@enduml
+```
+
+**Figura 4.7 — Cambiar idioma (CU13)**
+
+```plantuml
+@startuml SecCambiarIdioma
+actor Usuario
+participant "Sistema" as S
+
+Usuario -> S : seleccionar idioma de la interfaz
+S --> Usuario : mostrar la interfaz en el idioma elegido
 @enduml
 ```
