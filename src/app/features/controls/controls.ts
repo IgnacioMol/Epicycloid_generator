@@ -74,11 +74,19 @@ export class Controls {
   /**
    * Deshace la última sesión dibujada. Si la animación está en curso, primero la
    * pausa (lo que cierra la sesión activa) y a continuación la retira, de modo que
-   * cada pulsación elimina el último bloque dibujado.
+   * cada pulsación elimina el último bloque dibujado. Los parámetros del panel se
+   * restauran al estado previo a la sesión eliminada: los de la sesión anterior
+   * (la que queda en pantalla) o, si el lienzo queda vacío, la configuración con
+   * la que se inició la sesión eliminada.
    */
   clear(): void {
     if (this.isPlaying) this.pause();
-    this.patternService.removeLastSession();
+    const removed = this.patternService.removeLastSession();
+    if (removed) {
+      const last = this.patternService.sessions.at(-1);
+      this.params = { ...(last ? last.params : removed.params) };
+      this.patternService.updateParams(this.params);
+    }
     this.patternService.dispatch('undo');
   }
 

@@ -122,19 +122,20 @@ export class PatternService {
   }
 
   /**
-   * Elimina la última sesión dibujada (deshacer). Si hay una sesión activa sin
-   * cerrar, la cierra primero para poder retirarla. Tras quitarla, recalcula el
-   * historial de líneas reproduciendo las sesiones restantes, de modo que el
-   * lienzo refleje exactamente lo que queda.
+   * Elimina la última sesión dibujada (deshacer) y la devuelve (o `null` si no
+   * había ninguna). Si hay una sesión activa sin cerrar, la cierra primero para
+   * poder retirarla. Tras quitarla, recalcula el historial de líneas reproduciendo
+   * las sesiones restantes, de modo que el lienzo refleje exactamente lo que queda.
    */
-  removeLastSession(): void {
+  removeLastSession(): SimulationSession | null {
     if (this._sessionActive) this.endSession();
     if (this.sessions.length === 0) {
       this.lineHistory = [];
-      return;
+      return null;
     }
-    this.sessions.pop();
+    const removed = this.sessions.pop()!;
     this.lineHistory = this.replaySessionsToLines(this.sessions);
+    return removed;
   }
 
   /**
