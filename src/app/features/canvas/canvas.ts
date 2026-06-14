@@ -83,6 +83,21 @@ export class Canvas implements AfterViewInit, OnDestroy {
       case 'clear':
         this.clearPending = true;
         break;
+      case 'undo': {
+        // El servicio ya ha quitado la última sesión y recalculado el historial.
+        // Restauramos el estado de dibujo al final de la sesión que queda (o al
+        // inicio si no queda ninguna) y reconstruimos la estela.
+        const last = this.patternService.sessions.at(-1);
+        this.angle1 = last?.endAngle1 ?? 0;
+        this.angle2 = last?.endAngle2 ?? 0;
+        this.prevTipX = last?.endTipX ?? 0;
+        this.prevTipY = last?.endTipY ?? 0;
+        this.firstPoint = last?.endFirstPoint ?? true;
+        this.framesSinceLastLine = 0;
+        this.isPaused = true; this.isDrawing = false;
+        this.trailDirty = true;
+        break;
+      }
       case 'reset':
         this.resetPending = true;
         break;

@@ -1,64 +1,54 @@
 # 📌 Recordatorio — Actualizar la memoria del TFG por la i18n
 
-> Cambio realizado: se ha añadido **soporte multilingüe (Español / Inglés)** a la aplicación,
-> con detección automática del idioma del navegador y un **selector desplegable** para cambiarlo
-> manualmente. Implementado en la rama `feature/i18n` (fusionada a `main`).
+> Cambio realizado: se ha añadido **soporte multilingüe** a la aplicación (español, inglés,
+> indonesio y checo), con detección automática del idioma del navegador y un **selector
+> desplegable** para cambiarlo manualmente. Implementado en la rama `feature/i18n` (fusionada a `main`).
 >
-> Este archivo lista lo que conviene tocar en la **memoria** (no en el código) para que el documento
-> refleje la nueva funcionalidad. Bórralo cuando lo hayas incorporado.
+> **Estado:** los apartados 1, 2 y 3 ya están incorporados a la memoria. Queda pendiente solo el
+> apartado 4 ("Otros apartados a revisar"), porque esa parte de la memoria aún no se ha redactado.
 
 ---
 
-## 1. Requisitos
+## 1. Requisitos ✅ HECHO
 
-- [ ] **Añadir un requisito nuevo** para la internacionalización. Encaja mejor como **RNF de
-      usabilidad/accesibilidad** (la app debe estar disponible en español e inglés, detectando el
-      idioma del navegador y permitiendo el cambio manual). Si prefieres tratarlo como funcionalidad
-      explícita del usuario, puede ir como **RF** ("el usuario puede cambiar el idioma de la interfaz").
-- [ ] **Renumerar / actualizar la tabla de requisitos** si añades uno nuevo (recuerda mantener la
-      numeración canónica RF1–RF13 / RNF1–RNF12 coherente).
-- [ ] Marcar el nuevo requisito como **completado** en el estado de implementación.
+- [x] **Añadir un requisito nuevo** para la internacionalización → **RF14** (soporte multilingüe).
+      (Documentado en `requirements.md` y en la trazabilidad de `memoria-cap4-analisis.md`.)
+- [x] **Renumerar / actualizar la tabla de requisitos** (RF1–RF14 / RNF1–RNF12 coherentes).
+- [x] Marcar el nuevo requisito como **completado** en el estado de implementación.
 
-## 2. Diagramas (conceptuales, sin código ni tecnologías concretas)
+## 2. Diagramas (conceptuales, sin código ni tecnologías concretas) ✅ HECHO
 
-- [ ] **Casos de uso**: añadir el caso de uso *"Cambiar idioma de la interfaz"* (actor: Usuario).
-      Opcional: indicar que la selección inicial de idioma es automática (según el navegador).
-- [ ] **Diagrama de clases / componentes**: reflejar el nuevo módulo de internacionalización
-      (un servicio de idioma que mantiene el idioma activo y traduce los textos, más el origen de
-      datos de traducciones). Mantenerlo a nivel conceptual: "Servicio de Idioma", "Diccionario de
-      textos", sin nombrar Angular, pipes, JSON, signals, etc.
-- [ ] **Diagrama de secuencia**: opcionalmente, uno que muestre el flujo *"el usuario selecciona un
-      idioma → la interfaz se actualiza"* y/o *"al abrir la app se detecta el idioma del navegador"*.
+- [x] **Casos de uso**: añadido el caso de uso *"Cambiar idioma"* (CU13, actor: Usuario), con la
+      detección automática del idioma del navegador recogida en su flujo alternativo.
+- [x] **Diagrama de clases / componentes**: añadida la *Preferencia de idioma* como ajuste a nivel
+      de aplicación (concepto "Preferencia de idioma" asociado a "Aplicación").
+- [x] **Diagrama de secuencia**: añadida la *Figura 4.7 — Cambiar idioma* (selección → actualización
+      inmediata de los textos).
 
-## 3. Explicaciones / texto de la memoria
+## 3. Explicaciones / texto de la memoria ✅ HECHO
 
-- [ ] **Justificación de la decisión de diseño** (apartado valioso para el TFG): comparar el enfoque
-      de internacionalización **en tiempo de compilación** (un build por idioma, sin cambio en
-      caliente) frente al enfoque **en tiempo de ejecución** (textos externos en diccionarios,
-      cambio instantáneo), y argumentar por qué se eligió el segundo (cambio sin recargar, detección
-      del idioma del navegador, despliegue simple).
-- [ ] **Descripción funcional**: explicar la detección automática (español si el navegador está en
-      español, inglés en cualquier otro caso), la persistencia de la preferencia del usuario y el
-      selector desplegable.
-- [ ] **Extensibilidad**: mencionar que la arquitectura permite **añadir más idiomas** fácilmente
-      (la lista de idiomas del selector se genera de forma centralizada).
-- [ ] **Accesibilidad**: el idioma activo se refleja en el documento (atributo de idioma de la
-      página), lo cual es buena práctica de accesibilidad.
+- [x] **Justificación de la decisión de diseño**: enfoque en tiempo de compilación vs. tiempo de
+      ejecución, y por qué se eligió el segundo.
+- [x] **Descripción funcional**: detección automática (español si el navegador está en español,
+      inglés en otro caso), persistencia de la preferencia y selector desplegable.
+- [x] **Extensibilidad**: la arquitectura permite añadir más idiomas fácilmente (lista de idiomas
+      centralizada). Comprobado en la práctica añadiendo indonesio y checo.
+- [x] **Accesibilidad**: el idioma activo se refleja en el atributo de idioma de la página.
 
-## 4. Otros apartados a revisar
+## 4. Otros apartados a revisar ⏳ PENDIENTE (aún no se ha llegado a esa parte de la memoria)
 
-- [ ] **Resumen / abstract** y **objetivos**: si mencionas las características principales de la
-      aplicación, incluir el soporte multilingüe.
-- [ ] **Manual de usuario / capturas**: si la memoria incluye capturas de la interfaz, actualizar
-      alguna que muestre el selector de idioma (o añadir una con la app en inglés).
-- [ ] **Conclusiones / trabajo futuro**: posible línea futura → añadir más idiomas, o traducir
+- [ ] **Resumen / abstract** y **objetivos**: incluir el soporte multilingüe si se enumeran las
+      características principales.
+- [ ] **Manual de usuario / capturas**: actualizar/añadir capturas que muestren el selector de
+      idioma (o la app en otro idioma).
+- [ ] **Conclusiones / trabajo futuro**: posible línea futura → añadir más idiomas o traducir
       también los textos generados (nombres de archivo de exportación, etc.).
 
 ---
 
 ### Notas de implementación (por si las necesitas para redactar, NO para copiar tal cual)
 
-- Idiomas actuales: **Español** e **Inglés**.
+- Idiomas actuales: **Español**, **Inglés**, **Indonesio** y **Checo**.
 - Detección inicial: preferencia guardada del usuario → si no existe, idioma del navegador → si no
   coincide con ninguno disponible, **inglés** por defecto.
 - El cambio de idioma es **inmediato**, sin recargar la página.

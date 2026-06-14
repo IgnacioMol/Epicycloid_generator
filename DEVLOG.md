@@ -4,6 +4,33 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-14 (sesión 5) — Más idiomas, tutorial ampliado, "deshacer sesión" y documentación
+
+### Idiomas adicionales (RF14)
+- Añadidos **indonesio** (`id`) y **checo** (`cs`) como prueba real de la extensibilidad del sistema i18n. Cada idioma nuevo requiere solo 4 toques: crear su `xx.json`, importarlo + registrarlo en `DICTS`, añadir su código al tipo `Lang` y una entrada a `LANGUAGES`. El selector desplegable y la detección de navegador se actualizan solos.
+
+### Tutorial ampliado
+- El tutorial pasó de 7 a **10 pasos**: faltaban funciones reales que ahora se documentan → **🎲 Aleatorizar parámetros** (RF12), **🖼 Exportar imagen (PNG)** con sus opciones, y **🌐 Cambiar idioma**. Claves nuevas con nombres semánticos en los 4 diccionarios (las `step1`–`step7` se mantienen intactas).
+
+### Cambio de comportamiento: "Limpiar lienzo" → "Deshacer última sesión"
+- El botón de limpiar ahora **deshace la última sesión dibujada**; cada pulsación elimina un bloque más (5 → 4 → 3 …). El borrado total sigue en **Reset**.
+- **Modelo:** en pausa, `lineHistory` equivale al *replay* de `sessions[]`. Deshacer = quitar la última sesión y recomputar el historial reproduciendo las restantes.
+- `pattern.service.ts`: nuevos `removeLastSession()` y `replaySessionsToLines()` (la lógica de replay se **movió** aquí desde `controls.ts`, eliminando duplicación; la usan tanto el import como el deshacer). Nueva acción `'undo'`.
+- `controls.ts`: `clear()` pausa primero si está reproduciendo (cierra la sesión activa) y luego la retira. Botón deshabilitado cuando no hay nada que deshacer.
+- `canvas.ts`: la acción `'undo'` restaura el estado de dibujo al final de la sesión restante (para poder continuar) y reconstruye la estela.
+- Botón renombrado en los 4 idiomas y paso 6 del tutorial actualizado (describía el antiguo "Limpiar lienzo").
+
+### Documentación de la memoria
+- `requirements.md`: reescrito con la numeración nueva (RF1–RF14 / RNF1–RNF12) y el **estado real verificado contra el código**. Pendientes reales: **RF7 (presets)** y confirmar despliegue **RNF12 (Netlify)**.
+- `memoria-cap4-analisis.md`: integrado **RF14** en el análisis → nuevo **CU13 «Cambiar idioma»** (con detección automática como flujo alternativo), concepto *Preferencia de idioma* en el diagrama de clases, **Figura 4.7** de secuencia, y filas **RF13/RF14** en la trazabilidad (especificaciones de Visual Paradigm y PlantUML incluidas).
+- `claude/TODO-memoria-i18n.md`: apartados 1–3 marcados como hechos; el 4 (abstract, capturas, conclusiones) queda pendiente de redactar.
+
+### Estado al cierre de sesión
+- 4 idiomas funcionando; tutorial completo; "deshacer sesión" operativo; build de producción correcto.
+- Sin commitear todavía (todo el conjunto sobre `main`). Pendiente del proyecto: RF7 (presets) y RNF12 (verificar despliegue).
+
+---
+
 ## 2026-06-13 (sesión 4) — Internacionalización ES/EN (i18n)
 
 ### Objetivo

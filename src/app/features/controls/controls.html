@@ -358,7 +358,10 @@
         </button>
       </div>
     </div>
-    <button class="btn btn-outline-secondary btn-sm" (click)="clear()">{{ 'controls.clearCanvas' | t }}</button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="clear()"
+            [disabled]="!isPlaying && patternService.sessions.length === 0">
+      {{ 'controls.undoSession' | t }}
+    </button>
     <button class="btn btn-outline-danger btn-sm" (click)="reset()">{{ 'controls.reset' | t }}</button>
     <button class="btn btn-outline-info btn-sm" (click)="showExportModal = true">{{ 'controls.exportImage' | t }}</button>
     <button class="btn btn-outline-light btn-sm" (click)="exportJson()"
