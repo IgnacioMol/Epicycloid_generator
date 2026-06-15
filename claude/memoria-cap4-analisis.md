@@ -7,7 +7,7 @@
 
 El presente apartado tiene como objetivo analizar de manera estructurada la aplicación web desarrollada, utilizando herramientas de modelado que permitan comprender tanto los requisitos del sistema como su comportamiento. Para ello se ha empleado Visual Paradigm como entorno de modelado UML, que ha facilitado la elaboración de los diferentes diagramas que sustentan esta fase de análisis.
 
-En primer lugar, se presenta el diagrama de casos de uso, acompañado de sus correspondientes flujos de eventos, que permiten identificar y describir las interacciones entre el usuario y el sistema, detallando el comportamiento esperado ante distintos escenarios. A continuación, se expone el diagrama de clases conceptual, donde se definen las entidades principales del dominio y sus relaciones, sirviendo como base para el posterior diseño. Por último, se incluyen los diagramas de secuencia del sistema, que ilustran el flujo de mensajes entre el usuario y el sistema durante la ejecución de los casos de uso más significativos, permitiendo visualizar la lógica de interacción de la aplicación.
+En primer lugar, se presenta el diagrama de casos de uso, acompañado de sus correspondientes flujos de eventos, que permiten identificar y describir las interacciones entre el usuario y el sistema, detallando el comportamiento esperado ante distintos escenarios. A continuación, se expone el diagrama de clases, donde se definen las clases del sistema con sus métodos y relaciones, sirviendo como base para el posterior diseño e implementación. Por último, se incluyen los diagramas de secuencia del sistema, que ilustran el flujo de mensajes —expresados mediante las funciones reales que se ejecutan— entre los componentes durante la ejecución de cada caso de uso, permitiendo visualizar la lógica de interacción de la aplicación.
 
 A diferencia de otras aplicaciones, *Epicycloid Generator* es una aplicación web de página única que se ejecuta íntegramente en el navegador, sin necesidad de registro ni de conexión a un servidor. En consecuencia, existe un único actor —el **usuario**— que interactúa de forma directa y anónima con todas las funcionalidades.
 
@@ -198,21 +198,23 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Postcondiciones** | La interfaz se muestra en el idioma elegido, que queda recordado. |
 | **Flujo alternativo** | 1a. **Detección automática:** en el primer acceso, antes de cualquier elección manual, el sistema determina el idioma a partir de la configuración del navegador del usuario y muestra la interfaz en ese idioma; si el idioma del navegador no está disponible, utiliza el idioma predeterminado (inglés). |
 
-## 4.2. Diagrama de clases conceptual
+## 4.2. Diagrama de clases
 
-En esta sección se presenta el diagrama de clases conceptual de la aplicación, elaborado como parte del análisis previo al diseño. Su objetivo es ofrecer una visión general que ayude a comprender la estructura lógica del sistema desde una perspectiva orientada a objetos. Se trata de un **modelo de dominio**: representa los conceptos del problema (composiciones, órbitas, sesiones, trazas) y sus relaciones, sin entrar en cómo se implementan.
+En esta sección se presenta el diagrama de clases de la aplicación. A fin de que sirva de base directa para la implementación, las clases se nombran igual que en el código y se incluyen sus **métodos** (funciones) y los atributos más relevantes, de modo que el pseudocódigo de los diagramas guarde correspondencia con las clases reales del sistema.
 
-La aplicación gira en torno a una **composición**, que es el dibujo que el usuario construye. Una composición está formada por una o varias **sesiones**, entendiendo por sesión cada bloque de animación comprendido entre que el usuario reproduce y pausa. Cada sesión utiliza una **configuración de patrón**, que describe completamente el estado matemático y visual: el **modo de visualización**, dos **órbitas** (cada una con su radio, factores elípticos, inclinación, velocidad y fase inicial) y un conjunto de **parámetros visuales** (color, opacidad, grosor e intervalo). El resultado de animar una sesión es una colección de **trazas**, los segmentos o puntos que se acumulan en el lienzo.
+La aplicación se estructura en torno a varios **componentes** de interfaz y dos **servicios** compartidos. El componente raíz `AppComponent` contiene los componentes `Canvas` (el lienzo donde se dibuja y anima la composición), `Controls` (el panel de parámetros y acciones) y `Tutorial` (la guía de inicio). El componente `ExportModal` (diálogo de exportación de imagen) se crea bajo demanda desde `Controls`.
 
-Las relaciones principales son: la `Aplicación` *gestiona* una `Composición`; una `Composición` *se compone de* una o varias `Sesión`; cada `Sesión` *usa* una `Configuración de patrón` y *produce* muchas `Traza`; y una `Configuración de patrón` *combina* dos `Órbita` y unos `Parámetros visuales`.
+La lógica de estado se concentra en el servicio `PatternService`, que mantiene los parámetros activos, el historial de trazas (`lineHistory`) y las sesiones de animación (`sessions`), y ofrece las operaciones para reproducir, pausar, deshacer, exportar y reconstruir la composición. La internacionalización se gestiona en el servicio `I18nService` (idioma activo, detección y persistencia), apoyado por el `TranslatePipe`, que traduce los textos de las plantillas.
 
-Al margen del contenido artístico, la aplicación mantiene una **preferencia de idioma**, que representa el idioma en el que se presentan los textos de la interfaz al usuario. Se trata de un ajuste a nivel de aplicación —independiente de la composición y de sus parámetros— por lo que se modela asociado directamente a la `Aplicación`: esta *recuerda* una `Preferencia de idioma` con el idioma activo seleccionado (o detectado del navegador).
+El modelo de datos se define mediante las interfaces `PatternParams` (todos los parámetros matemáticos y visuales de la composición), `SimulationSession` (un bloque de animación con sus parámetros y estado final), `LineRecord` (un segmento dibujado) y `ExportOptions` (las opciones del diálogo de exportación).
 
-*(Aquí va la Figura 4.2: Diagrama de clases conceptual — ver especificación para Visual Paradigm al final del documento.)*
+Las relaciones principales son: `AppComponent` *contiene* a `Canvas`, `Controls` y `Tutorial`, y *usa* `I18nService`; `Controls`, `Canvas` y `ExportModal` *usan* `PatternService`; `Controls` *crea* `ExportModal`; `TranslatePipe` *usa* `I18nService`; y `PatternService` *gestiona* colecciones de `SimulationSession` y `LineRecord`, definidas a partir de `PatternParams`.
+
+*(Aquí va la Figura 4.2: Diagrama de clases — ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.3. Diagramas de secuencia del sistema
 
-Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones entre el usuario y el sistema a lo largo del tiempo. Se basan en los casos de uso previamente definidos y tratan el sistema como una **caja negra**: muestran las acciones que el usuario realiza y las respuestas que el sistema devuelve, sin detallar su funcionamiento interno (eso corresponde al diseño y la implementación). A continuación se incluye un diagrama de secuencia del sistema para **cada uno** de los casos de uso identificados (CU1–CU13), ordenados según su numeración. En todos ellos intervienen dos líneas de vida: el actor **Usuario** y el **Sistema** como caja negra.
+Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones a lo largo del tiempo durante la ejecución de cada caso de uso. En estos diagramas, en lugar de tratar el sistema como una única caja negra, se reflejan los **componentes reales** que colaboran y las **funciones** (en pseudocódigo) que se invocan en cada paso, lo que permite trazar cada caso de uso con la lógica que realmente se ejecuta. Las líneas de vida son el actor **Usuario** y los componentes que intervienen según el caso: `Controls` (panel de control), `PatternService` (estado y sesiones), `Canvas` (lienzo), `ExportModal` (diálogo de exportación), `Tutorial`, `App` (componente raíz) e `I18nService` (idioma). A continuación se incluye un diagrama para **cada uno** de los casos de uso (CU1–CU13), ordenados según su numeración.
 
 - **Configurar parámetros (CU1) — Figura 4.3:** el usuario solicita modificar un parámetro y el sistema responde actualizando la vista con el nuevo valor.
 - **Reproducir animación (CU2) — Figura 4.4:** el usuario solicita reproducir; el sistema anima y acumula trazas de forma continua hasta que el usuario solicita pausar.
@@ -257,7 +259,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 
 # Anexo — Construcción de los diagramas en Visual Paradigm
 
-> Especificación conceptual de cada diagrama (elementos + relaciones) para reproducirlos en **Visual Paradigm**. No aparece ningún nombre de función ni de tecnología: todo está en lenguaje de dominio, como corresponde a la fase de análisis.
+> Especificación de cada diagrama (elementos + relaciones) para reproducirlos en **Visual Paradigm**. El diagrama de **casos de uso** se mantiene a nivel de dominio (acciones del usuario, sin tecnologías). El diagrama de **clases** (A.2) y los de **secuencia** (A.3) usan los **nombres reales de las clases del código** y de sus **funciones** (pseudocódigo), de modo que sirvan de base directa para la implementación.
 
 ## A.1. Diagrama de casos de uso (Figura 4.1)
 
@@ -289,100 +291,128 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 
 > **Nota:** la flecha `«include»` parte del caso base (Exportar/Importar) hacia el incluido. El usuario NO se conecta a los casos incluidos (solo a los 13 principales).
 
-## A.2. Diagrama de clases conceptual (Figura 4.2)
+## A.2. Diagrama de clases (Figura 4.2)
 
-> Modelo de dominio. Las clases son **conceptos**, no componentes de software. Atributos sin tipo; operaciones solo como acciones del dominio si se desea.
+> Las clases llevan los **nombres reales del código** e incluyen sus **métodos** (funciones) y los atributos principales. Los componentes y servicios son clases; el modelo de datos se representa con interfaces (estereotipo `«interface»`).
 
 **Pasos en Visual Paradigm:**
 1. `File → New → Class Diagram`.
-2. Crea las clases conceptuales con sus atributos:
-   - `Aplicación`
-   - `Composición`
-   - `Sesión` — atributos: número de orden, duración, número de fotogramas
-   - `Configuración de patrón` — atributo: modo de visualización (curva | líneas)
-   - `Órbita` — atributos: radio, factor elíptico X, factor elíptico Y, inclinación, velocidad, fase inicial
-   - `Parámetros visuales` — atributos: color, opacidad, grosor, intervalo
-   - `Traza` — atributos: punto inicial, punto final, color
-   - `Preferencia de idioma` — atributo: idioma activo
+2. Crea las clases con sus atributos y **operaciones** (botón derecho → Add → Operation):
+   - `AppComponent` — atrib.: `langMenuOpen` · métodos: `currentLanguageLabel()`, `selectLang(code)`
+   - `Canvas` — atrib.: `params`, `isPaused`, `isDrawing`, `zoom` · métodos: `ngAfterViewInit()`, `ngOnDestroy()`, `zoomIn()`, `zoomOut()`, `onAction(action)`, `initSketch()`
+   - `Controls` — atrib.: `params`, `isPlaying`, `showExportModal` · métodos: `onParamChange()`, `toggleMode()`, `play()`, `pause()`, `clear()`, `reset()`, `randomize()`, `clampParams()`, `formatInterval(s)`, `exportJson()`, `triggerImport()`
+   - `ExportModal` — atrib.: `options`, `isTransparent`, `exportZoom`, `exportScale` · métodos: `renderPreview()`, `buildExportCanvas()`, `onOptionChange()`, `onTransparentToggle()`, `save()`
+   - `Tutorial` — atrib.: `visible`, `dontShowAgain` · métodos: `open()`, `close()`
+   - `PatternService` — atrib.: `lineHistory`, `sessions`, `params$`, `action$` · métodos: `updateParams(p)`, `getCurrentParams()`, `dispatch(a)`, `beginSession(p)`, `incrementSessionFrame()`, `setCurrentState(...)`, `endSession()`, `snapshotActiveSession()`, `removeLastSession()`, `replaySessionsToLines(s)`, `clearSessions()`
+   - `I18nService` — atrib.: `lang`, `languages` · métodos: `setLang(l)`, `toggle()`, `translate(key)`, `detectInitialLang()`
+   - `TranslatePipe` — método: `transform(key)`
+   - `«interface» PatternParams` — `orbit1Radius`, `orbit2Radius`, `orbit1SpeedRpm`, `orbit2SpeedRpm`, `initialAngle1/2`, factores elípticos e inclinación, `lineColor`, `lineAlpha`, `strokeWeight`, `lineInterval`, `visualizationMode`
+   - `«interface» SimulationSession` — `sessionIndex`, `params`, `frameCount`, `durationSeconds`, `endAngle1/2`, `endTipX/Y`, `endFirstPoint`
+   - `«interface» LineRecord` — `x1`, `y1`, `x2`, `y2`, `r`, `g`, `b`, `a`, `sw`
+   - `«interface» ExportOptions` — `bgColor`, `showGuides`, `showCenterDot`
 3. Traza las relaciones:
-   - `Aplicación` ──▶ `Preferencia de idioma` (**Association**, 1 a 1, *recuerda*)
-   - `Aplicación` ──▶ `Composición` (**Association**, 1 a 1, *gestiona*)
-   - `Composición` ◆── `Sesión` (**Composition**, 1 a 1..*, *se compone de*)
-   - `Sesión` ──▶ `Configuración de patrón` (**Association**, 1 a 1, *usa*)
-   - `Sesión` ──▶ `Traza` (**Association**, 1 a *, *produce*)
-   - `Configuración de patrón` ◆── `Órbita` (**Composition**, 1 a 2, *combina*)
-   - `Configuración de patrón` ◆── `Parámetros visuales` (**Composition**, 1 a 1)
+   - `AppComponent` ◆── `Canvas`, ◆── `Controls`, ◆── `Tutorial` (**Composition**, *contiene*)
+   - `AppComponent` ──▶ `I18nService` (**Association/Dependency**, *usa*)
+   - `Controls` ──▶ `PatternService`, `Canvas` ──▶ `PatternService`, `ExportModal` ──▶ `PatternService` (*usa*)
+   - `Controls` ┄┄▶ `ExportModal` (**Dependency**, *crea*)
+   - `TranslatePipe` ──▶ `I18nService` (*usa*)
+   - `PatternService` ──▶ `SimulationSession` (1 a *, `sessions`) y ──▶ `LineRecord` (1 a *, `lineHistory`)
+   - `SimulationSession` ──▶ `PatternParams` (1 a 1) ; `ExportModal` ──▶ `ExportOptions` (1 a 1)
 
 > Ajusta las multiplicidades en los extremos de cada conector (botón derecho → Multiplicity). Fíjate en el `1 a 2` de las órbitas: siempre hay exactamente dos.
 
 ## A.3. Diagramas de secuencia del sistema (Figuras 4.3–4.15)
 
-**Pasos en Visual Paradigm:** `File → New → Sequence Diagram` (uno por cada caso de uso). En cada diagrama coloca solo dos líneas de vida: el **Actor** `Usuario` y un objeto `Sistema` (el sistema como caja negra). Traza los **Message** en el orden indicado. Para las respuestas usa **mensaje de retorno** (flecha discontinua); donde se indique, un **Combined Fragment** tipo `loop` o un **mensaje a sí mismo** (self-message).
+**Pasos en Visual Paradigm:** `File → New → Sequence Diagram` (uno por cada caso de uso). Coloca las líneas de vida indicadas en cada figura (el **Actor** `Usuario` y los **componentes reales** que intervienen) y traza los **Message** etiquetados con el **nombre de la función** que se ejecuta. Para las respuestas usa **mensaje de retorno** (flecha discontinua); usa **Combined Fragment** `loop`/`alt`/`opt` y **mensaje a sí mismo** (self-message) donde se indique.
 
-- **Fig. 4.3 — Configurar parámetros (CU1):**
-  1. Usuario → Sistema: modificar parámetro
-  2. Sistema ⤍ Usuario: actualizar vista *(retorno)*
+- **Fig. 4.3 — Configurar parámetros (CU1):** Usuario, Controls, PatternService, Canvas.
+  1. Usuario → Controls: editar un control `(ngModelChange)`
+  2. Controls → Controls: `onParamChange()`
+  3. Controls → PatternService: `updateParams(params)`
+  4. PatternService ⤍ Canvas: `params$` (suscripción)
+  5. Canvas → Canvas: `draw()` (refleja los nuevos parámetros)
+  6. Usuario → Controls: confirmar valor `(change)` → `clampParams()` → PatternService: `updateParams(params)`
 
-- **Fig. 4.4 — Reproducir animación (CU2):** con un fragmento `loop` «mientras la animación está activa».
-  1. Usuario → Sistema: reproducir
-  2. *(loop)* Sistema ⤍ Usuario: añadir trazas a la composición
-  3. Usuario → Sistema: pausar
-  4. Sistema ⤍ Usuario: detener y conservar el dibujo *(retorno)*
+- **Fig. 4.4 — Reproducir animación (CU2):** Usuario, Controls, PatternService, Canvas. Fragmento `loop` «cada fotograma mientras `isDrawing`».
+  1. Usuario → Controls: `play()`
+  2. Controls → PatternService: `dispatch('play')`
+  3. PatternService ⤍ Canvas: `onAction('play')`
+  4. Canvas → PatternService: `beginSession(params)`
+  5. *(loop)* Canvas: `draw()` → PatternService: `lineHistory.push(record)`, `incrementSessionFrame()`, `setCurrentState(...)`
+  6. Usuario → Controls: `pause()` → PatternService: `dispatch('pause')`
+  7. PatternService ⤍ Canvas: `onAction('pause')` → Canvas → PatternService: `endSession()`
 
-- **Fig. 4.5 — Pausar animación (CU3):**
-  1. Usuario → Sistema: pausar
-  2. Sistema ⤍ Usuario: detener la animación y conservar el dibujo *(retorno)*
+- **Fig. 4.5 — Pausar animación (CU3):** Usuario, Controls, PatternService, Canvas.
+  1. Usuario → Controls: `pause()`
+  2. Controls → PatternService: `dispatch('pause')`
+  3. PatternService ⤍ Canvas: `onAction('pause')`
+  4. Canvas → PatternService: `endSession()`
 
-- **Fig. 4.6 — Alternar modo de visualización (CU4):**
-  1. Usuario → Sistema: seleccionar el otro modo de visualización
-  2. Sistema ⤍ Usuario: limpiar el lienzo y mostrar el nuevo modo *(retorno)*
+- **Fig. 4.6 — Alternar modo de visualización (CU4):** Usuario, Controls, PatternService, Canvas.
+  1. Usuario → Controls: `toggleMode()`
+  2. Controls → PatternService: `updateParams(params)` (nuevo `visualizationMode`)
+  3. PatternService ⤍ Canvas: `params$`
+  4. Canvas → Canvas: `draw()` (detecta el cambio de modo) → PatternService: `endSession()`, `clearSessions()`
 
-- **Fig. 4.7 — Deshacer última sesión (CU5):**
-  1. Usuario → Sistema: deshacer la última sesión
-  2. Sistema ⤍ Usuario: eliminar la última sesión, reconstruir el dibujo y restaurar los parámetros previos *(retorno)*
+- **Fig. 4.7 — Deshacer última sesión (CU5):** Usuario, Controls, PatternService, Canvas. Fragmentos `alt`.
+  1. Usuario → Controls: `clear()`
+  2. *(alt `isPlaying`)* Controls → Controls: `pause()` → PatternService: `dispatch('pause')` → `endSession()`
+  3. Controls → PatternService: `removeLastSession()`
+  4. *(alt quedan sesiones)* PatternService: `sessions.pop()`, `replaySessionsToLines(sessions)`; Controls → PatternService: `updateParams(prevParams)`
+  5. Controls → PatternService: `dispatch('undo')`
+  6. PatternService ⤍ Canvas: `onAction('undo')` (reconstruye la estela)
 
-- **Fig. 4.8 — Restablecer parámetros (CU6):**
-  1. Usuario → Sistema: restablecer parámetros
-  2. Sistema ⤍ Usuario: restaurar los valores por defecto y limpiar el lienzo *(retorno)*
+- **Fig. 4.8 — Restablecer parámetros (CU6):** Usuario, Controls, PatternService, Canvas.
+  1. Usuario → Controls: `reset()`
+  2. Controls → PatternService: `updateParams(DEFAULT_PARAMS)`
+  3. Controls → PatternService: `dispatch('reset')`
+  4. PatternService ⤍ Canvas: `onAction('reset')` → Canvas → PatternService: `endSession()`, `clearSessions()`
 
-- **Fig. 4.9 — Ajustar zoom (CU7):**
-  1. Usuario → Sistema: acercar o alejar la vista
-  2. Sistema ⤍ Usuario: reescalar la vista *(retorno)*
+- **Fig. 4.9 — Ajustar zoom (CU7):** Usuario, Canvas.
+  1. Usuario → Canvas: `mouseWheel()` / `zoomIn()` / `zoomOut()`
+  2. Canvas → Canvas: `trailDirty = true` → `draw()` (reescala la vista)
 
-- **Fig. 4.10 — Exportar imagen (CU8):**
-  1. Usuario → Sistema: solicitar exportar imagen
-  2. Sistema ⤍ Usuario: mostrar previsualización *(retorno)*
-  3. Usuario → Sistema: configurar opciones (fondo, zoom, resolución, guías)
-  4. Usuario → Sistema: confirmar descarga
-  5. Sistema ⤍ Usuario: entregar imagen *(retorno)*
+- **Fig. 4.10 — Exportar imagen (CU8):** Usuario, Controls, ExportModal, PatternService. Fragmento `opt`.
+  1. Usuario → Controls: `showExportModal = true`
+  2. Controls → ExportModal: crear `<app-export-modal>`
+  3. ExportModal → ExportModal: `ngAfterViewInit()` → `renderPreview()` → `buildExportCanvas()` (lee `getCurrentParams()`, `lineHistory` de PatternService)
+  4. *(opt ajustar opciones)* Usuario → ExportModal: `onTransparentToggle()` / `onOptionChange()` → `renderPreview()`
+  5. Usuario → ExportModal: `save()` → `buildExportCanvas()` → `toDataURL()`
 
-- **Fig. 4.11 — Exportar patrón (CU9):**
-  1. Usuario → Sistema: solicitar exportar patrón
-  2. Sistema ⤍ Usuario: entregar el archivo del patrón *(retorno)*
+- **Fig. 4.11 — Exportar patrón (CU9):** Usuario, Controls, PatternService.
+  1. Usuario → Controls: `exportJson()`
+  2. Controls → PatternService: `snapshotActiveSession()` + `sessions`
+  3. Controls → Controls: construir `Blob` y enlace de descarga
 
-- **Fig. 4.12 — Importar patrón (CU10):**
-  1. Usuario → Sistema: seleccionar archivo de patrón
-  2. Sistema → Sistema: reconstruir el dibujo *(mensaje a sí mismo)*
-  3. Sistema ⤍ Usuario: mostrar composición y actualizar parámetros *(retorno)*
+- **Fig. 4.12 — Importar patrón (CU10):** Usuario, Controls, PatternService, Canvas. Fragmento `alt`.
+  1. Usuario → Controls: `triggerImport()`
+  2. Usuario → Controls: `onFileSelected(event)`
+  3. *(alt archivo válido)* Controls → PatternService: `replaySessionsToLines(sessions)`, `updateParams(lastParams)`, `dispatch('import-json')` → PatternService ⤍ Canvas: `onAction('import-json')`
+  4. *(else inválido)* Controls → Controls: `catch` (descarta la importación)
 
-- **Fig. 4.13 — Consultar tutorial (CU11):**
-  1. Usuario → Sistema: abrir el tutorial
-  2. Sistema ⤍ Usuario: mostrar la guía *(retorno)*
-  3. Usuario → Sistema: cerrar el tutorial
+- **Fig. 4.13 — Consultar tutorial (CU11):** Usuario, Tutorial.
+  1. Usuario → Tutorial: `open()`
+  2. Tutorial ⤍ Usuario: muestra la guía (`visible = true`)
+  3. Usuario → Tutorial: `close()`
 
-- **Fig. 4.14 — Generar variación aleatoria (CU12):**
-  1. Usuario → Sistema: aleatorizar parámetros
-  2. Sistema ⤍ Usuario: asignar valores aleatorios válidos y actualizar la vista *(retorno)*
+- **Fig. 4.14 — Generar variación aleatoria (CU12):** Usuario, Controls, PatternService, Canvas.
+  1. Usuario → Controls: `randomize()`
+  2. Controls → Controls: `randInRange()` / `randColor()`
+  3. Controls → PatternService: `updateParams(params)`
+  4. PatternService ⤍ Canvas: `params$` → `draw()`
 
-- **Fig. 4.15 — Cambiar idioma (CU13):**
-  1. Usuario → Sistema: seleccionar idioma de la interfaz
-  2. Sistema ⤍ Usuario: mostrar la interfaz con todos los textos en el idioma elegido *(retorno)*
+- **Fig. 4.15 — Cambiar idioma (CU13):** Usuario, App, I18nService. Fragmento `alt`.
+  1. *(alt primer acceso)* I18nService → I18nService: `detectInitialLang()`
+  2. Usuario → App: abrir selector (`langMenuOpen = true`)
+  3. Usuario → App: `selectLang(code)`
+  4. App → I18nService: `setLang(code)` → `lang.set(code)` + `localStorage` + `document.documentElement.lang`
+  5. I18nService ⤍ Usuario: `TranslatePipe` (`| t`) reevalúa los textos
 
 ---
 
 ## A.4. (Opcional) Código PlantUML para vista previa rápida
 
-> Solo para previsualizar antes de montarlo en Visual Paradigm. Los mensajes son conceptuales, sin código.
+> Solo para previsualizar antes de montarlo en Visual Paradigm. Los diagramas de casos de uso y de clases son conceptuales; los de **secuencia** usan nombres de funciones reales (pseudocódigo) y los componentes reales como líneas de vida.
 
 ```plantuml
 @startuml CasosDeUso
@@ -428,49 +458,126 @@ CU10 ..> CU10b : <<include>>
 ```
 
 ```plantuml
-@startuml ClasesConceptual
+@startuml Clases
 skinparam classAttributeIconSize 0
 
-class Aplicación
-class Composición
-class Sesión {
-  número de orden
-  duración
-  número de fotogramas
+class AppComponent {
+  + langMenuOpen: boolean
+  + currentLanguageLabel(): string
+  + selectLang(code): void
 }
-class "Configuración de patrón" as Config {
-  modo de visualización
+class Canvas {
+  - params: PatternParams
+  - isPaused: boolean
+  - isDrawing: boolean
+  - zoom: number
+  + ngAfterViewInit(): void
+  + ngOnDestroy(): void
+  + zoomIn(): void
+  + zoomOut(): void
+  - onAction(action): void
+  - initSketch(): void
 }
-class Órbita {
-  radio
-  factor elíptico X
-  factor elíptico Y
-  inclinación
-  velocidad
-  fase inicial
+class Controls {
+  + params: PatternParams
+  + isPlaying: boolean
+  + showExportModal: boolean
+  + onParamChange(): void
+  + toggleMode(): void
+  + play(): void
+  + pause(): void
+  + clear(): void
+  + reset(): void
+  + randomize(): void
+  + clampParams(): void
+  + exportJson(): void
+  + triggerImport(): void
 }
-class "Parámetros visuales" as Visual {
-  color
-  opacidad
-  grosor
-  intervalo
+class ExportModal {
+  + options: ExportOptions
+  + isTransparent: boolean
+  + exportZoom: number
+  + exportScale: number
+  + renderPreview(): void
+  - buildExportCanvas(): HTMLCanvasElement
+  + onOptionChange(): void
+  + onTransparentToggle(): void
+  + save(): void
 }
-class Traza {
-  punto inicial
-  punto final
-  color
+class Tutorial {
+  + visible: boolean
+  + dontShowAgain: boolean
+  + open(): void
+  + close(): void
 }
-class "Preferencia de idioma" as Idioma {
-  idioma activo
+class PatternService {
+  + lineHistory: LineRecord[]
+  + sessions: SimulationSession[]
+  + params$
+  + action$
+  + updateParams(p): void
+  + getCurrentParams(): PatternParams
+  + dispatch(a): void
+  + beginSession(p): void
+  + incrementSessionFrame(): void
+  + setCurrentState(...): void
+  + endSession(): void
+  + snapshotActiveSession(): SimulationSession
+  + removeLastSession(): SimulationSession
+  + replaySessionsToLines(s): LineRecord[]
+  + clearSessions(): void
+}
+class I18nService {
+  + lang: Signal<Lang>
+  + languages: LanguageOption[]
+  + setLang(l): void
+  + toggle(): void
+  + translate(key): string
+  - detectInitialLang(): Lang
+}
+class TranslatePipe {
+  + transform(key): string
+}
+interface PatternParams {
+  orbit1Radius / orbit2Radius
+  orbit1SpeedRpm / orbit2SpeedRpm
+  initialAngle1 / initialAngle2
+  factores elípticos e inclinación
+  lineColor / lineAlpha / strokeWeight
+  lineInterval
+  visualizationMode
+}
+interface SimulationSession {
+  sessionIndex
+  params: PatternParams
+  frameCount / durationSeconds
+  endAngle1 / endAngle2
+  endTipX / endTipY / endFirstPoint
+}
+interface LineRecord {
+  x1, y1, x2, y2
+  r, g, b, a
+  sw
+}
+interface ExportOptions {
+  bgColor
+  showGuides
+  showCenterDot
 }
 
-Aplicación "1" --> "1" Idioma : recuerda
-Aplicación "1" --> "1" Composición : gestiona
-Composición "1" *-- "1..*" Sesión : se compone de
-Sesión "1" --> "1" Config : usa
-Sesión "1" --> "*" Traza : produce
-Config "1" *-- "2" Órbita : combina
-Config "1" *-- "1" Visual
+AppComponent *-- Canvas
+AppComponent *-- Controls
+AppComponent *-- Tutorial
+AppComponent --> I18nService : usa
+Controls --> PatternService : usa
+Canvas --> PatternService : usa
+ExportModal --> PatternService : usa
+Controls ..> ExportModal : crea
+TranslatePipe --> I18nService : usa
+PatternService "1" --> "*" SimulationSession : sessions
+PatternService "1" --> "*" LineRecord : lineHistory
+SimulationSession "1" --> "1" PatternParams
+ExportModal "1" --> "1" ExportOptions
 @enduml
 ```
 
@@ -479,10 +586,18 @@ Config "1" *-- "1" Visual
 ```plantuml
 @startuml SecConfigurar
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> S : modificar parámetro
-S --> Usuario : actualizar vista
+Usuario -> C : editar control (ngModelChange)
+C -> C : onParamChange()
+C -> PS : updateParams(params)
+PS --> CV : params$ (suscripción)
+CV -> CV : draw() (refleja parámetros)
+Usuario -> C : confirmar valor (change)
+C -> C : clampParams()
+C -> PS : updateParams(params)
 @enduml
 ```
 
@@ -491,14 +606,24 @@ S --> Usuario : actualizar vista
 ```plantuml
 @startuml SecReproducir
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> S : reproducir
-loop mientras la animación está activa
-  S --> Usuario : añadir trazas a la composición
+Usuario -> C : play()
+C -> PS : dispatch('play')
+PS --> CV : onAction('play')
+CV -> PS : beginSession(params)
+loop cada fotograma mientras isDrawing
+  CV -> CV : draw()
+  CV -> PS : lineHistory.push(record)
+  CV -> PS : incrementSessionFrame()
+  CV -> PS : setCurrentState(...)
 end
-Usuario -> S : pausar
-S --> Usuario : detener y conservar el dibujo
+Usuario -> C : pause()
+C -> PS : dispatch('pause')
+PS --> CV : onAction('pause')
+CV -> PS : endSession()
 @enduml
 ```
 
@@ -507,10 +632,14 @@ S --> Usuario : detener y conservar el dibujo
 ```plantuml
 @startuml SecPausar
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> S : pausar
-S --> Usuario : detener la animación y conservar el dibujo
+Usuario -> C : pause()
+C -> PS : dispatch('pause')
+PS --> CV : onAction('pause')
+CV -> PS : endSession()
 @enduml
 ```
 
@@ -519,10 +648,16 @@ S --> Usuario : detener la animación y conservar el dibujo
 ```plantuml
 @startuml SecAlternarModo
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> S : seleccionar el otro modo de visualización
-S --> Usuario : limpiar el lienzo y mostrar el nuevo modo
+Usuario -> C : toggleMode()
+C -> PS : updateParams(params) (nuevo modo)
+PS --> CV : params$
+CV -> CV : draw() (detecta cambio de modo)
+CV -> PS : endSession()
+CV -> PS : clearSessions()
 @enduml
 ```
 
@@ -531,10 +666,24 @@ S --> Usuario : limpiar el lienzo y mostrar el nuevo modo
 ```plantuml
 @startuml SecDeshacer
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> S : deshacer la última sesión
-S --> Usuario : eliminar la última sesión, reconstruir el dibujo y restaurar los parámetros previos
+Usuario -> C : clear()
+alt isPlaying
+  C -> C : pause()
+  C -> PS : dispatch('pause')
+  PS --> CV : onAction('pause') / endSession()
+end
+C -> PS : removeLastSession()
+alt quedan sesiones
+  PS -> PS : sessions.pop()
+  PS -> PS : replaySessionsToLines(sessions)
+  C -> PS : updateParams(prevParams)
+end
+C -> PS : dispatch('undo')
+PS --> CV : onAction('undo') (reconstruye estela)
 @enduml
 ```
 
@@ -543,10 +692,16 @@ S --> Usuario : eliminar la última sesión, reconstruir el dibujo y restaurar l
 ```plantuml
 @startuml SecRestablecer
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> S : restablecer parámetros
-S --> Usuario : restaurar los valores por defecto y limpiar el lienzo
+Usuario -> C : reset()
+C -> PS : updateParams(DEFAULT_PARAMS)
+C -> PS : dispatch('reset')
+PS --> CV : onAction('reset')
+CV -> PS : endSession()
+CV -> PS : clearSessions()
 @enduml
 ```
 
@@ -555,10 +710,11 @@ S --> Usuario : restaurar los valores por defecto y limpiar el lienzo
 ```plantuml
 @startuml SecZoom
 actor Usuario
-participant "Sistema" as S
+participant "Canvas" as CV
 
-Usuario -> S : acercar o alejar la vista
-S --> Usuario : reescalar la vista
+Usuario -> CV : mouseWheel() / zoomIn() / zoomOut()
+CV -> CV : trailDirty = true
+CV -> CV : draw() (reescala la vista)
 @enduml
 ```
 
@@ -567,13 +723,22 @@ S --> Usuario : reescalar la vista
 ```plantuml
 @startuml SecExportarImagen
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "ExportModal" as EM
+participant "PatternService" as PS
 
-Usuario -> S : solicitar exportar imagen
-S --> Usuario : mostrar previsualización
-Usuario -> S : configurar opciones (fondo, zoom, resolución, guías)
-Usuario -> S : confirmar descarga
-S --> Usuario : entregar imagen
+Usuario -> C : showExportModal = true
+C -> EM : crear <app-export-modal>
+EM -> EM : ngAfterViewInit() / renderPreview()
+EM -> PS : getCurrentParams() / lineHistory
+EM -> EM : buildExportCanvas()
+opt ajustar opciones
+  Usuario -> EM : onTransparentToggle() / onOptionChange()
+  EM -> EM : renderPreview()
+end
+Usuario -> EM : save()
+EM -> EM : buildExportCanvas() / toDataURL()
+EM --> Usuario : descarga PNG
 @enduml
 ```
 
@@ -582,10 +747,13 @@ S --> Usuario : entregar imagen
 ```plantuml
 @startuml SecExportarPatron
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
 
-Usuario -> S : solicitar exportar patrón
-S --> Usuario : entregar el archivo del patrón
+Usuario -> C : exportJson()
+C -> PS : snapshotActiveSession() / sessions
+C -> C : Blob + enlace de descarga
+C --> Usuario : descarga JSON
 @enduml
 ```
 
@@ -594,11 +762,21 @@ S --> Usuario : entregar el archivo del patrón
 ```plantuml
 @startuml SecImportar
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> S : seleccionar archivo de patrón
-S -> S : reconstruir el dibujo
-S --> Usuario : mostrar composición y actualizar parámetros
+Usuario -> C : triggerImport()
+Usuario -> C : onFileSelected(event)
+alt archivo válido
+  C -> PS : replaySessionsToLines(sessions)
+  C -> PS : updateParams(lastParams)
+  C -> PS : dispatch('import-json')
+  PS --> CV : onAction('import-json') (restaura estado)
+  CV --> Usuario : muestra la composición
+else archivo no válido
+  C -> C : catch (descarta la importación)
+end
 @enduml
 ```
 
@@ -607,11 +785,11 @@ S --> Usuario : mostrar composición y actualizar parámetros
 ```plantuml
 @startuml SecTutorial
 actor Usuario
-participant "Sistema" as S
+participant "Tutorial" as T
 
-Usuario -> S : abrir el tutorial
-S --> Usuario : mostrar la guía
-Usuario -> S : cerrar el tutorial
+Usuario -> T : open()
+T --> Usuario : muestra la guía (visible = true)
+Usuario -> T : close()
 @enduml
 ```
 
@@ -620,10 +798,15 @@ Usuario -> S : cerrar el tutorial
 ```plantuml
 @startuml SecAleatorizar
 actor Usuario
-participant "Sistema" as S
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> S : aleatorizar parámetros
-S --> Usuario : asignar valores aleatorios válidos y actualizar la vista
+Usuario -> C : randomize()
+C -> C : randInRange() / randColor()
+C -> PS : updateParams(params)
+PS --> CV : params$
+CV -> CV : draw()
 @enduml
 ```
 
@@ -632,9 +815,16 @@ S --> Usuario : asignar valores aleatorios válidos y actualizar la vista
 ```plantuml
 @startuml SecCambiarIdioma
 actor Usuario
-participant "Sistema" as S
+participant "App" as APP
+participant "I18nService" as I18N
 
-Usuario -> S : seleccionar idioma de la interfaz
-S --> Usuario : mostrar la interfaz en el idioma elegido
+alt primer acceso (sin preferencia)
+  I18N -> I18N : detectInitialLang()
+end
+Usuario -> APP : abrir selector (langMenuOpen = true)
+Usuario -> APP : selectLang(code)
+APP -> I18N : setLang(code)
+I18N -> I18N : lang.set(code) + localStorage + document.documentElement.lang
+I18N --> Usuario : TranslatePipe (| t) reevalúa los textos
 @enduml
 ```

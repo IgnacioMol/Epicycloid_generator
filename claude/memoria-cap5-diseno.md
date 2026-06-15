@@ -1,12 +1,12 @@
 # Capítulo 5 — Diseño
 
 > Borrador del apartado de diseño de la memoria del TFG *Epicycloid Generator*.
-> **Nivel de diseño**: a diferencia del análisis (donde el sistema se trataba como una caja negra),
-> aquí los diagramas de secuencia muestran la **colaboración entre los elementos internos** del
-> sistema. No obstante, se mantienen en un plano **conceptual**: los participantes son los
-> componentes lógicos de la aplicación (panel de control, lienzo, gestor de composición, gestor de
-> idioma…), sin nombrar funciones reales ni tecnologías de implementación. Los diagramas se han
-> elaborado en Visual Paradigm; las especificaciones para reproducirlos están en el anexo final.
+> **Nivel de diseño**: los diagramas de secuencia detallan, con más profundidad que los del
+> capítulo 4, la **colaboración entre las clases reales** del sistema durante las operaciones clave.
+> Los mensajes se expresan mediante **funciones reales** (pseudocódigo) y las líneas de vida son las
+> **clases del código** (`Controls`, `Canvas`, `PatternService`, `ExportModal`, `AppComponent`,
+> `I18nService`, `TranslatePipe`), de modo que sirvan de base directa para la implementación. Los
+> diagramas se han elaborado en Visual Paradigm; las especificaciones están en el anexo final.
 
 ---
 
@@ -18,44 +18,44 @@ A diferencia de la aplicación en que se inspira esta estructura, *Epicycloid Ge
 
 ## 5.1. Diagramas de secuencia de operaciones del sistema
 
-Los diagramas de secuencia de esta sección describen el comportamiento dinámico del sistema durante las operaciones más relevantes. Para ello se identifican los siguientes **participantes** conceptuales, que representan los elementos lógicos que colaboran en cada operación:
+Los diagramas de secuencia de esta sección describen el comportamiento dinámico del sistema durante las operaciones más relevantes, con mayor profundidad que los del capítulo 4. Los mensajes se expresan mediante las **funciones reales** que se ejecutan y las líneas de vida son las **clases del código** que colaboran en cada operación:
 
 - **Usuario:** actor que interactúa con la aplicación.
-- **Panel de control:** la zona de la interfaz donde el usuario ajusta parámetros y lanza acciones.
-- **Lienzo:** la superficie donde se dibuja y anima la composición.
-- **Gestor de composición:** el elemento que coordina el estado del patrón, las sesiones de animación y el historial de trazas.
-- **Diálogo de exportación:** la ventana que reúne las opciones para guardar la composición como imagen.
-- **Selector de idioma** y **Gestor de idioma:** los elementos encargados, respectivamente, de ofrecer los idiomas disponibles y de aplicar y recordar el idioma activo.
+- **`Controls`:** el panel de control; recoge la edición de parámetros y las acciones del usuario.
+- **`Canvas`:** el lienzo; dibuja y anima la composición (integra el bucle de render de p5).
+- **`PatternService`:** el servicio que coordina los parámetros, las sesiones de animación y el historial de trazas.
+- **`ExportModal`:** el diálogo que reúne las opciones de exportación de imagen.
+- **`AppComponent`, `I18nService` y `TranslatePipe`:** intervienen en el cambio de idioma (selector, gestión del idioma activo y traducción de los textos).
 
 Se emplean fragmentos combinados —`loop` (repetición), `alt` (alternativa) y `opt` (opcional)— para reflejar la lógica condicional de cada operación.
 
 ### Diagrama de secuencia de la operación «Generar y reproducir el patrón»
 
-Este diagrama representa la operación central de la aplicación. El usuario ajusta los parámetros en el panel de control, que los traslada al gestor de composición; este, a su vez, notifica al lienzo para que refleje los cambios. Cuando el usuario reproduce la animación, el gestor inicia una nueva sesión y el lienzo entra en un ciclo (`loop`) en el que, fotograma a fotograma, calcula las posiciones y acumula las trazas resultantes, informando al gestor para el registro de la sesión. Al pausar, el gestor cierra la sesión (la registra como un bloque) y el lienzo detiene la animación, conservando la composición.
+Este diagrama representa la operación central de la aplicación. El usuario ajusta los parámetros (`onParamChange()`), que `Controls` traslada a `PatternService` mediante `updateParams()`; el cambio se propaga a `Canvas` a través del observable `params$` y se refleja en `draw()`. Al reproducir (`play()` → `dispatch('play')` → `onAction('play')`), `PatternService` abre una sesión (`beginSession()`) y `Canvas` entra en un bucle (`loop`) dentro de `draw()` que, fotograma a fotograma, calcula las posiciones, acumula las trazas (`lineHistory.push()`) y avanza la sesión (`incrementSessionFrame()`, `setCurrentState()`). Al pausar (`pause()`), `PatternService` cierra la sesión (`endSession()`), registrándola como un bloque.
 
 *(Aquí va la Figura 5.1: Diagrama de secuencia «Generar y reproducir el patrón» — ver anexo.)*
 
 ### Diagrama de secuencia de la operación «Deshacer última sesión»
 
-Este diagrama ilustra el comportamiento del deshacer incremental. Cuando el usuario solicita deshacer, un primer fragmento `alt` contempla que, si hay una animación en curso, el sistema la detiene primero y la considera la sesión a eliminar. A continuación, un segundo fragmento `alt` distingue dos casos: si queda alguna sesión, el gestor de composición retira la última, reconstruye el historial con las restantes, devuelve los parámetros previos al panel de control —que los restaura en la interfaz— y ordena al lienzo reconstruir el dibujo restante; si no queda ninguna, el lienzo simplemente se vacía. Así, cada pulsación retira un bloque más y devuelve la aplicación al estado anterior a esa sesión.
+Este diagrama ilustra el deshacer incremental. Al solicitar deshacer (`clear()`), un primer fragmento `alt` contempla que, si hay una animación en curso, se pausa primero (`pause()`, que cierra la sesión activa). Después se invoca `removeLastSession()`; un segundo `alt` distingue dos casos: si queda alguna sesión, `PatternService` retira la última (`sessions.pop()`), reconstruye el historial con las restantes (`replaySessionsToLines()`) y `Controls` restaura los parámetros previos (`updateParams()`); si no queda ninguna, el historial se vacía. En ambos casos se notifica a `Canvas` con `dispatch('undo')` → `onAction('undo')` para reconstruir o vaciar la estela.
 
 *(Aquí va la Figura 5.2: Diagrama de secuencia «Deshacer última sesión» — ver anexo.)*
 
 ### Diagrama de secuencia de la operación «Exportar imagen»
 
-Este diagrama describe el guardado de la composición como imagen. El usuario solicita la exportación desde el panel de control, que abre el diálogo de exportación; este pide al gestor de composición los datos de la composición actual y muestra una previsualización. Un fragmento `opt` recoge que el usuario puede, opcionalmente, ajustar las opciones de exportación (fondo o transparencia, zoom, resolución y visibilidad de las guías), lo que actualiza la previsualización. Finalmente, el usuario confirma la descarga y el diálogo genera y entrega el archivo de imagen.
+Este diagrama describe el guardado de la composición como imagen. El usuario abre el diálogo (`showExportModal = true`); `ExportModal` genera la previsualización (`ngAfterViewInit()` → `renderPreview()` → `buildExportCanvas()`), leyendo de `PatternService` los datos de la composición (`getCurrentParams()`, `lineHistory`). Un fragmento `opt` recoge el ajuste opcional de opciones (`onTransparentToggle()`, `onOptionChange()` → `renderPreview()`). Al confirmar (`save()`), `ExportModal` genera la imagen (`buildExportCanvas()` → `toDataURL()`) y la descarga.
 
 *(Aquí va la Figura 5.3: Diagrama de secuencia «Exportar imagen» — ver anexo.)*
 
 ### Diagrama de secuencia de la operación «Importar patrón»
 
-Este diagrama representa la recuperación de una composición previamente guardada. El usuario selecciona un archivo de patrón en el panel de control, que lo lee y valida. Un fragmento `alt` distingue dos rutas: si el archivo es válido, el gestor de composición carga las sesiones, reconstruye el dibujo a partir de ellas y lo muestra en el lienzo, y el panel de control actualiza los parámetros mostrados al estado del patrón cargado; si el archivo no es válido, el sistema descarta la importación e informa al usuario.
+Este diagrama representa la recuperación de una composición guardada. El usuario selecciona un archivo (`triggerImport()` → `onFileSelected()`), que `Controls` lee y valida (`JSON.parse()`). Un fragmento `alt` distingue dos rutas: si el archivo es válido, se reconstruyen las líneas (`replaySessionsToLines()`), se actualizan los parámetros (`updateParams()`) y se avisa a `Canvas` (`dispatch('import-json')` → `onAction('import-json')`); si no lo es, la importación se descarta en el bloque `catch`.
 
 *(Aquí va la Figura 5.4: Diagrama de secuencia «Importar patrón» — ver anexo.)*
 
 ### Diagrama de secuencia de la operación «Cambiar idioma»
 
-Este diagrama refleja tanto la detección automática como el cambio manual de idioma. Un fragmento `alt` contempla, en el primer acceso, que el gestor de idioma detecta el idioma del navegador y aplica el correspondiente a la interfaz (o el inglés por defecto si no está disponible). Para el cambio manual, el usuario abre el selector de idioma, que muestra los idiomas disponibles; al elegir uno, el gestor de idioma guarda la preferencia y actualiza de inmediato todos los textos de la interfaz, sin recargar la página.
+Este diagrama refleja la detección automática y el cambio manual de idioma. Un fragmento `alt` contempla, en el primer acceso, que `I18nService` detecta el idioma del navegador (`detectInitialLang()`). Para el cambio manual, el usuario abre el selector y elige un idioma en `AppComponent` (`selectLang()`), que invoca `setLang()` en `I18nService` (actualiza la señal `lang`, persiste la preferencia en `localStorage` y fija el atributo de idioma del documento); a continuación, el `TranslatePipe` reevalúa (`translate()`) y actualiza todos los textos, sin recargar la página.
 
 *(Aquí va la Figura 5.5: Diagrama de secuencia «Cambiar idioma» — ver anexo.)*
 
@@ -95,156 +95,166 @@ Se presentan las principales vistas de la aplicación, con el objetivo de mostra
 
 # Anexo — Construcción de los diagramas de secuencia (Capítulo 5) en Visual Paradigm
 
-> Especificación conceptual de cada diagrama de secuencia de diseño. Los participantes son elementos
-> lógicos del sistema (no componentes de software concretos ni tecnologías). Para las respuestas se
-> usa **mensaje de retorno** (flecha discontinua); para la lógica condicional, **Combined Fragment**
-> de tipo `loop`, `alt` u `opt` según se indique.
+> Especificación de cada diagrama de secuencia de diseño. Las líneas de vida son las **clases reales**
+> del código y los mensajes son **funciones reales** (pseudocódigo). Para las respuestas se usa
+> **mensaje de retorno** (flecha discontinua); para la lógica condicional, **Combined Fragment** de
+> tipo `loop`, `alt` u `opt` según se indique.
 >
 > **Pasos generales en Visual Paradigm:** `File → New → Sequence Diagram`. Coloca las líneas de vida
-> (un **Actor** `Usuario` y los **participantes** indicados en cada figura) y traza los **Message** en
-> el orden descrito. Para los fragmentos, selecciona los mensajes implicados y `right-click → Enclose
-> with → Combined Fragment`, eligiendo el tipo (`loop` / `alt` / `opt`) y escribiendo la condición.
+> (un **Actor** `Usuario` y las **clases** indicadas en cada figura) y traza los **Message** etiquetados
+> con el nombre de la función. Para los fragmentos, selecciona los mensajes implicados y `right-click →
+> Enclose with → Combined Fragment`, eligiendo el tipo (`loop` / `alt` / `opt`) y escribiendo la condición.
 
 ## A.1. Figura 5.1 — «Generar y reproducir el patrón»
 
-**Participantes:** `Usuario`, `Panel de control`, `Gestor de composición`, `Lienzo`.
+**Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
 
 ```plantuml
 @startuml SecGenerarReproducir
 actor Usuario
-participant "Panel de control" as PC
-participant "Gestor de composición" as GC
-participant "Lienzo" as L
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> PC : ajustar parámetros
-PC -> GC : actualizar parámetros
-GC -> L : aplicar nuevos parámetros
+Usuario -> C : onParamChange()
+C -> PS : updateParams(params)
+PS --> CV : params$ (suscripción)
+CV -> CV : draw()
 
-Usuario -> PC : reproducir
-PC -> GC : iniciar sesión y reproducir
-GC -> L : iniciar animación
+Usuario -> C : play()
+C -> PS : dispatch('play')
+PS --> CV : onAction('play')
+CV -> PS : beginSession(params)
 
-loop mientras la animación está activa
-  L -> L : calcular posiciones y trazar segmento
-  L -> GC : registrar traza y avanzar la sesión
+loop cada fotograma mientras isDrawing
+  CV -> CV : draw() (computa posiciones, paintLines)
+  CV -> PS : lineHistory.push(record)
+  CV -> PS : incrementSessionFrame()
+  CV -> PS : setCurrentState(...)
 end
 
-Usuario -> PC : pausar
-PC -> GC : pausar
-GC -> GC : cerrar y registrar la sesión
-GC -> L : detener la animación
-L --> Usuario : mostrar la composición
+Usuario -> C : pause()
+C -> PS : dispatch('pause')
+PS --> CV : onAction('pause')
+CV -> PS : endSession()
 @enduml
 ```
 
 ## A.2. Figura 5.2 — «Deshacer última sesión»
 
-**Participantes:** `Usuario`, `Panel de control`, `Gestor de composición`, `Lienzo`.
+**Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
 
 ```plantuml
 @startuml SecDeshacerSesion
 actor Usuario
-participant "Panel de control" as PC
-participant "Gestor de composición" as GC
-participant "Lienzo" as L
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> PC : deshacer última sesión
+Usuario -> C : clear()
 
-alt animación en curso
-  PC -> GC : pausar (cerrar la sesión activa)
+alt isPlaying
+  C -> C : pause()
+  C -> PS : dispatch('pause')
+  PS --> CV : onAction('pause') / endSession()
 end
 
-PC -> GC : eliminar la última sesión
+C -> PS : removeLastSession()
 
-alt queda alguna sesión
-  GC -> GC : quitar la última sesión y reconstruir el historial
-  GC --> PC : devolver los parámetros previos
-  PC -> PC : restaurar los parámetros en el panel
-  GC -> L : reconstruir el dibujo restante
+alt quedan sesiones
+  PS -> PS : sessions.pop()
+  PS -> PS : replaySessionsToLines(sessions)
+  PS --> C : sesión eliminada
+  C -> PS : updateParams(prevParams)
 else no quedan sesiones
-  GC -> L : vaciar el lienzo
+  PS -> PS : lineHistory = []
 end
 
-L --> Usuario : mostrar el resultado
+C -> PS : dispatch('undo')
+PS --> CV : onAction('undo') (reconstruye o vacía la estela)
+CV --> Usuario : mostrar el resultado
 @enduml
 ```
 
 ## A.3. Figura 5.3 — «Exportar imagen»
 
-**Participantes:** `Usuario`, `Panel de control`, `Diálogo de exportación`, `Gestor de composición`.
+**Líneas de vida:** `Usuario`, `Controls`, `ExportModal`, `PatternService`.
 
 ```plantuml
 @startuml SecExportarImagenDiseno
 actor Usuario
-participant "Panel de control" as PC
-participant "Diálogo de exportación" as DE
-participant "Gestor de composición" as GC
+participant "Controls" as C
+participant "ExportModal" as EM
+participant "PatternService" as PS
 
-Usuario -> PC : solicitar exportar imagen
-PC -> DE : abrir diálogo de exportación
-DE -> GC : solicitar la composición actual
-GC --> DE : datos de la composición
-DE --> Usuario : mostrar previsualización
+Usuario -> C : showExportModal = true
+C -> EM : crear <app-export-modal>
+EM -> EM : ngAfterViewInit()
+EM -> EM : renderPreview()
+EM -> PS : getCurrentParams() / lineHistory / canvasDimensions
+EM -> EM : buildExportCanvas()
+EM --> Usuario : previsualización
 
 opt ajustar opciones de exportación
-  Usuario -> DE : configurar fondo, zoom, resolución y guías
-  DE -> DE : actualizar la previsualización
+  Usuario -> EM : onTransparentToggle() / onOptionChange()
+  EM -> EM : renderPreview()
 end
 
-Usuario -> DE : confirmar descarga
-DE -> DE : generar la imagen
-DE --> Usuario : entregar el archivo de imagen
+Usuario -> EM : save()
+EM -> EM : buildExportCanvas()
+EM -> EM : toDataURL() + descarga
+EM --> Usuario : archivo PNG
 @enduml
 ```
 
 ## A.4. Figura 5.4 — «Importar patrón»
 
-**Participantes:** `Usuario`, `Panel de control`, `Gestor de composición`, `Lienzo`.
+**Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
 
 ```plantuml
 @startuml SecImportarPatronDiseno
 actor Usuario
-participant "Panel de control" as PC
-participant "Gestor de composición" as GC
-participant "Lienzo" as L
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
 
-Usuario -> PC : seleccionar archivo de patrón
-PC -> PC : leer y validar el archivo
+Usuario -> C : triggerImport()
+Usuario -> C : onFileSelected(event)
+C -> C : JSON.parse() + validar
 
 alt archivo válido
-  PC -> GC : cargar las sesiones del patrón
-  GC -> GC : reconstruir el dibujo a partir de las sesiones
-  GC -> L : mostrar la composición
-  PC -> PC : actualizar los parámetros mostrados
-  L --> Usuario : mostrar la composición importada
+  C -> PS : replaySessionsToLines(sessions)
+  C -> PS : updateParams(lastParams)
+  C -> PS : dispatch('import-json')
+  PS --> CV : onAction('import-json') (restaura estado)
+  CV --> Usuario : mostrar la composición importada
 else archivo no válido
-  PC --> Usuario : descartar la importación e informar
+  C -> C : catch (descarta la importación)
 end
 @enduml
 ```
 
 ## A.5. Figura 5.5 — «Cambiar idioma»
 
-**Participantes:** `Usuario`, `Selector de idioma`, `Gestor de idioma`, `Interfaz`.
+**Líneas de vida:** `Usuario`, `AppComponent`, `I18nService`, `TranslatePipe`.
 
 ```plantuml
 @startuml SecCambiarIdiomaDiseno
 actor Usuario
-participant "Selector de idioma" as SI
-participant "Gestor de idioma" as GI
-participant "Interfaz" as IF
+participant "AppComponent" as APP
+participant "I18nService" as I18N
+participant "TranslatePipe" as TP
 
 alt primer acceso (sin preferencia guardada)
-  GI -> GI : detectar el idioma del navegador
-  GI -> IF : aplicar el idioma detectado (o inglés por defecto)
+  I18N -> I18N : detectInitialLang()
 end
 
-Usuario -> SI : abrir el selector
-SI --> Usuario : mostrar los idiomas disponibles
-Usuario -> SI : seleccionar un idioma
-SI -> GI : establecer el idioma
-GI -> GI : guardar la preferencia
-GI -> IF : actualizar todos los textos
-IF --> Usuario : mostrar la interfaz en el idioma elegido
+Usuario -> APP : abrir selector (langMenuOpen = true)
+Usuario -> APP : selectLang(code)
+APP -> I18N : setLang(code)
+I18N -> I18N : lang.set(code) + localStorage + document.documentElement.lang
+I18N --> TP : (la señal lang cambia)
+TP -> I18N : translate(key)
+TP --> Usuario : textos actualizados
 @enduml
 ```
