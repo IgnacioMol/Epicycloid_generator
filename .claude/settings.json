@@ -10,7 +10,18 @@
       "Bash(git stash *)",
       "Bash(echo \"EXIT_MERGE=$?\")",
       "Bash(git --no-pager diff .claude/settings.json)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "PowerShell(git restore .claude/settings.json 2>$null)",
+      "PowerShell(git add claude/memoria-cap5-diseno.md)",
+      "Bash(command -v pdftotext)",
+      "Bash(command -v python)",
+      "Bash(command -v python3)",
+      "Bash(command -v py)",
+      "Bash(py --version)",
+      "Bash(pdftotext -layout \"Estudio_y_desarrollo_de_una_aplicación_móvil_para_la_seguridad_ciudadana__UrbanGuardian.pdf\" urbanguardian.txt)",
+      "Bash(rm -f urbanguardian.txt)",
+      "Bash(ls *.pdf *.md)",
+      "Bash(pdftotext -layout \"Generador de imágenes basadas en patrones orbitales y su integración a Aplicación Web.pdf\" mytfg.txt)"
     ]
   }
 }
