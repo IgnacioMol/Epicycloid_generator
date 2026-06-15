@@ -293,7 +293,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 
 ## A.2. Diagrama de clases (Figura 4.2)
 
-> Las clases llevan los **nombres reales del código** e incluyen sus **métodos** (funciones) y los atributos principales. Los componentes y servicios son clases; el modelo de datos se representa con interfaces (estereotipo `«interface»`).
+> Las clases llevan los **nombres reales del código** e incluyen sus **métodos** (funciones) y los atributos principales, expresados en **pseudocódigo** (nombres reales, sin tipos del lenguaje ni marcadores de visibilidad). Los componentes y servicios son clases; el modelo de datos se representa con interfaces (estereotipo `«interface»`).
 
 **Pasos en Visual Paradigm:**
 1. `File → New → Class Diagram`.
@@ -462,81 +462,81 @@ CU10 ..> CU10b : <<include>>
 skinparam classAttributeIconSize 0
 
 class AppComponent {
-  + langMenuOpen: boolean
-  + currentLanguageLabel(): string
-  + selectLang(code): void
+  langMenuOpen
+  currentLanguageLabel()
+  selectLang(code)
 }
 class Canvas {
-  - params: PatternParams
-  - isPaused: boolean
-  - isDrawing: boolean
-  - zoom: number
-  + ngAfterViewInit(): void
-  + ngOnDestroy(): void
-  + zoomIn(): void
-  + zoomOut(): void
-  - onAction(action): void
-  - initSketch(): void
+  params
+  isPaused
+  isDrawing
+  zoom
+  ngAfterViewInit()
+  ngOnDestroy()
+  zoomIn()
+  zoomOut()
+  onAction(action)
+  initSketch()
 }
 class Controls {
-  + params: PatternParams
-  + isPlaying: boolean
-  + showExportModal: boolean
-  + onParamChange(): void
-  + toggleMode(): void
-  + play(): void
-  + pause(): void
-  + clear(): void
-  + reset(): void
-  + randomize(): void
-  + clampParams(): void
-  + exportJson(): void
-  + triggerImport(): void
+  params
+  isPlaying
+  showExportModal
+  onParamChange()
+  toggleMode()
+  play()
+  pause()
+  clear()
+  reset()
+  randomize()
+  clampParams()
+  exportJson()
+  triggerImport()
 }
 class ExportModal {
-  + options: ExportOptions
-  + isTransparent: boolean
-  + exportZoom: number
-  + exportScale: number
-  + renderPreview(): void
-  - buildExportCanvas(): HTMLCanvasElement
-  + onOptionChange(): void
-  + onTransparentToggle(): void
-  + save(): void
+  options
+  isTransparent
+  exportZoom
+  exportScale
+  renderPreview()
+  buildExportCanvas()
+  onOptionChange()
+  onTransparentToggle()
+  save()
 }
 class Tutorial {
-  + visible: boolean
-  + dontShowAgain: boolean
-  + open(): void
-  + close(): void
+  visible
+  dontShowAgain
+  open()
+  close()
 }
 class PatternService {
-  + lineHistory: LineRecord[]
-  + sessions: SimulationSession[]
-  + params$
-  + action$
-  + updateParams(p): void
-  + getCurrentParams(): PatternParams
-  + dispatch(a): void
-  + beginSession(p): void
-  + incrementSessionFrame(): void
-  + setCurrentState(...): void
-  + endSession(): void
-  + snapshotActiveSession(): SimulationSession
-  + removeLastSession(): SimulationSession
-  + replaySessionsToLines(s): LineRecord[]
-  + clearSessions(): void
+  lineHistory
+  sessions
+  params$
+  action$
+  updateParams(params)
+  getCurrentParams()
+  dispatch(action)
+  beginSession(params)
+  incrementSessionFrame()
+  setCurrentState(...)
+  endSession()
+  snapshotActiveSession()
+  removeLastSession()
+  replaySessionsToLines(sessions)
+  clearSessions()
 }
 class I18nService {
-  + lang: Signal<Lang>
-  + languages: LanguageOption[]
-  + setLang(l): void
-  + toggle(): void
-  + translate(key): string
-  - detectInitialLang(): Lang
+  lang
+  languages
+  setLang(lang)
+  toggle()
+  translate(key)
+  detectInitialLang()
 }
 class TranslatePipe {
-  + transform(key): string
+  transform(key)
 }
 interface PatternParams {
   orbit1Radius / orbit2Radius
@@ -549,7 +549,7 @@ interface PatternParams {
 }
 interface SimulationSession {
   sessionIndex
-  params: PatternParams
+  params
   frameCount / durationSeconds
   endAngle1 / endAngle2
   endTipX / endTipY / endFirstPoint
