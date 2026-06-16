@@ -21,7 +21,8 @@
       "Bash(pdftotext -layout \"Estudio_y_desarrollo_de_una_aplicación_móvil_para_la_seguridad_ciudadana__UrbanGuardian.pdf\" urbanguardian.txt)",
       "Bash(rm -f urbanguardian.txt)",
       "Bash(ls *.pdf *.md)",
-      "Bash(pdftotext -layout \"Generador de imágenes basadas en patrones orbitales y su integración a Aplicación Web.pdf\" mytfg.txt)"
+      "Bash(pdftotext -layout \"Generador de imágenes basadas en patrones orbitales y su integración a Aplicación Web.pdf\" mytfg.txt)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
