@@ -75,11 +75,11 @@ Se ha optado por una paleta equilibrada, en la que predominan los tonos oscuros 
 
 **Tipografía**
 
-La fuente utilizada es de tipo *sans-serif*, sencilla y de tamaño medio, lo que facilita la lectura rápida y evita la fatiga visual. Se emplean distintos pesos para diferenciar títulos, subtítulos y textos secundarios: la negrita se reserva para títulos y botones importantes, con el fin de guiar la atención del usuario, mientras que los textos de ayuda y las descripciones auxiliares utilizan un tamaño menor y un tono más tenue.
+La aplicación emplea la fuente *sans-serif* del sistema (la pila tipográfica por defecto del framework de estilos), una elección sencilla y de tamaño medio que facilita la lectura rápida, evita la fatiga visual y ofrece un aspecto nativo y coherente en cada plataforma sin necesidad de cargar fuentes externas. Se emplean distintos pesos para diferenciar títulos, subtítulos y textos secundarios: la negrita se reserva para títulos y botones importantes, con el fin de guiar la atención del usuario, mientras que los textos de ayuda y las descripciones auxiliares utilizan un tamaño menor y un tono más tenue. Por su parte, los valores numéricos de los parámetros usan una fuente monoespaciada, que mantiene las cifras alineadas y mejora su legibilidad.
 
 **Distribución de la interfaz**
 
-La disposición de los elementos sigue una estructura jerárquica y lógica dentro de una única vista, dividida en dos zonas: el **lienzo** ocupa la mayor parte de la pantalla (aproximadamente el 70 %) a la izquierda, y el **panel de control** (aproximadamente el 30 %) a la derecha. Así, parámetros y resultado conviven sin necesidad de cambiar de pantalla, reforzando la edición en tiempo real. Dentro del panel, los controles se ordenan de lo general a lo específico (modo de visualización, órbita 1, órbita 2, ajustes visuales y, plegados por defecto, los parámetros avanzados), y las acciones principales quedan siempre accesibles en la parte inferior. Los elementos secundarios —controles de zoom, ayuda y selector de idioma— se sitúan en esquinas, accesibles pero sin entorpecer la visualización de la composición. Este diseño minimiza el número de pasos para acceder a las funciones relevantes.
+La disposición de los elementos sigue una estructura jerárquica y lógica dentro de una única vista, dividida en dos zonas: el **lienzo** ocupa la mayor parte de la pantalla (aproximadamente el 70 %) a la izquierda, y el **panel de control** (aproximadamente el 30 %) a la derecha. Así, parámetros y resultado conviven sin necesidad de cambiar de pantalla, reforzando la edición en tiempo real. Dentro del panel, los controles se ordenan de lo general a lo específico (un desplegable de ejemplos predefinidos como punto de partida opcional, el modo de visualización, órbita 1, órbita 2, ajustes visuales y, plegados por defecto, los parámetros avanzados), y las acciones principales quedan siempre accesibles en la parte inferior. Los elementos secundarios —controles de zoom, ayuda y selector de idioma— se sitúan en esquinas, accesibles pero sin entorpecer la visualización de la composición. Este diseño minimiza el número de pasos para acceder a las funciones relevantes.
 
 **Accesibilidad y adaptabilidad**
 
@@ -87,7 +87,7 @@ El diseño está optimizado para pantallas de diferentes tamaños y resoluciones
 
 ### 5.2.2. Mockups
 
-Se presentan las principales vistas de la aplicación, con el objetivo de mostrar cómo se ha plasmado gráficamente la experiencia de usuario planteada durante las fases de diseño. Entre ellas destacan: la vista principal con el lienzo y el panel de control; el panel con sus secciones de parámetros (incluida la de parámetros avanzados desplegada); el diálogo de exportación de imagen con su previsualización y opciones; el tutorial de bienvenida; y el selector de idioma desplegado.
+Se presentan las principales vistas de la aplicación, con el objetivo de mostrar cómo se ha plasmado gráficamente la experiencia de usuario planteada durante las fases de diseño. Entre ellas destacan: la vista principal con el lienzo y el panel de control; el panel con sus secciones de parámetros (incluida la de parámetros avanzados desplegada); el desplegable de ejemplos predefinidos; el diálogo de exportación de imagen con su previsualización y opciones; el tutorial de bienvenida; y el selector de idioma desplegado.
 
 *(Aquí van las Figuras 5.6 y siguientes: capturas/mockups de las vistas de la aplicación.)*
 

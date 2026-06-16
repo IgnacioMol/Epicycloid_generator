@@ -34,6 +34,10 @@ A petición del usuario, `claude/memoria-cap4-analisis.md` se ajustó para refle
 ### Idioma nuevo: catalán (RF14)
 Añadido **catalán** (`ca`) como 5.º idioma, repitiendo los 4 toques del sistema i18n: `ca.json` (traducción completa de es.json, incl. presets), import + registro en `DICTS`, código en el tipo `Lang` y entrada `{ code: 'ca', label: 'Català' }` en `LANGUAGES`. Selector y detección de navegador se actualizan solos. Build correcto.
 
+### Documentación de la memoria (Cap. 5 — Diseño)
+- Se valoró añadir un diagrama de secuencia por cada caso de uso en el cap. 5, pero al comparar con el TFG de referencia (que en su cap. 5 solo muestra ~3 «operaciones clave») se descartó: el cap. 5 mantiene su subconjunto curado de 5 operaciones (la paridad por caso de uso ya está en el cap. 4). No se tocaron los diagramas de secuencia del cap. 5.
+- En **5.2 Diseño visual** (que ya estaba redactado) se integró la funcionalidad de presets: el desplegable de ejemplos predefinidos se menciona en «Distribución de la interfaz» y en la lista de mockups (5.2.2).
+
 ### Estado al cierre de sesión
 - RF7 completado y documentado; catalán añadido; build de producción correcto. Único pendiente del proyecto: **RNF12 (verificar despliegue en Netlify)**.
 
