@@ -18,44 +18,35 @@ A diferencia de la aplicación en que se inspira esta estructura, *Epicycloid Ge
 
 ## 5.1. Diagramas de secuencia de operaciones del sistema
 
-Los diagramas de secuencia de esta sección describen el comportamiento dinámico del sistema durante las operaciones más relevantes, con mayor profundidad que los del capítulo 4. Los mensajes se expresan mediante las **funciones reales** que se ejecutan y las líneas de vida son las **clases del código** que colaboran en cada operación:
-
-- **Usuario:** actor que interactúa con la aplicación.
-- **`Controls`:** el panel de control; recoge la edición de parámetros y las acciones del usuario.
-- **`Canvas`:** el lienzo; dibuja y anima la composición (integra el bucle de render de p5).
-- **`PatternService`:** el servicio que coordina los parámetros, las sesiones de animación y el historial de trazas.
-- **`ExportModal`:** el diálogo que reúne las opciones de exportación de imagen.
-- **`AppComponent`, `I18nService` y `TranslatePipe`:** intervienen en el cambio de idioma (selector, gestión del idioma activo y traducción de los textos).
-
-Se emplean fragmentos combinados —`loop` (repetición), `alt` (alternativa) y `opt` (opcional)— para reflejar la lógica condicional de cada operación.
+Los diagramas de secuencia de esta sección describen el comportamiento dinámico del sistema durante sus operaciones más relevantes. En ellos intervienen el usuario y los componentes que colaboran en cada operación —principalmente el panel de control, el lienzo y el servicio que coordina los parámetros, las sesiones y el historial de trazas, además del diálogo de exportación y los elementos encargados del idioma—. Se emplean fragmentos combinados (`loop`, `alt` y `opt`) para reflejar la repetición y la lógica condicional de cada flujo.
 
 ### Diagrama de secuencia de la operación «Generar y reproducir el patrón»
 
-Este diagrama representa la operación central de la aplicación. El usuario ajusta los parámetros (`onParamChange()`), que `Controls` traslada a `PatternService` mediante `updateParams()`; el cambio se propaga a `Canvas` a través del observable `params$` y se refleja en `draw()`. Al reproducir (`play()` → `dispatch('play')` → `onAction('play')`), `PatternService` abre una sesión (`beginSession()`) y `Canvas` entra en un bucle (`loop`) dentro de `draw()` que, fotograma a fotograma, calcula las posiciones, acumula las trazas (`lineHistory.push()`) y avanza la sesión (`incrementSessionFrame()`, `setCurrentState()`). Al pausar (`pause()`), `PatternService` cierra la sesión (`endSession()`), registrándola como un bloque.
+Este diagrama representa la operación central de la aplicación. El usuario ajusta los parámetros en el panel de control y el sistema actualiza al instante la representación en el lienzo. Al reproducir, el sistema inicia una sesión de animación y, mediante un bucle (`loop`), dibuja la composición fotograma a fotograma acumulando las trazas resultantes. Cuando el usuario pausa, el sistema cierra la sesión y la registra como un bloque, conservando el dibujo acumulado.
 
 *(Aquí va la Figura 5.1: Diagrama de secuencia «Generar y reproducir el patrón» — ver anexo.)*
 
 ### Diagrama de secuencia de la operación «Deshacer última sesión»
 
-Este diagrama ilustra el deshacer incremental. Al solicitar deshacer (`clear()`), un primer fragmento `alt` contempla que, si hay una animación en curso, se pausa primero (`pause()`, que cierra la sesión activa). Después se invoca `removeLastSession()`; un segundo `alt` distingue dos casos: si queda alguna sesión, `PatternService` retira la última (`sessions.pop()`), reconstruye el historial con las restantes (`replaySessionsToLines()`) y `Controls` restaura los parámetros previos (`updateParams()`); si no queda ninguna, el historial se vacía. En ambos casos se notifica a `Canvas` con `dispatch('undo')` → `onAction('undo')` para reconstruir o vaciar la estela.
+Este diagrama ilustra el deshacer incremental de la composición. Al solicitar deshacer, un primer bloque condicional (`alt`) contempla que, si hay una animación en curso, el sistema la pausa primero para tomarla como la sesión a eliminar. A continuación, un segundo bloque alternativo distingue dos casos: si quedan sesiones anteriores, el sistema retira la última, reconstruye el dibujo con las restantes y restaura los parámetros previos; si no queda ninguna, el lienzo se vacía. En ambos casos, la estela se actualiza para reflejar el resultado.
 
 *(Aquí va la Figura 5.2: Diagrama de secuencia «Deshacer última sesión» — ver anexo.)*
 
 ### Diagrama de secuencia de la operación «Exportar imagen»
 
-Este diagrama describe el guardado de la composición como imagen. El usuario abre el diálogo (`showExportModal = true`); `ExportModal` genera la previsualización (`ngAfterViewInit()` → `renderPreview()` → `buildExportCanvas()`), leyendo de `PatternService` los datos de la composición (`getCurrentParams()`, `lineHistory`). Un fragmento `opt` recoge el ajuste opcional de opciones (`onTransparentToggle()`, `onOptionChange()` → `renderPreview()`). Al confirmar (`save()`), `ExportModal` genera la imagen (`buildExportCanvas()` → `toDataURL()`) y la descarga.
+Este diagrama describe el guardado de la composición como imagen. El usuario abre el diálogo de exportación y el sistema genera una previsualización a partir de la composición actual. Un bloque opcional (`opt`) recoge el ajuste de las opciones de exportación —fondo, zoom, resolución y elementos visibles—, que actualizan la previsualización. Al confirmar, el sistema genera la imagen final y la descarga.
 
 *(Aquí va la Figura 5.3: Diagrama de secuencia «Exportar imagen» — ver anexo.)*
 
 ### Diagrama de secuencia de la operación «Importar patrón»
 
-Este diagrama representa la recuperación de una composición guardada. El usuario selecciona un archivo (`triggerImport()` → `onFileSelected()`), que `Controls` lee y valida (`JSON.parse()`). Un fragmento `alt` distingue dos rutas: si el archivo es válido, se reconstruyen las líneas (`replaySessionsToLines()`), se actualizan los parámetros (`updateParams()`) y se avisa a `Canvas` (`dispatch('import-json')` → `onAction('import-json')`); si no lo es, la importación se descarta en el bloque `catch`.
+Este diagrama representa la recuperación de una composición guardada. El usuario selecciona un archivo, que el sistema lee y valida. Un bloque condicional (`alt`) distingue dos rutas: si el archivo es válido, el sistema reconstruye el dibujo y actualiza los parámetros mostrados al estado del patrón cargado; si no lo es, la importación se descarta.
 
 *(Aquí va la Figura 5.4: Diagrama de secuencia «Importar patrón» — ver anexo.)*
 
 ### Diagrama de secuencia de la operación «Cambiar idioma»
 
-Este diagrama refleja la detección automática y el cambio manual de idioma. Un fragmento `alt` contempla, en el primer acceso, que `I18nService` detecta el idioma del navegador (`detectInitialLang()`). Para el cambio manual, el usuario abre el selector y elige un idioma en `AppComponent` (`selectLang()`), que invoca `setLang()` en `I18nService` (actualiza la señal `lang`, persiste la preferencia en `localStorage` y fija el atributo de idioma del documento); a continuación, el `TranslatePipe` reevalúa (`translate()`) y actualiza todos los textos, sin recargar la página.
+Este diagrama refleja la detección automática y el cambio manual de idioma. Un bloque condicional (`alt`) contempla que, en el primer acceso, el sistema detecta el idioma del navegador. Para el cambio manual, el usuario abre el selector y elige un idioma; el sistema actualiza de inmediato todos los textos de la interfaz y recuerda la preferencia para futuras visitas, sin recargar la página.
 
 *(Aquí va la Figura 5.5: Diagrama de secuencia «Cambiar idioma» — ver anexo.)*
 
@@ -75,7 +66,7 @@ Se ha optado por una paleta equilibrada, en la que predominan los tonos oscuros 
 
 **Tipografía**
 
-La aplicación emplea la fuente *sans-serif* del sistema (la pila tipográfica por defecto del framework de estilos), una elección sencilla y de tamaño medio que facilita la lectura rápida, evita la fatiga visual y ofrece un aspecto nativo y coherente en cada plataforma sin necesidad de cargar fuentes externas. Se emplean distintos pesos para diferenciar títulos, subtítulos y textos secundarios: la negrita se reserva para títulos y botones importantes, con el fin de guiar la atención del usuario, mientras que los textos de ayuda y las descripciones auxiliares utilizan un tamaño menor y un tono más tenue. Por su parte, los valores numéricos de los parámetros usan una fuente monoespaciada, que mantiene las cifras alineadas y mejora su legibilidad.
+La aplicación emplea la fuente *sans-serif* del sistema (la pila tipográfica por defecto del framework de estilos), sencilla y de tamaño medio, lo que facilita la lectura y ofrece un aspecto nativo en cada plataforma sin cargar fuentes externas. Se usan distintos pesos para diferenciar títulos, subtítulos y textos secundarios —la negrita se reserva para títulos y botones importantes—, y los valores numéricos de los parámetros emplean una fuente monoespaciada que mantiene las cifras alineadas.
 
 **Distribución de la interfaz**
 
