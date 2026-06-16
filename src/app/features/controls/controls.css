@@ -38,6 +38,24 @@
   color: #5a62a0;
 }
 
+.preset-select {
+  background: #1a1a32;
+  color: #a0a8d0;
+  border: 1px solid #3a3a60;
+}
+
+.preset-select:focus {
+  background: #22224a;
+  color: #d0d8f0;
+  border-color: #6080c0;
+  box-shadow: none;
+}
+
+.preset-select option {
+  background: #1a1a32;
+  color: #a0a8d0;
+}
+
 .lock-banner {
   background: #1a1a32;
   border: 1px solid #4a4a80;

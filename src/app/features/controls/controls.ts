@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { DEFAULT_PARAMS, PatternService } from '../../core/pattern.service';
 import { PatternParams, SimulationSession } from '../../models/pattern-params.model';
 import { ExportModal } from '../export-modal/export-modal';
+import { PATTERN_PRESETS } from '../presets/presets';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { I18nService } from '../../core/i18n/i18n.service';
 
@@ -45,11 +46,32 @@ export class Controls {
   isPlaying = false;
   showExportModal = false;
 
+  /** Catálogo de ejemplos predefinidos (RF7) para el desplegable. */
+  readonly presets = PATTERN_PRESETS;
+  /** Id del ejemplo seleccionado; '' = ninguno (lienzo en blanco, valores por defecto). */
+  selectedPresetId = '';
+
   private readonly i18n = inject(I18nService);
 
   constructor(public patternService: PatternService) {}
 
   onParamChange(): void {
+    // Una edición manual deja de corresponder a un ejemplo: el desplegable vuelve a vacío.
+    this.selectedPresetId = '';
+    this.patternService.updateParams({ ...this.params });
+  }
+
+  /**
+   * Aplica el ejemplo elegido en el desplegable (RF7). Fusiona sus parámetros sobre
+   * los valores por defecto, de modo que el panel queda en un estado completo y
+   * reproducible; al pulsar "Play" se dibuja el patrón guardado. La opción vacía
+   * ('') restablece los parámetros por defecto (lienzo en blanco).
+   */
+  applyPreset(): void {
+    const preset = this.presets.find((p) => p.id === this.selectedPresetId);
+    this.params = preset
+      ? { ...DEFAULT_PARAMS, ...preset.params }
+      : { ...DEFAULT_PARAMS };
     this.patternService.updateParams({ ...this.params });
   }
 
@@ -92,6 +114,7 @@ export class Controls {
 
   reset(): void {
     this.params = { ...DEFAULT_PARAMS };
+    this.selectedPresetId = '';
     this.isPlaying = false;
     this.patternService.updateParams(this.params);
     this.patternService.dispatch('reset');
@@ -113,6 +136,7 @@ export class Controls {
     }
     next.lineColor = this.randColor();
     this.params = next;
+    this.selectedPresetId = '';
     this.patternService.updateParams({ ...this.params });
   }
 
@@ -209,6 +233,7 @@ export class Controls {
         const lastParams: PatternParams = lastSession.params;
 
         this.isPlaying = false;
+        this.selectedPresetId = '';
         this.patternService.endSession();
         this.params = { ...lastParams };
         this.patternService.updateParams(lastParams);

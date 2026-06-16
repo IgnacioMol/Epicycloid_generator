@@ -12,6 +12,19 @@
   <!-- ── ZONA BLOQUEADA DURANTE PLAY ── -->
   <div [class.params-locked]="isPlaying">
 
+    <!-- ── EJEMPLOS (PRESETS) ── -->
+    <div class="mb-4">
+      <label class="form-label small d-block mb-1" for="presetSelect">{{ 'controls.examples' | t }}</label>
+      <select id="presetSelect" class="form-select form-select-sm preset-select"
+              [(ngModel)]="selectedPresetId"
+              (ngModelChange)="applyPreset()">
+        <option value="">{{ 'controls.examplesNone' | t }}</option>
+        @for (preset of presets; track preset.id) {
+          <option [value]="preset.id">{{ ('controls.presets.' + preset.id) | t }}</option>
+        }
+      </select>
+    </div>
+
     <!-- ── MODO DE VISUALIZACIÓN ── -->
     <div class="mb-4 p-3 rounded" style="background:#1a1a32; border:1px solid #3a3a60;">
       <p class="mb-2 small text-uppercase fw-semibold" style="color:#5a62a0; letter-spacing:.08em;">

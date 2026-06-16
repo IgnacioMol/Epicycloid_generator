@@ -12,7 +12,7 @@
 | RF4 | La aplicación deberá permitir iniciar, pausar y reiniciar la animación de los patrones generados. | ✅ Hecho — botones Play / Pausa vía `PatternService.dispatch()` |
 | RF5 | El sistema deberá permitir limpiar el lienzo y generar una nueva composición desde cero. | ✅ Hecho — botón Limpiar lienzo |
 | RF6 | El usuario deberá poder guardar la composición generada como imagen en un formato estándar. | ✅ Hecho — `ExportModal`: fondo, zoom, resolución 1×/2×/4×, nombre de archivo, preview en tiempo real, exporta PNG |
-| RF7 | La aplicación deberá permitir almacenar configuraciones de parámetros predefinidas y recuperarlas posteriormente. | ❌ **No hecho** — el componente `Presets` es un placeholder vacío y no está enrutado. (Existe export/import de patrones en JSON, pero no son *presets* con nombre persistidos) |
+| RF7 | La aplicación deberá permitir almacenar configuraciones de parámetros predefinidas y recuperarlas posteriormente. | ✅ Hecho — desplegable de **Ejemplos** en el panel: catálogo `PATTERN_PRESETS` (`features/presets/presets.ts`) con configuraciones predefinidas; `Controls.applyPreset()` ajusta los parámetros al elegir uno (opción vacía = lienzo en blanco). Complementado por export/import de patrones en JSON. |
 | RF8 | El sistema deberá permitir alternar entre distintos modos de visualización (modo curva epicicloidal y modo intersección de líneas). | ✅ Hecho — botón de alternancia en el panel de control; ambos modos implementados |
 | RF9 | La aplicación deberá ofrecer controles interactivos (sliders, selectores, campos numéricos) para facilitar la manipulación de parámetros. | ✅ Hecho — sliders en fases e inclinación; inputs numéricos en el resto; selector de color nativo |
 | RF10 | El sistema deberá mostrar en pantalla los valores actuales de los parámetros utilizados en la generación del patrón. | ✅ Hecho — los inputs numéricos muestran y actualizan el valor actual en tiempo real |
@@ -40,10 +40,9 @@
 
 ## Resumen de estado
 
-- **Funcionales:** 13 de 14 completos. **Falta solo RF7 (presets con nombre persistidos).**
+- **Funcionales:** 14 de 14 completos.
 - **No funcionales:** todos cumplidos salvo **RNF12**, que está *configurado* pero pendiente de confirmar el despliegue público; y **RNF11**, cumplido por stack pero sin verificación manual cruzada de navegadores.
 
 ### Lo que queda por hacer
-1. **RF7 — Presets**: implementar el componente `Presets` (guardar/recuperar configuraciones con nombre, p. ej. en `localStorage`) y enrutarlo/integrarlo en la UI.
-2. **RNF12 — Despliegue**: completar y verificar el despliegue en Netlify (el `netlify.toml` ya está listo).
-3. **RNF11 — Verificación**: probar manualmente en Chrome, Firefox, Edge y Opera.
+1. **RNF12 — Despliegue**: completar y verificar el despliegue en Netlify (el `netlify.toml` ya está listo).
+2. **RNF11 — Verificación**: probar manualmente en Chrome, Firefox, Edge y Opera.

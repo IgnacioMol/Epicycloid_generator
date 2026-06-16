@@ -36,7 +36,16 @@
     "reset": "↺ Atur ulang",
     "exportImage": "↓ Ekspor gambar",
     "exportJson": "↓ Ekspor pola (JSON)",
-    "importJson": "↑ Impor pola (JSON)"
+    "importJson": "↑ Impor pola (JSON)",
+    "examples": "Contoh",
+    "examplesNone": "— Kanvas kosong —",
+    "presets": {
+      "fiveRose": "Mawar lima kelopak",
+      "eightStar": "Bintang delapan sudut",
+      "epiFlower": "Bunga episikloida",
+      "ellipticMandala": "Mandala elips",
+      "hypnoticSpiral": "Spiral hipnotis"
+    }
   },
   "tutorial": {
     "helpTitle": "Bantuan / Tutorial",

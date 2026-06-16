@@ -36,7 +36,16 @@
     "reset": "↺ Reset",
     "exportImage": "↓ Exportar imagen",
     "exportJson": "↓ Exportar patrón (JSON)",
-    "importJson": "↑ Importar patrón (JSON)"
+    "importJson": "↑ Importar patrón (JSON)",
+    "examples": "Ejemplos",
+    "examplesNone": "— Lienzo en blanco —",
+    "presets": {
+      "fiveRose": "Rosa de cinco pétalos",
+      "eightStar": "Estrella de ocho puntas",
+      "epiFlower": "Flor epicicloidal",
+      "ellipticMandala": "Mandala elíptico",
+      "hypnoticSpiral": "Espiral hipnótica"
+    }
   },
   "tutorial": {
     "helpTitle": "Ayuda / Tutorial",

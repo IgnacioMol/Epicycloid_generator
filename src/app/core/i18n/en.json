@@ -36,7 +36,16 @@
     "reset": "↺ Reset",
     "exportImage": "↓ Export image",
     "exportJson": "↓ Export pattern (JSON)",
-    "importJson": "↑ Import pattern (JSON)"
+    "importJson": "↑ Import pattern (JSON)",
+    "examples": "Examples",
+    "examplesNone": "— Blank canvas —",
+    "presets": {
+      "fiveRose": "Five-petal rose",
+      "eightStar": "Eight-point star",
+      "epiFlower": "Epicycloidal flower",
+      "ellipticMandala": "Elliptic mandala",
+      "hypnoticSpiral": "Hypnotic spiral"
+    }
   },
   "tutorial": {
     "helpTitle": "Help / Tutorial",

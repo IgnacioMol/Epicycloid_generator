@@ -4,6 +4,35 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-16 (sesión 6) — RF7: ejemplos predefinidos (presets) en desplegable
+
+### Objetivo
+Completar el **RF7** (almacenar configuraciones de parámetros predefinidas y recuperarlas). Se implementa como un **desplegable de "Ejemplos"** en el panel de control con patrones ya creados; por defecto está vacío (lienzo en blanco con los parámetros por defecto). Al elegir un ejemplo, los parámetros del panel se ajustan automáticamente y, al pulsar **Play**, se dibuja el patrón guardado.
+
+### Cambios
+- **`features/presets/presets.ts`**: el scaffold vacío del componente (no enrutado en ningún sitio) se reconvierte en un **módulo de datos** que exporta la interfaz `PatternPreset` y el catálogo `PATTERN_PRESETS` (5 ejemplos). Cada preset guarda solo los parámetros que difieren de `DEFAULT_PARAMS` (`Partial<PatternParams>`), que se fusionan al aplicarlo. Eliminados `presets.html`, `presets.css` y `presets.spec.ts` (ya no es un componente).
+- **`controls.ts`**: nuevo `selectedPresetId` y `applyPreset()`. La opción vacía (`''`) restablece los valores por defecto. Una edición manual, `randomize()`, `reset()` e importar JSON ponen el desplegable de nuevo en vacío (el estado ya no corresponde a un ejemplo con nombre).
+- **`controls.html`**: `<select>` de ejemplos en la parte superior de la zona de parámetros (se bloquea durante Play como el resto de parámetros). Nombres traducibles vía clave dinámica `controls.presets.<id>`.
+- **i18n**: claves `controls.examples`, `controls.examplesNone` y `controls.presets.*` en los 4 idiomas (es/en/id/cs).
+- **`controls.css`**: estilo `.preset-select` acorde al tema oscuro.
+
+### Ejemplos incluidos
+Rosa de cinco pétalos y Estrella de ocho puntas (modo líneas), Flor epicicloidal y Espiral hipnótica (modo curva), y Mandala elíptico (líneas con factores elípticos e inclinación).
+
+### Documentación de la memoria (Cap. 4 — Análisis)
+Hasta ahora el RF7 se justificaba solo con CU9/CU10 (export/import JSON); la palabra «predefinidas» del RF7 encaja con los presets, que no estaban documentados. Cambios en `claude/memoria-cap4-analisis.md`:
+- **Nuevo CU14 «Aplicar ejemplo predefinido»** (tabla de flujo completa).
+- Diagrama de **casos de uso** (Fig. 4.1): añadido el caso y `Usuario --> CU14` (spec VP + PlantUML).
+- Diagrama de **clases** (Fig. 4.2): `Controls` gana `selectedPresetId`/`presets` + `applyPreset()`; nueva interfaz `«interface» PatternPreset` (`id`, `params`) y relaciones `Controls → PatternPreset → PatternParams`.
+- Nuevo diagrama de **secuencia** (Fig. 4.16) con fragmento `alt` (ejemplo elegido / opción vacía).
+- **Trazabilidad**: RF7 → **CU14, CU9, CU10**.
+- `claude/requirements.md`: RF7 marcado como hecho; resumen a 14/14 funcionales.
+
+### Estado al cierre de sesión
+- RF7 completado y documentado; build de producción correcto. Único pendiente del proyecto: **RNF12 (verificar despliegue en Netlify)**.
+
+---
+
 ## 2026-06-14 (sesión 5) — Más idiomas, tutorial ampliado, "deshacer sesión" y documentación
 
 ### Idiomas adicionales (RF14)

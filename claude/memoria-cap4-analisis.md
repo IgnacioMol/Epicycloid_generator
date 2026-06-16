@@ -198,6 +198,19 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Postcondiciones** | La interfaz se muestra en el idioma elegido, que queda recordado. |
 | **Flujo alternativo** | 1a. **Detección automática:** en el primer acceso, antes de cualquier elección manual, el sistema determina el idioma a partir de la configuración del navegador del usuario y muestra la interfaz en ese idioma; si el idioma del navegador no está disponible, utiliza el idioma predeterminado (inglés). |
 
+**CU14: Aplicar ejemplo predefinido**
+
+| Campo | Contenido |
+|---|---|
+| **ID del caso de uso** | CU14 — Aplicar ejemplo predefinido |
+| **Actor principal** | Usuario |
+| **Descripción** | El usuario selecciona uno de los ejemplos de patrones predefinidos que ofrece la aplicación y el sistema ajusta automáticamente todos los parámetros a esa configuración, dejando la composición lista para reproducirse. |
+| **Requisitos cumplidos** | RF7 |
+| **Precondiciones** | Ninguna. La animación no debe estar en curso. |
+| **Flujo de eventos** | 1. El usuario abre el desplegable de ejemplos. 2. El usuario elige uno de los ejemplos disponibles. 3. El sistema ajusta todos los parámetros del panel a la configuración guardada del ejemplo. 4. El usuario pulsa «Play» y el sistema dibuja el patrón correspondiente. |
+| **Postcondiciones** | Los parámetros del panel reflejan el ejemplo elegido y la composición se genera al reproducir. |
+| **Flujo alternativo** | 2a. **Lienzo en blanco:** el desplegable parte de una opción vacía; si el usuario la mantiene o la vuelve a elegir, el sistema restablece los parámetros por defecto. 3a. Si la animación está en curso, la acción no está disponible; el usuario debe pausar antes de aplicar un ejemplo. 4a. Si tras aplicar el ejemplo el usuario modifica manualmente un parámetro, el desplegable vuelve a la opción vacía, pues la configuración ya no corresponde a un ejemplo con nombre. |
+
 ## 4.2. Diagrama de clases
 
 En esta sección se presenta el diagrama de clases de la aplicación. A fin de que sirva de base directa para la implementación, las clases se nombran igual que en el código y se incluyen sus **métodos** (funciones) y los atributos más relevantes, de modo que el pseudocódigo de los diagramas guarde correspondencia con las clases reales del sistema.
@@ -206,15 +219,15 @@ La aplicación se estructura en torno a varios **componentes** de interfaz y dos
 
 La lógica de estado se concentra en el servicio `PatternService`, que mantiene los parámetros activos, el historial de trazas (`lineHistory`) y las sesiones de animación (`sessions`), y ofrece las operaciones para reproducir, pausar, deshacer, exportar y reconstruir la composición. La internacionalización se gestiona en el servicio `I18nService` (idioma activo, detección y persistencia), apoyado por el `TranslatePipe`, que traduce los textos de las plantillas.
 
-El modelo de datos se define mediante las interfaces `PatternParams` (todos los parámetros matemáticos y visuales de la composición), `SimulationSession` (un bloque de animación con sus parámetros y estado final), `LineRecord` (un segmento dibujado) y `ExportOptions` (las opciones del diálogo de exportación).
+El modelo de datos se define mediante las interfaces `PatternParams` (todos los parámetros matemáticos y visuales de la composición), `SimulationSession` (un bloque de animación con sus parámetros y estado final), `LineRecord` (un segmento dibujado), `ExportOptions` (las opciones del diálogo de exportación) y `PatternPreset` (un ejemplo predefinido, con su identificador y la configuración de parámetros que aplica). El catálogo de ejemplos predefinidos (`PATTERN_PRESETS`) que ofrece el desplegable se construye a partir de esta última interfaz y lo consulta `Controls`.
 
-Las relaciones principales son: `AppComponent` *contiene* a `Canvas`, `Controls` y `Tutorial`, y *usa* `I18nService`; `Controls`, `Canvas` y `ExportModal` *usan* `PatternService`; `Controls` *crea* `ExportModal`; `TranslatePipe` *usa* `I18nService`; y `PatternService` *gestiona* colecciones de `SimulationSession` y `LineRecord`, definidas a partir de `PatternParams`.
+Las relaciones principales son: `AppComponent` *contiene* a `Canvas`, `Controls` y `Tutorial`, y *usa* `I18nService`; `Controls`, `Canvas` y `ExportModal` *usan* `PatternService`; `Controls` *crea* `ExportModal` y *usa* el catálogo de `PatternPreset`; `TranslatePipe` *usa* `I18nService`; y `PatternService` *gestiona* colecciones de `SimulationSession` y `LineRecord`, definidas a partir de `PatternParams`.
 
 *(Aquí va la Figura 4.2: Diagrama de clases — ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.3. Diagramas de secuencia del sistema
 
-Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones a lo largo del tiempo durante la ejecución de cada caso de uso. En estos diagramas, en lugar de tratar el sistema como una única caja negra, se reflejan los **componentes reales** que colaboran y las **funciones** (en pseudocódigo) que se invocan en cada paso, lo que permite trazar cada caso de uso con la lógica que realmente se ejecuta. Las líneas de vida son el actor **Usuario** y los componentes que intervienen según el caso: `Controls` (panel de control), `PatternService` (estado y sesiones), `Canvas` (lienzo), `ExportModal` (diálogo de exportación), `Tutorial`, `App` (componente raíz) e `I18nService` (idioma). A continuación se incluye un diagrama para **cada uno** de los casos de uso (CU1–CU13), ordenados según su numeración.
+Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones a lo largo del tiempo durante la ejecución de cada caso de uso. En estos diagramas, en lugar de tratar el sistema como una única caja negra, se reflejan los **componentes reales** que colaboran y las **funciones** (en pseudocódigo) que se invocan en cada paso, lo que permite trazar cada caso de uso con la lógica que realmente se ejecuta. Las líneas de vida son el actor **Usuario** y los componentes que intervienen según el caso: `Controls` (panel de control), `PatternService` (estado y sesiones), `Canvas` (lienzo), `ExportModal` (diálogo de exportación), `Tutorial`, `App` (componente raíz) e `I18nService` (idioma). A continuación se incluye un diagrama para **cada uno** de los casos de uso (CU1–CU14), ordenados según su numeración.
 
 - **Configurar parámetros (CU1) — Figura 4.3:** el usuario solicita modificar un parámetro y el sistema responde actualizando la vista con el nuevo valor.
 - **Reproducir animación (CU2) — Figura 4.4:** el usuario solicita reproducir; el sistema anima y acumula trazas de forma continua hasta que el usuario solicita pausar.
@@ -229,8 +242,9 @@ Los diagramas de secuencia del sistema representan de forma visual y ordenada c�
 - **Consultar tutorial (CU11) — Figura 4.13:** el usuario abre la guía, el sistema la muestra y el usuario la cierra.
 - **Generar variación aleatoria (CU12) — Figura 4.14:** el usuario solicita aleatorizar y el sistema asigna valores aleatorios válidos y actualiza la vista.
 - **Cambiar idioma (CU13) — Figura 4.15:** el usuario selecciona un idioma y el sistema actualiza de inmediato todos los textos de la interfaz, sin recargar la página.
+- **Aplicar ejemplo predefinido (CU14) — Figura 4.16:** el usuario elige un ejemplo del desplegable y el sistema ajusta automáticamente todos los parámetros del panel a la configuración guardada, dejándola lista para reproducir.
 
-*(Aquí van las Figuras 4.3 a 4.15 — ver especificación para Visual Paradigm al final del documento.)*
+*(Aquí van las Figuras 4.3 a 4.16 — ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.4. Trazabilidad entre requisitos funcionales y casos de uso
 
@@ -244,7 +258,7 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 | RF4 | Iniciar, pausar y reiniciar la animación | CU2, CU3, CU6 |
 | RF5 | Limpiar el lienzo y generar una nueva composición desde cero (mediante el deshacer incremental de sesiones) | CU5 |
 | RF6 | Guardar la composición como imagen | CU8 |
-| RF7 | Almacenar configuraciones de parámetros y recuperarlas posteriormente | CU9, CU10 |
+| RF7 | Almacenar configuraciones de parámetros predefinidas y recuperarlas posteriormente | CU14, CU9, CU10 |
 | RF8 | Alternar entre modos de visualización (curva e intersección de líneas) | CU4 |
 | RF9 | Controles interactivos (sliders, selectores, campos numéricos) | CU1 |
 | RF10 | Mostrar en pantalla los valores actuales de los parámetros | CU1 |
@@ -267,7 +281,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 1. `File → New → Use Case Diagram`.
 2. Arrastra un **Actor** y renómbralo `Usuario`.
 3. Arrastra un **System (rectángulo de frontera)** y nómbralo `Epicycloid Generator`. Dentro irán todos los óvalos.
-4. Crea los 13 **Use Case** (óvalos):
+4. Crea los 14 **Use Case** (óvalos):
    - Configurar parámetros
    - Generar variación aleatoria
    - Reproducir animación
@@ -281,7 +295,8 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - Importar patrón
    - Consultar tutorial
    - Cambiar idioma
-5. Une `Usuario` con cada uno de los 13 casos de uso mediante una **Association** (línea continua sin flecha).
+   - Aplicar ejemplo predefinido
+5. Une `Usuario` con cada uno de los 14 casos de uso mediante una **Association** (línea continua sin flecha).
 6. Crea dos casos de uso incluidos:
    - Configurar opciones de exportación
    - Reconstruir el dibujo
@@ -289,7 +304,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - `Exportar imagen` ──«include»──▶ `Configurar opciones de exportación`
    - `Importar patrón` ──«include»──▶ `Reconstruir el dibujo`
 
-> **Nota:** la flecha `«include»` parte del caso base (Exportar/Importar) hacia el incluido. El usuario NO se conecta a los casos incluidos (solo a los 13 principales).
+> **Nota:** la flecha `«include»` parte del caso base (Exportar/Importar) hacia el incluido. El usuario NO se conecta a los casos incluidos (solo a los 14 principales).
 
 ## A.2. Diagrama de clases (Figura 4.2)
 
@@ -300,7 +315,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 2. Crea las clases con sus atributos y **operaciones** (botón derecho → Add → Operation):
    - `AppComponent` — atrib.: `langMenuOpen` · métodos: `currentLanguageLabel()`, `selectLang(code)`
    - `Canvas` — atrib.: `params`, `isPaused`, `isDrawing`, `zoom` · métodos: `ngAfterViewInit()`, `ngOnDestroy()`, `zoomIn()`, `zoomOut()`, `onAction(action)`, `initSketch()`
-   - `Controls` — atrib.: `params`, `isPlaying`, `showExportModal` · métodos: `onParamChange()`, `toggleMode()`, `play()`, `pause()`, `clear()`, `reset()`, `randomize()`, `clampParams()`, `formatInterval(s)`, `exportJson()`, `triggerImport()`
+   - `Controls` — atrib.: `params`, `isPlaying`, `showExportModal`, `selectedPresetId`, `presets` · métodos: `onParamChange()`, `applyPreset()`, `toggleMode()`, `play()`, `pause()`, `clear()`, `reset()`, `randomize()`, `clampParams()`, `formatInterval(s)`, `exportJson()`, `triggerImport()`
    - `ExportModal` — atrib.: `options`, `isTransparent`, `exportZoom`, `exportScale` · métodos: `renderPreview()`, `buildExportCanvas()`, `onOptionChange()`, `onTransparentToggle()`, `save()`
    - `Tutorial` — atrib.: `visible`, `dontShowAgain` · métodos: `open()`, `close()`
    - `PatternService` — atrib.: `lineHistory`, `sessions`, `params$`, `action$` · métodos: `updateParams(p)`, `getCurrentParams()`, `dispatch(a)`, `beginSession(p)`, `incrementSessionFrame()`, `setCurrentState(...)`, `endSession()`, `snapshotActiveSession()`, `removeLastSession()`, `replaySessionsToLines(s)`, `clearSessions()`
@@ -310,6 +325,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - `«interface» SimulationSession` — `sessionIndex`, `params`, `frameCount`, `durationSeconds`, `endAngle1/2`, `endTipX/Y`, `endFirstPoint`
    - `«interface» LineRecord` — `x1`, `y1`, `x2`, `y2`, `r`, `g`, `b`, `a`, `sw`
    - `«interface» ExportOptions` — `bgColor`, `showGuides`, `showCenterDot`
+   - `«interface» PatternPreset` — `id`, `params`
 3. Traza las relaciones:
    - `AppComponent` ◆── `Canvas`, ◆── `Controls`, ◆── `Tutorial` (**Composition**, *contiene*)
    - `AppComponent` ──▶ `I18nService` (**Association/Dependency**, *usa*)
@@ -318,10 +334,11 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - `TranslatePipe` ──▶ `I18nService` (*usa*)
    - `PatternService` ──▶ `SimulationSession` (1 a *, `sessions`) y ──▶ `LineRecord` (1 a *, `lineHistory`)
    - `SimulationSession` ──▶ `PatternParams` (1 a 1) ; `ExportModal` ──▶ `ExportOptions` (1 a 1)
+   - `Controls` ──▶ `PatternPreset` (1 a *, catálogo `PATTERN_PRESETS`, *usa*) ; `PatternPreset` ──▶ `PatternParams` (1 a 1, configuración que aplica)
 
 > Ajusta las multiplicidades en los extremos de cada conector (botón derecho → Multiplicity). Fíjate en el `1 a 2` de las órbitas: siempre hay exactamente dos.
 
-## A.3. Diagramas de secuencia del sistema (Figuras 4.3–4.15)
+## A.3. Diagramas de secuencia del sistema (Figuras 4.3–4.16)
 
 **Pasos en Visual Paradigm:** `File → New → Sequence Diagram` (uno por cada caso de uso). Coloca las líneas de vida indicadas en cada figura (el **Actor** `Usuario` y los **componentes reales** que intervienen) y traza los **Message** etiquetados con el **nombre de la función** que se ejecuta. Para las respuestas usa **mensaje de retorno** (flecha discontinua); usa **Combined Fragment** `loop`/`alt`/`opt` y **mensaje a sí mismo** (self-message) donde se indique.
 
@@ -408,6 +425,14 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
   4. App → I18nService: `setLang(code)` → `lang.set(code)` + `localStorage` + `document.documentElement.lang`
   5. I18nService ⤍ Usuario: `TranslatePipe` (`| t`) reevalúa los textos
 
+- **Fig. 4.16 — Aplicar ejemplo predefinido (CU14):** Usuario, Controls, PatternService, Canvas. Fragmento `alt`.
+  1. Usuario → Controls: seleccionar ejemplo en el desplegable (`(ngModelChange)` sobre `selectedPresetId`)
+  2. Controls → Controls: `applyPreset()`
+  3. *(alt ejemplo elegido)* Controls → Controls: buscar el preset en `PATTERN_PRESETS` y fusionar `params` sobre los valores por defecto
+  4. *(else opción vacía)* Controls → Controls: restablecer los parámetros por defecto (lienzo en blanco)
+  5. Controls → PatternService: `updateParams(params)`
+  6. PatternService ⤍ Canvas: `params$` → `draw()` (al pulsar «Play» se dibuja el patrón)
+
 ---
 
 ## A.4. (Opcional) Código PlantUML para vista previa rápida
@@ -436,6 +461,7 @@ rectangle "Epicycloid Generator" {
   usecase "Reconstruir el dibujo" as CU10b
   usecase "Consultar tutorial" as CU11
   usecase "Cambiar idioma" as CU13
+  usecase "Aplicar ejemplo predefinido" as CU14
 }
 
 U --> CU1
@@ -451,6 +477,7 @@ U --> CU9
 U --> CU10
 U --> CU11
 U --> CU13
+U --> CU14
 
 CU8 ..> CU8b : <<include>>
 CU10 ..> CU10b : <<include>>
@@ -482,7 +509,10 @@ class Controls {
   params
   isPlaying
   showExportModal
+  selectedPresetId
+  presets
   onParamChange()
+  applyPreset()
   toggleMode()
   play()
   pause()
@@ -564,6 +594,10 @@ interface ExportOptions {
   showGuides
   showCenterDot
 }
+interface PatternPreset {
+  id
+  params
+}
 
 AppComponent *-- Canvas
 AppComponent *-- Controls
@@ -578,6 +612,8 @@ PatternService "1" --> "*" SimulationSession : sessions
 PatternService "1" --> "*" LineRecord : lineHistory
 SimulationSession "1" --> "1" PatternParams
 ExportModal "1" --> "1" ExportOptions
+Controls "1" --> "*" PatternPreset : presets
+PatternPreset "1" --> "1" PatternParams
 @enduml
 ```
 
@@ -826,5 +862,27 @@ Usuario -> APP : selectLang(code)
 APP -> I18N : setLang(code)
 I18N -> I18N : lang.set(code) + localStorage + document.documentElement.lang
 I18N --> Usuario : TranslatePipe (| t) reevalúa los textos
+@enduml
+```
+
+**Figura 4.16 — Aplicar ejemplo predefinido (CU14)**
+
+```plantuml
+@startuml SecAplicarEjemplo
+actor Usuario
+participant "Controls" as C
+participant "PatternService" as PS
+participant "Canvas" as CV
+
+Usuario -> C : seleccionar ejemplo (ngModelChange → selectedPresetId)
+C -> C : applyPreset()
+alt ejemplo elegido
+  C -> C : buscar preset en PATTERN_PRESETS y fusionar params sobre los valores por defecto
+else opción vacía
+  C -> C : restablecer parámetros por defecto (lienzo en blanco)
+end
+C -> PS : updateParams(params)
+PS --> CV : params$
+CV -> CV : draw()
 @enduml
 ```

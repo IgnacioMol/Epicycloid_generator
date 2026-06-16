@@ -36,7 +36,16 @@
     "reset": "↺ Obnovit",
     "exportImage": "↓ Exportovat obrázek",
     "exportJson": "↓ Exportovat vzor (JSON)",
-    "importJson": "↑ Importovat vzor (JSON)"
+    "importJson": "↑ Importovat vzor (JSON)",
+    "examples": "Příklady",
+    "examplesNone": "— Prázdné plátno —",
+    "presets": {
+      "fiveRose": "Růže s pěti lístky",
+      "eightStar": "Osmicípá hvězda",
+      "epiFlower": "Epicykloidní květ",
+      "ellipticMandala": "Eliptická mandala",
+      "hypnoticSpiral": "Hypnotická spirála"
+    }
   },
   "tutorial": {
     "helpTitle": "Nápověda / Návod",
