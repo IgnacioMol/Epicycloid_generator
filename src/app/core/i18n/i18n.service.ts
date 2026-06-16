@@ -22,10 +22,10 @@ export interface LanguageOption {
  */
 export const LANGUAGES: readonly LanguageOption[] = [
   { code: 'es', label: 'Español' },
+  { code: 'ca', label: 'Català' },
   { code: 'en', label: 'English' },
   { code: 'id', label: 'Bahasa Indonesia' },
   { code: 'cs', label: 'Čeština' },
-  { code: 'ca', label: 'Català' },
 ];
 
 /** Idioma por defecto cuando el navegador no coincide con ninguno disponible. */
