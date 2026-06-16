@@ -28,8 +28,14 @@ Hasta ahora el RF7 se justificaba solo con CU9/CU10 (export/import JSON); la pal
 - **Trazabilidad**: RF7 → **CU14, CU9, CU10**.
 - `claude/requirements.md`: RF7 marcado como hecho; resumen a 14/14 funcionales.
 
+### Sincronización del MD del Cap. 4 con el Word
+A petición del usuario, `claude/memoria-cap4-analisis.md` se ajustó para reflejar el texto de su Word (facilita el copia-pega md→word), **manteniendo** la sección 4.3 (secuencias) y el anexo, y **sin eliminar** información: intro del capítulo y de 4.1/4.1.1 reescritas con la redacción del Word; lista de acciones en viñetas (+ «Aplicar ejemplo predefinido»); **4.2 vuelve a ser «diagrama de clases conceptual»** (entidades de dominio, con la entidad «ejemplos predefinidos» añadida para no perder el RF7). CU5 se mantiene como **«Deshacer última sesión»** (el Word lo tenía mal). ⚠️ Pendiente de coherencia: el anexo (A.2 + PlantUML) y 4.3 siguen con clases/funciones reales, mientras 4.2 es ahora conceptual.
+
+### Idioma nuevo: catalán (RF14)
+Añadido **catalán** (`ca`) como 5.º idioma, repitiendo los 4 toques del sistema i18n: `ca.json` (traducción completa de es.json, incl. presets), import + registro en `DICTS`, código en el tipo `Lang` y entrada `{ code: 'ca', label: 'Català' }` en `LANGUAGES`. Selector y detección de navegador se actualizan solos. Build correcto.
+
 ### Estado al cierre de sesión
-- RF7 completado y documentado; build de producción correcto. Único pendiente del proyecto: **RNF12 (verificar despliegue en Netlify)**.
+- RF7 completado y documentado; catalán añadido; build de producción correcto. Único pendiente del proyecto: **RNF12 (verificar despliegue en Netlify)**.
 
 ---
 

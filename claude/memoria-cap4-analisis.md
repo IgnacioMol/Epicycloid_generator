@@ -5,35 +5,51 @@
 
 ---
 
-El presente apartado tiene como objetivo analizar de manera estructurada la aplicación web desarrollada, utilizando herramientas de modelado que permitan comprender tanto los requisitos del sistema como su comportamiento. Para ello se ha empleado Visual Paradigm como entorno de modelado UML, que ha facilitado la elaboración de los diferentes diagramas que sustentan esta fase de análisis.
+En este capítulo se analiza la aplicación desarrollada desde una perspectiva funcional, identificando las principales interacciones entre el usuario y el sistema, así como los elementos que intervienen en la generación de los patrones visuales.
 
-En primer lugar, se presenta el diagrama de casos de uso, acompañado de sus correspondientes flujos de eventos, que permiten identificar y describir las interacciones entre el usuario y el sistema, detallando el comportamiento esperado ante distintos escenarios. A continuación, se expone el diagrama de clases, donde se definen las clases del sistema con sus métodos y relaciones, sirviendo como base para el posterior diseño e implementación. Por último, se incluyen los diagramas de secuencia del sistema, que ilustran el flujo de mensajes —expresados mediante las funciones reales que se ejecutan— entre los componentes durante la ejecución de cada caso de uso, permitiendo visualizar la lógica de interacción de la aplicación.
+Para llevar a cabo este análisis se han utilizado distintos diagramas UML elaborados con Visual Paradigm. Estos diagramas permiten representar de forma gráfica tanto las funcionalidades disponibles para el usuario como la estructura conceptual de la aplicación y el flujo de interacción que se produce durante su utilización.
 
-A diferencia de otras aplicaciones, *Epicycloid Generator* es una aplicación web de página única que se ejecuta íntegramente en el navegador, sin necesidad de registro ni de conexión a un servidor. En consecuencia, existe un único actor —el **usuario**— que interactúa de forma directa y anónima con todas las funcionalidades.
+En primer lugar, se presenta el diagrama de casos de uso, donde se identifican las distintas acciones que el usuario puede realizar dentro de la aplicación. Posteriormente, se describe el diagrama de clases conceptual, cuyo objetivo es representar las entidades principales del dominio del problema y las relaciones existentes entre ellas. Finalmente, se incluye un diagrama de secuencia para cada uno de los casos de uso identificados, que permiten visualizar el intercambio de acciones entre el usuario y el sistema durante la ejecución de cada funcionalidad.
+
+A diferencia de otras aplicaciones web, *Epicycloid Generator* se ejecuta íntegramente en el navegador y no requiere registro de usuarios ni conexión con servicios externos para su funcionamiento. Por este motivo, existe un único actor que interactúa directamente con todas las funcionalidades ofrecidas por la aplicación.
 
 ## 4.1. Diagrama de casos de uso
 
-Esta herramienta se emplea principalmente durante las etapas de análisis y diseño de un sistema, ya que ayuda a organizar y comprender mejor su desarrollo. El diagrama de casos de uso es una representación gráfica que muestra de forma clara cómo los usuarios (también llamados actores) se relacionan con el sistema, identificando las distintas acciones o funcionalidades que pueden llevar a cabo.
+Esta herramienta se emplea principalmente durante las etapas de análisis y diseño de un sistema, ya que ayuda a organizar y comprender mejor su funcionamiento. El diagrama de casos de uso es una representación gráfica que muestra cómo los usuarios interactúan con el sistema, identificando las distintas funcionalidades que pueden ejecutar.
 
-En este caso concreto, hay un único actor (**Usuario**) que interactúa con el sistema (la aplicación web). El usuario puede elegir entre diferentes acciones, llamadas casos de uso. Las acciones a destacar son las siguientes: «Configurar parámetros», «Generar variación aleatoria», «Reproducir animación», «Pausar animación», «Alternar modo de visualización», «Deshacer última sesión», «Restablecer parámetros», «Ajustar zoom», «Exportar imagen», «Exportar patrón», «Importar patrón», «Consultar tutorial», «Cambiar idioma» y «Aplicar ejemplo predefinido».
+En el caso de Epicycloid Generator existe un único actor, denominado Usuario, que interactúa con la aplicación web para generar composiciones visuales basadas en patrones orbitales paramétricos.
 
-A diferencia de aplicaciones con navegación entre múltiples pantallas, aquí todas las funcionalidades conviven en una única vista (el lienzo a la izquierda y el panel de controles a la derecha), por lo que no existe un caso de uso de navegación entre pantallas ni de inicio de sesión. El usuario accede directamente a cualquier acción.
+Las principales acciones que puede realizar el usuario son las siguientes:
 
-Se han modelado además dos relaciones de inclusión (`«include»`), que representan un comportamiento que forma parte obligatoria de otro caso de uso:
+- Configurar parámetros.
+- Reproducir la animación.
+- Pausar animación.
+- Alternar modo de visualización.
+- Deshacer última sesión.
+- Restablecer los parámetros.
+- Cambiar Idioma.
+- Ajustar zoom.
+- Exportar imagen PNG.
+- Exportar patrón JSON.
+- Importar patrón JSON.
+- Consultar tutorial.
+- Generar variación aleatoria.
+- Aplicar ejemplo predefinido.
 
-- «Exportar imagen» **incluye** «Configurar opciones de exportación» (fondo, zoom, resolución y guías), ya que la imagen resultante siempre depende de dichas opciones.
-- «Importar patrón» **incluye** «Reconstruir el dibujo», puesto que la importación siempre conlleva regenerar la composición a partir de la información del archivo.
+Asimismo, existen relaciones de inclusión entre determinados casos de uso. La exportación de imágenes requiere previamente la configuración de las opciones de exportación, mientras que la importación de patrones implica necesariamente la reconstrucción de la composición a partir de los datos almacenados en el archivo importado.
 
-*(Aquí va la Figura 4.1: Diagrama de Casos de Uso — ver especificación para Visual Paradigm al final del documento.)*
+La Figura 4.1 muestra el diagrama de casos de uso correspondiente a la aplicación desarrollada.
 
 ### 4.1.1. Flujos de eventos de casos de uso
 
-Los flujos de eventos permiten describir cómo se comporta un caso de uso, y se clasifican en dos tipos principales:
+Los flujos de eventos permiten describir el comportamiento de cada caso de uso, indicando la secuencia de acciones que realiza el usuario y la respuesta que proporciona el sistema.
 
-- **Flujo principal:** representa la secuencia de pasos más común que sigue el usuario, junto con la respuesta esperada del sistema.
-- **Flujos alternativos:** describen rutas diferentes que pueden surgir cuando ocurre alguna situación no prevista dentro del desarrollo normal del caso de uso.
+Se distinguen dos tipos de flujo:
 
-A continuación, se detallan tanto el flujo principal como los posibles flujos alternativos para cada uno de los casos de uso.
+- **Flujo principal**, que representa el comportamiento habitual esperado durante la ejecución del caso de uso.
+- **Flujos alternativos**, que describen situaciones excepcionales o comportamientos diferentes al flujo principal.
+
+A continuación, se presentan las tablas correspondientes a cada uno de los casos de uso identificados.
 
 ---
 
@@ -211,19 +227,19 @@ A continuación, se detallan tanto el flujo principal como los posibles flujos a
 | **Postcondiciones** | Los parámetros del panel reflejan el ejemplo elegido y la composición se genera al reproducir. |
 | **Flujo alternativo** | 2a. **Lienzo en blanco:** el desplegable parte de una opción vacía; si el usuario la mantiene o la vuelve a elegir, el sistema restablece los parámetros por defecto. 3a. Si la animación está en curso, la acción no está disponible; el usuario debe pausar antes de aplicar un ejemplo. 4a. Si tras aplicar el ejemplo el usuario modifica manualmente un parámetro, el desplegable vuelve a la opción vacía, pues la configuración ya no corresponde a un ejemplo con nombre. |
 
-## 4.2. Diagrama de clases
+## 4.2. Diagramas de clases conceptual
 
-En esta sección se presenta el diagrama de clases de la aplicación. A fin de que sirva de base directa para la implementación, las clases se nombran igual que en el código y se incluyen sus **métodos** (funciones) y los atributos más relevantes, de modo que el pseudocódigo de los diagramas guarde correspondencia con las clases reales del sistema.
+En esta sección se presenta el diagrama de clases conceptual de la aplicación web, elaborado como parte del análisis previo al diseño e implementación del sistema. Su objetivo es ofrecer una visión general de los elementos que intervienen en la generación de patrones y de las relaciones existentes entre ellos.
 
-La aplicación se estructura en torno a varios **componentes** de interfaz y dos **servicios** compartidos. El componente raíz `AppComponent` contiene los componentes `Canvas` (el lienzo donde se dibuja y anima la composición), `Controls` (el panel de parámetros y acciones) y `Tutorial` (la guía de inicio). El componente `ExportModal` (diálogo de exportación de imagen) se crea bajo demanda desde `Controls`.
+La aplicación se basa en un modelo de generación paramétrica en el que el usuario define una serie de valores que controlan el comportamiento de dos órbitas independientes. A partir de dichos parámetros, el sistema genera composiciones geométricas que pueden visualizarse, modificarse y exportarse posteriormente.
 
-La lógica de estado se concentra en el servicio `PatternService`, que mantiene los parámetros activos, el historial de trazas (`lineHistory`) y las sesiones de animación (`sessions`), y ofrece las operaciones para reproducir, pausar, deshacer, exportar y reconstruir la composición. La internacionalización se gestiona en el servicio `I18nService` (idioma activo, detección y persistencia), apoyado por el `TranslatePipe`, que traduce los textos de las plantillas.
+Entre las entidades principales del dominio destacan el usuario, los parámetros que definen la simulación, las sesiones de dibujo generadas, los ejemplos predefinidos de patrones, los modos de visualización disponibles y las configuraciones de exportación. Todas estas entidades colaboran para permitir la creación y gestión de patrones geométricos de forma interactiva.
 
-El modelo de datos se define mediante las interfaces `PatternParams` (todos los parámetros matemáticos y visuales de la composición), `SimulationSession` (un bloque de animación con sus parámetros y estado final), `LineRecord` (un segmento dibujado), `ExportOptions` (las opciones del diálogo de exportación) y `PatternPreset` (un ejemplo predefinido, con su identificador y la configuración de parámetros que aplica). El catálogo de ejemplos predefinidos (`PATTERN_PRESETS`) que ofrece el desplegable se construye a partir de esta última interfaz y lo consulta `Controls`.
+Asimismo, la aplicación incorpora un conjunto de ejemplos predefinidos: configuraciones de parámetros ya preparadas que el usuario puede seleccionar para reproducir un patrón concreto sin necesidad de ajustar los valores manualmente. Cada ejemplo se corresponde con una configuración completa de parámetros.
 
-Las relaciones principales son: `AppComponent` *contiene* a `Canvas`, `Controls` y `Tutorial`, y *usa* `I18nService`; `Controls`, `Canvas` y `ExportModal` *usan* `PatternService`; `Controls` *crea* `ExportModal` y *usa* el catálogo de `PatternPreset`; `TranslatePipe` *usa* `I18nService`; y `PatternService` *gestiona* colecciones de `SimulationSession` y `LineRecord`, definidas a partir de `PatternParams`.
+El diagrama conceptual mostrado a continuación representa dichas relaciones desde un punto de vista funcional, sin entrar todavía en detalles específicos de implementación.
 
-*(Aquí va la Figura 4.2: Diagrama de clases — ver especificación para Visual Paradigm al final del documento.)*
+*(Aquí va la Figura 4.2: Diagrama de clases conceptual — ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.3. Diagramas de secuencia del sistema
 

@@ -3,8 +3,9 @@ import es from './es.json';
 import en from './en.json';
 import id from './id.json';
 import cs from './cs.json';
+import ca from './ca.json';
 
-export type Lang = 'es' | 'en' | 'id' | 'cs';
+export type Lang = 'es' | 'en' | 'id' | 'cs' | 'ca';
 
 /** Una opción de idioma del selector. `label` es el nombre nativo mostrado. */
 export interface LanguageOption {
@@ -24,6 +25,7 @@ export const LANGUAGES: readonly LanguageOption[] = [
   { code: 'en', label: 'English' },
   { code: 'id', label: 'Bahasa Indonesia' },
   { code: 'cs', label: 'Čeština' },
+  { code: 'ca', label: 'Català' },
 ];
 
 /** Idioma por defecto cuando el navegador no coincide con ninguno disponible. */
@@ -37,6 +39,7 @@ const DICTS: Record<Lang, Dict> = {
   en: en as Dict,
   id: id as Dict,
   cs: cs as Dict,
+  ca: ca as Dict,
 };
 const STORAGE_KEY = 'epicycloid_lang';
 
