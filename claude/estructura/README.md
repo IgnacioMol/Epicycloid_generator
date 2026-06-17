@@ -16,6 +16,14 @@ Esta carpeta documenta **a fondo** el proyecto: cómo está organizado, cómo fu
 8. [08 — Interfaz y diseño](08-interfaz-diseno.md) — UI/UX, estilos, validación (RNF4/RNF9/RNF10).
 9. [09 — Trazabilidad RF/RNF → código](09-trazabilidad-rf-rnf.md) — tabla de qué implementa cada requisito.
 
+### Para la defensa ante el tribunal (explicación experta)
+
+10. [10 — Ciclo de vida de Angular](10-ciclo-de-vida-angular.md) — qué es, los hooks `ng*` y cuáles usa el proyecto (y por qué).
+11. [11 — Conceptos de Angular, RxJS y señales](11-conceptos-angular-rxjs.md) — standalone, DI, observables vs señales, zoneless, pipes.
+12. [12 — Decisiones técnicas y alternativas descartadas](12-decisiones-tecnicas.md) — el «¿por qué X y no Y?» de cada elección.
+13. [13 — Preguntas probables del tribunal](13-preguntas-tribunal.md) — banco de preguntas con respuestas modelo.
+14. [14 — Glosario de términos](14-glosario.md) — definiciones breves para tenerlas a mano.
+
 ## Resumen en una frase
 
 Aplicación **web de página única** (Angular 21 *standalone*, **zoneless**) que genera **arte generativo** a partir de patrones orbitales (epicicloides), dibujados en tiempo real con **p5.js**; el usuario ajusta parámetros, reproduce/pausa la animación, deshace por sesiones, exporta imagen/JSON y cambia el idioma, todo sin recargar la página.

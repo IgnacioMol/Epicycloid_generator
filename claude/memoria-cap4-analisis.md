@@ -337,11 +337,14 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - `PatternService` — atrib.: `lineHistory`, `sessions`, `params$`, `action$` · métodos: `updateParams(p)`, `getCurrentParams()`, `dispatch(a)`, `beginSession(p)`, `incrementSessionFrame()`, `setCurrentState(...)`, `endSession()`, `snapshotActiveSession()`, `removeLastSession()`, `replaySessionsToLines(s)`, `clearSessions()`
    - `I18nService` — atrib.: `lang`, `languages` · métodos: `setLang(l)`, `toggle()`, `translate(key)`, `detectInitialLang()`
    - `TranslatePipe` — método: `transform(key)`
-   - `«interface» PatternParams` — `orbit1Radius`, `orbit2Radius`, `orbit1SpeedRpm`, `orbit2SpeedRpm`, `initialAngle1/2`, factores elípticos e inclinación, `lineColor`, `lineAlpha`, `strokeWeight`, `lineInterval`, `visualizationMode`
+   - `«interface» PatternParams` — `orbit1Radius`, `orbit2Radius`, `orbit1EllipseX`, `orbit1EllipseY`, `orbit2EllipseX`, `orbit2EllipseY`, `orbit1Angle`, `orbit2Angle`, `orbit1SpeedRpm`, `orbit2SpeedRpm`, `initialAngle1`, `initialAngle2`, `lineColor`, `lineAlpha`, `strokeWeight`, `lineInterval`, `visualizationMode`
    - `«interface» SimulationSession` — `sessionIndex`, `params`, `frameCount`, `durationSeconds`, `endAngle1/2`, `endTipX/Y`, `endFirstPoint`
    - `«interface» LineRecord` — `x1`, `y1`, `x2`, `y2`, `r`, `g`, `b`, `a`, `sw`
    - `«interface» ExportOptions` — `bgColor`, `showGuides`, `showCenterDot`
    - `«interface» PatternPreset` — `id`, `params`
+
+> **Nota sobre los métodos con prefijo `ng`:** `ngAfterViewInit` y `ngOnDestroy` (en `Canvas` y `ExportModal`) son *hooks del ciclo de vida* de Angular. No se invocan manualmente, sino que el framework los ejecuta de forma automática en momentos concretos de la vida del componente: `ngAfterViewInit` se ejecuta una vez creada la vista (se aprovecha para inicializar p5.js sobre el lienzo y las suscripciones), y `ngOnDestroy` al destruirse el componente (libera las suscripciones y elimina el sketch de p5 para evitar fugas de memoria).
+
 3. Traza las relaciones:
    - `AppComponent` ◆── `Canvas`, ◆── `Controls`, ◆── `Tutorial` (**Composition**, *contiene*)
    - `AppComponent` ──▶ `I18nService` (**Association/Dependency**, *usa*)
@@ -585,11 +588,21 @@ class TranslatePipe {
   transform(key)
 }
 interface PatternParams {
-  orbit1Radius / orbit2Radius
-  orbit1SpeedRpm / orbit2SpeedRpm
-  initialAngle1 / initialAngle2
-  factores elípticos e inclinación
-  lineColor / lineAlpha / strokeWeight
+  orbit1Radius
+  orbit2Radius
+  orbit1EllipseX
+  orbit1EllipseY
+  orbit2EllipseX
+  orbit2EllipseY
+  orbit1Angle
+  orbit2Angle
+  orbit1SpeedRpm
+  orbit2SpeedRpm
+  initialAngle1
+  initialAngle2
+  lineColor
+  lineAlpha
+  strokeWeight
   lineInterval
   visualizationMode
 }

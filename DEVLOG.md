@@ -4,6 +4,27 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-17 (sesión 7) — Documentación experta para la defensa del TFG
+
+### Objetivo
+Ampliar `claude/estructura/` con material de **explicación experta** para defender el proyecto ante el tribunal, partiendo de una duda concreta del usuario (los métodos con prefijo `ng`).
+
+### Nuevos documentos en `claude/estructura/`
+- **10-ciclo-de-vida-angular.md** — qué es el ciclo de vida, los hooks `ng*` y cuáles usa el proyecto (`constructor`/`ngAfterViewInit`/`ngOnDestroy`) y por qué (p5 necesita el `<canvas>` ya renderizado → `ngAfterViewInit`, no `ngOnInit`).
+- **11-conceptos-angular-rxjs.md** — standalone, DI/singletons, `Subject` vs `BehaviorSubject`, señales, zoneless, pipe impuro, data binding.
+- **12-decisiones-tecnicas.md** — el «¿por qué X y no Y?» de cada elección (Angular, p5, zoneless, i18n propio, capa incremental, etc.).
+- **13-preguntas-tribunal.md** — banco de preguntas probables con respuestas modelo.
+- **14-glosario.md** — definiciones breves de todos los términos.
+- README de la carpeta actualizado con la nueva sección «Para la defensa».
+
+### Hallazgo importante (coherencia)
+Se detectó que docs **antiguos** (`implementation-notes.md`, `tfg-context.md`, `web-structure-analysis.md`) describen p5 con `ngZone.runOutsideAngular()`, pero el **código actual es zoneless y NO usa `NgZone`**. La fuente de verdad es `canvas.ts` y los docs de `estructura/`; los nuevos documentos lo dejan claro (nota explícita en el 10). Pendiente: limpiar o marcar como obsoletos esos tres docs antiguos.
+
+### Nota de cap. 4
+Añadida en el anexo A.2 (diagrama de clases) una aclaración de qué son los métodos con prefijo `ng` (hooks de ciclo de vida de Angular).
+
+---
+
 ## 2026-06-16 (sesión 6) — RF7: ejemplos predefinidos (presets) en desplegable
 
 ### Objetivo
