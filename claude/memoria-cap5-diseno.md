@@ -12,43 +12,45 @@
 
 Tras el análisis de los requisitos del proyecto y la posterior elaboración de los respectivos casos de uso, se ha diseñado la estructura que deberá seguir la aplicación durante el desarrollo.
 
-En este apartado se presentan los diagramas de secuencia que describen el flujo de las operaciones clave del sistema, detallando cómo colaboran sus distintos elementos para llevarlas a cabo. Además, se explican las decisiones visuales tomadas para la interfaz de la aplicación, priorizando la claridad, la accesibilidad y la coherencia estética.
+En este apartado se presentan los diagramas de secuencia que describen el **funcionamiento interno** del sistema, detallando cómo colaboran sus componentes y servicios para llevar a cabo las operaciones de diseño que sostienen la aplicación; de este modo complementan, con la perspectiva del diseño, las operaciones de usuario ya analizadas en el capítulo 4. Además, se explican las decisiones visuales tomadas para la interfaz de la aplicación, priorizando la claridad, la accesibilidad y la coherencia estética.
 
-A diferencia de la aplicación en que se inspira esta estructura, *Epicycloid Generator* es una aplicación web de página única, sin inicio de sesión ni navegación entre múltiples pantallas. Por ello, las operaciones representadas no corresponden a transiciones entre pantallas, sino a las interacciones significativas del usuario con la única vista de la aplicación (el lienzo y el panel de control).
+A diferencia de la aplicación en que se inspira esta estructura, *Epicycloid Generator* es una aplicación web de página única, sin inicio de sesión ni navegación entre múltiples pantallas. Por ello, las operaciones representadas no corresponden a transiciones entre pantallas, sino a los **mecanismos internos del motor de dibujo** y a la colaboración entre los componentes dentro de la única vista de la aplicación (el lienzo y el panel de control).
 
 ## 5.1. Diagramas de secuencia de operaciones del sistema
 
-Los diagramas de secuencia de esta sección describen el comportamiento dinámico del sistema durante sus operaciones más relevantes. En ellos intervienen el usuario y los componentes que colaboran en cada operación —principalmente el panel de control, el lienzo y el servicio que coordina los parámetros, las sesiones y el historial de trazas, además del diálogo de exportación y los elementos encargados del idioma—. Se emplean fragmentos combinados (`loop`, `alt` y `opt`) para reflejar la repetición y la lógica condicional de cada flujo.
+A diferencia del capítulo 4 —que modela las **operaciones del usuario** (los casos de uso)—, esta sección detalla el **funcionamiento interno** del sistema: cómo colaboran las clases reales para llevar a cabo las **operaciones de diseño** que sostienen la aplicación y que no son acciones directas del usuario, sino mecanismos internos del motor de dibujo. Así se evita repetir lo ya mostrado en el análisis y se aporta la perspectiva propia del diseño.
 
-### Diagrama de secuencia de la operación «Generar y reproducir el patrón»
+Las operaciones internas representadas son: la **inicialización del lienzo**, el **renderizado de un fotograma**, la **reconstrucción del historial de trazas**, el **redimensionado responsivo** y la **comunicación reactiva entre componentes**. Las líneas de vida son las clases reales del código —`Canvas`, `PatternService`, `Controls`— junto con la instancia de **p5** y su **capa de estela** (`trailLayer`). Se emplean fragmentos combinados (`loop`, `alt`) para reflejar la repetición y la lógica condicional.
 
-Este diagrama representa la operación central de la aplicación. El usuario ajusta los parámetros en el panel de control y el sistema actualiza al instante la representación en el lienzo. Al reproducir, el sistema inicia una sesión de animación y, mediante un bucle (`loop`), dibuja la composición fotograma a fotograma acumulando las trazas resultantes. Cuando el usuario pausa, el sistema cierra la sesión y la registra como un bloque, conservando el dibujo acumulado.
+### Diagrama de secuencia de la operación «Inicialización del lienzo»
 
-*(Aquí va la Figura 5.1: Diagrama de secuencia «Generar y reproducir el patrón» — ver anexo.)*
+Ocurre al crearse el componente del lienzo. Una vez que Angular ha renderizado la vista (en el hook `ngAfterViewInit`), `Canvas` se **suscribe** a los dos canales del servicio (parámetros y órdenes) y crea la instancia de **p5** en modo *instance* sobre el contenedor del DOM. En su arranque (`setup`), p5 crea el lienzo principal y una **capa de estela fuera de pantalla** del mismo tamaño, guarda las dimensiones en el servicio y pone en marcha el bucle de dibujo a 60 fps. Es la operación que conecta el ciclo de vida de Angular con el motor gráfico (ver [10 — Ciclo de vida](../estructura/10-ciclo-de-vida-angular.md)).
 
-### Diagrama de secuencia de la operación «Deshacer última sesión»
+*(Aquí va la Figura 5.1: Diagrama de secuencia «Inicialización del lienzo» — ver anexo.)*
 
-Este diagrama ilustra el deshacer incremental de la composición. Al solicitar deshacer, un primer bloque condicional (`alt`) contempla que, si hay una animación en curso, el sistema la pausa primero para tomarla como la sesión a eliminar. A continuación, un segundo bloque alternativo distingue dos casos: si quedan sesiones anteriores, el sistema retira la última, reconstruye el dibujo con las restantes y restaura los parámetros previos; si no queda ninguna, el lienzo se vacía. En ambos casos, la estela se actualiza para reflejar el resultado.
+### Diagrama de secuencia de la operación «Renderizado de un fotograma»
 
-*(Aquí va la Figura 5.2: Diagrama de secuencia «Deshacer última sesión» — ver anexo.)*
+Es la operación que más se repite (60 veces por segundo) y el núcleo del rendimiento. En cada fotograma, el lienzo atiende primero las **acciones pendientes** (limpiar, reiniciar o cambio de modo); después decide cómo pintar la estela mediante un bloque alternativo (`alt`): si algo obligó a rehacerla —zoom, redimensionado, importación…— la **reconstruye entera**; si no, pinta **solo las líneas nuevas** desde el último fotograma (coste O(1)). Luego compone el fotograma (fondo + capa de estela + guías y planetas vivos) y, si la animación está activa, añade la nueva traza al historial y avanza los ángulos. Aquí reside la clave de **RNF5/RNF8** (ver [05 — Renderizado](../estructura/05-renderizado-rendimiento.md)).
 
-### Diagrama de secuencia de la operación «Exportar imagen»
+*(Aquí va la Figura 5.2: Diagrama de secuencia «Renderizado de un fotograma» — ver anexo.)*
 
-Este diagrama describe el guardado de la composición como imagen. El usuario abre el diálogo de exportación y el sistema genera una previsualización a partir de la composición actual. Un bloque opcional (`opt`) recoge el ajuste de las opciones de exportación —fondo, zoom, resolución y elementos visibles—, que actualizan la previsualización. Al confirmar, el sistema genera la imagen final y la descarga.
+### Diagrama de secuencia de la operación «Reconstrucción del historial de trazas»
 
-*(Aquí va la Figura 5.3: Diagrama de secuencia «Exportar imagen» — ver anexo.)*
+Es el algoritmo interno que sostiene tanto el **deshacer** como la **importación** de patrones. A partir de una lista de sesiones, el servicio **reproduce la simulación** de cada bloque fotograma a fotograma (dos bucles `loop` anidados: por sesión y por fotograma), recomputando todas las líneas y el estado final de cada sesión. El resultado es el nuevo historial de trazas. Sobre esta operación descansa el **invariante** del sistema: en pausa, el historial equivale exactamente al *replay* de las sesiones.
 
-### Diagrama de secuencia de la operación «Importar patrón»
+*(Aquí va la Figura 5.3: Diagrama de secuencia «Reconstrucción del historial de trazas» — ver anexo.)*
 
-Este diagrama representa la recuperación de una composición guardada. El usuario selecciona un archivo, que el sistema lee y valida. Un bloque condicional (`alt`) distingue dos rutas: si el archivo es válido, el sistema reconstruye el dibujo y actualiza los parámetros mostrados al estado del patrón cargado; si no lo es, la importación se descarta.
+### Diagrama de secuencia de la operación «Redimensionado responsivo del lienzo»
 
-*(Aquí va la Figura 5.4: Diagrama de secuencia «Importar patrón» — ver anexo.)*
+Cuando cambia el tamaño de la ventana, p5 invoca `windowResized`. El lienzo principal y la capa de estela se **redimensionan** a las nuevas medidas, se actualizan las dimensiones guardadas en el servicio y se marca la estela para rehacerse. Como las trazas se guardan en **coordenadas del lienzo**, el patrón **se conserva**: en el siguiente fotograma se rerasteriza por completo al nuevo tamaño. Esta operación es la que materializa la visualización responsiva (**RF11/RNF9**).
 
-### Diagrama de secuencia de la operación «Cambiar idioma»
+*(Aquí va la Figura 5.4: Diagrama de secuencia «Redimensionado responsivo del lienzo» — ver anexo.)*
 
-Este diagrama refleja la detección automática y el cambio manual de idioma. Un bloque condicional (`alt`) contempla que, en el primer acceso, el sistema detecta el idioma del navegador. Para el cambio manual, el usuario abre el selector y elige un idioma; el sistema actualiza de inmediato todos los textos de la interfaz y recuerda la preferencia para futuras visitas, sin recargar la página.
+### Diagrama de secuencia de la operación «Comunicación reactiva entre componentes»
 
-*(Aquí va la Figura 5.5: Diagrama de secuencia «Cambiar idioma» — ver anexo.)*
+Describe la **columna vertebral de la arquitectura**: cómo se comunican los componentes sin conocerse entre sí, a través del servicio `PatternService`. Este expone dos canales de RxJS: un `BehaviorSubject` con los **parámetros activos** (que recuerda el último valor) y un `Subject` de **órdenes puntuales** (play, pausa, deshacer…). `Controls` publica en ellos y `Canvas`, suscrito, reacciona; así el panel y el lienzo quedan **desacoplados** (**RNF6**). Ver [11 — Conceptos de Angular](../estructura/11-conceptos-angular-rxjs.md).
+
+*(Aquí va la Figura 5.5: Diagrama de secuencia «Comunicación reactiva entre componentes» — ver anexo.)*
 
 ## 5.2. Diseño visual
 
@@ -92,160 +94,138 @@ Se presentan las principales vistas de la aplicación, con el objetivo de mostra
 > tipo `loop`, `alt` u `opt` según se indique.
 >
 > **Pasos generales en Visual Paradigm:** `File → New → Sequence Diagram`. Coloca las líneas de vida
-> (un **Actor** `Usuario` y las **clases** indicadas en cada figura) y traza los **Message** etiquetados
-> con el nombre de la función. Para los fragmentos, selecciona los mensajes implicados y `right-click →
-> Enclose with → Combined Fragment`, eligiendo el tipo (`loop` / `alt` / `opt`) y escribiendo la condición.
+> indicadas en cada figura (las **clases reales** y, solo cuando interviene, el **Actor** `Usuario`) y traza
+> los **Message** etiquetados con el nombre de la función. Para los fragmentos, selecciona los mensajes
+> implicados y `right-click → Enclose with → Combined Fragment`, eligiendo el tipo (`loop` / `alt` / `opt`)
+> y escribiendo la condición.
 
-## A.1. Figura 5.1 — «Generar y reproducir el patrón»
+## A.1. Figura 5.1 — «Inicialización del lienzo»
 
-**Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
+**Líneas de vida:** `Canvas`, `PatternService`, `p5 (sketch)`, `trailLayer`.
 
 ```plantuml
-@startuml SecGenerarReproducir
-actor Usuario
-participant "Controls" as C
-participant "PatternService" as PS
+@startuml SecInicializacionLienzo
 participant "Canvas" as CV
+participant "PatternService" as PS
+participant "p5 (sketch)" as P5
+participant "trailLayer\n(offscreen)" as TL
 
-Usuario -> C : onParamChange()
-C -> PS : updateParams(params)
-PS --> CV : params$ (suscripción)
-CV -> CV : draw()
+note over CV : Angular invoca ngAfterViewInit()\n(la vista y el <canvas> ya existen)
+CV -> PS : subscribe(params$)
+CV -> PS : subscribe(action$)
+CV -> CV : initSketch()
+CV -> P5 : new p5(sketch, contenedor)   // modo instance
+activate P5
+P5 -> P5 : setup()
+P5 -> P5 : createCanvas(ancho, alto)
+P5 -> TL : createGraphics(ancho, alto) + pixelDensity()
+P5 -> PS : canvasDimensions = { w, h }
+P5 -> P5 : frameRate(60) -> arranca el bucle draw()
+deactivate P5
+@enduml
+```
 
-Usuario -> C : play()
-C -> PS : dispatch('play')
-PS --> CV : onAction('play')
-CV -> PS : beginSession(params)
+## A.2. Figura 5.2 — «Renderizado de un fotograma»
 
-loop cada fotograma mientras isDrawing
-  CV -> CV : draw() (computa posiciones, paintLines)
+**Líneas de vida:** `Canvas` / `p5.draw()`, `PatternService`, `trailLayer`.
+
+```plantuml
+@startuml SecRenderizadoFotograma
+participant "p5.draw() / Canvas" as CV
+participant "PatternService" as PS
+participant "trailLayer\n(offscreen)" as TL
+
+CV -> CV : procesa acciones pendientes (clear / reset / cambio de modo)
+CV -> CV : calcula la posición de los dos planetas
+
+alt trailDirty o el historial encogió
+  CV -> PS : lee lineHistory
+  CV -> TL : clear() + repinta TODAS las líneas (reconstrucción)
+  CV -> CV : renderedLineCount = nº de líneas
+else dibujo normal
+  CV -> PS : lee lineHistory
+  CV -> TL : pinta SOLO las líneas nuevas (desde renderedLineCount)   // O(1)
+end
+
+CV -> CV : background() + image(trailLayer) + guías y planetas vivos
+
+alt no en pausa y dibujando
   CV -> PS : lineHistory.push(record)
-  CV -> PS : incrementSessionFrame()
-  CV -> PS : setCurrentState(...)
+  CV -> PS : incrementSessionFrame() / setCurrentState(...)
+  CV -> CV : avanza los ángulos (angle1 += s1, angle2 += s2)
 end
-
-Usuario -> C : pause()
-C -> PS : dispatch('pause')
-PS --> CV : onAction('pause')
-CV -> PS : endSession()
 @enduml
 ```
 
-## A.2. Figura 5.2 — «Deshacer última sesión»
+## A.3. Figura 5.3 — «Reconstrucción del historial de trazas»
 
-**Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
+**Líneas de vida:** `Controls` / `Canvas` (quien deshace o importa), `PatternService`.
 
 ```plantuml
-@startuml SecDeshacerSesion
-actor Usuario
-participant "Controls" as C
+@startuml SecReconstruccionHistorial
+participant "Controls / Canvas\n(deshacer o importar)" as C
 participant "PatternService" as PS
+
+C -> PS : replaySessionsToLines(sessions)
+activate PS
+PS -> PS : lines = [] ; ángulos = 0 ; firstPoint = true
+loop por cada sesión
+  loop por cada fotograma (session.frameCount)
+    PS -> PS : recomputa la posición de los planetas
+    PS -> PS : añade la línea a 'lines' (según modo e intervalo)
+    PS -> PS : avanza los ángulos
+  end
+  PS -> PS : guarda el estado final de la sesión (ángulos, punto extremo)
+end
+PS --> C : devuelve 'lines'  (nuevo lineHistory)
+deactivate PS
+note over PS : invariante: en pausa, lineHistory == replay(sessions)
+@enduml
+```
+
+## A.4. Figura 5.4 — «Redimensionado responsivo del lienzo»
+
+**Líneas de vida:** `Usuario`, `p5 (sketch)`, `trailLayer`, `PatternService`.
+
+```plantuml
+@startuml SecRedimensionado
+actor Usuario
+participant "p5 (sketch)" as P5
+participant "trailLayer\n(offscreen)" as TL
+participant "PatternService" as PS
+
+Usuario -> P5 : redimensiona la ventana del navegador
+P5 -> P5 : windowResized()
+P5 -> P5 : resizeCanvas(nuevoAncho, nuevoAlto)
+P5 -> TL : resizeCanvas(nuevoAncho, nuevoAlto)
+P5 -> PS : canvasDimensions = { w, h }
+P5 -> P5 : firstPoint = true ; trailDirty = true
+note over P5, TL : las trazas están en coords del lienzo →\nel siguiente draw() rerasteriza la estela\ny el patrón se conserva
+@enduml
+```
+
+## A.5. Figura 5.5 — «Comunicación reactiva entre componentes»
+
+**Líneas de vida:** `Controls`, `PatternService`, `Canvas`.
+
+```plantuml
+@startuml SecComunicacionReactiva
+participant "Controls" as C
+participant "PatternService\n(hub de estado)" as PS
 participant "Canvas" as CV
 
-Usuario -> C : clear()
+note over PS : dos canales (RxJS):\nparams$ = BehaviorSubject (recuerda el último valor)\naction$ = Subject (órdenes puntuales)
 
-alt isPlaying
-  C -> C : pause()
-  C -> PS : dispatch('pause')
-  PS --> CV : onAction('pause') / endSession()
-end
+== Cambio de un parámetro ==
+C -> PS : updateParams(params)
+PS -> PS : paramsSubject.next(params)
+PS --> CV : params$ (emite a los suscriptores)
+CV -> CV : this.params = params  (el próximo draw() lo usa)
 
-C -> PS : removeLastSession()
-
-alt quedan sesiones
-  PS -> PS : sessions.pop()
-  PS -> PS : replaySessionsToLines(sessions)
-  PS --> C : sesión eliminada
-  C -> PS : updateParams(prevParams)
-else no quedan sesiones
-  PS -> PS : lineHistory = []
-end
-
-C -> PS : dispatch('undo')
-PS --> CV : onAction('undo') (reconstruye o vacía la estela)
-CV --> Usuario : mostrar el resultado
-@enduml
-```
-
-## A.3. Figura 5.3 — «Exportar imagen»
-
-**Líneas de vida:** `Usuario`, `Controls`, `ExportModal`, `PatternService`.
-
-```plantuml
-@startuml SecExportarImagenDiseno
-actor Usuario
-participant "Controls" as C
-participant "ExportModal" as EM
-participant "PatternService" as PS
-
-Usuario -> C : showExportModal = true
-C -> EM : crear <app-export-modal>
-EM -> EM : ngAfterViewInit()
-EM -> EM : renderPreview()
-EM -> PS : getCurrentParams() / lineHistory / canvasDimensions
-EM -> EM : buildExportCanvas()
-EM --> Usuario : previsualización
-
-opt ajustar opciones de exportación
-  Usuario -> EM : onTransparentToggle() / onOptionChange()
-  EM -> EM : renderPreview()
-end
-
-Usuario -> EM : save()
-EM -> EM : buildExportCanvas()
-EM -> EM : toDataURL() + descarga
-EM --> Usuario : archivo PNG
-@enduml
-```
-
-## A.4. Figura 5.4 — «Importar patrón»
-
-**Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
-
-```plantuml
-@startuml SecImportarPatronDiseno
-actor Usuario
-participant "Controls" as C
-participant "PatternService" as PS
-participant "Canvas" as CV
-
-Usuario -> C : triggerImport()
-Usuario -> C : onFileSelected(event)
-C -> C : JSON.parse() + validar
-
-alt archivo válido
-  C -> PS : replaySessionsToLines(sessions)
-  C -> PS : updateParams(lastParams)
-  C -> PS : dispatch('import-json')
-  PS --> CV : onAction('import-json') (restaura estado)
-  CV --> Usuario : mostrar la composición importada
-else archivo no válido
-  C -> C : catch (descarta la importación)
-end
-@enduml
-```
-
-## A.5. Figura 5.5 — «Cambiar idioma»
-
-**Líneas de vida:** `Usuario`, `AppComponent`, `I18nService`, `TranslatePipe`.
-
-```plantuml
-@startuml SecCambiarIdiomaDiseno
-actor Usuario
-participant "AppComponent" as APP
-participant "I18nService" as I18N
-participant "TranslatePipe" as TP
-
-alt primer acceso (sin preferencia guardada)
-  I18N -> I18N : detectInitialLang()
-end
-
-Usuario -> APP : abrir selector (langMenuOpen = true)
-Usuario -> APP : selectLang(code)
-APP -> I18N : setLang(code)
-I18N -> I18N : lang.set(code) + localStorage + document.documentElement.lang
-I18N --> TP : (la señal lang cambia)
-TP -> I18N : translate(key)
-TP --> Usuario : textos actualizados
+== Orden puntual (play / pausa / deshacer / …) ==
+C -> PS : dispatch(action)
+PS -> PS : actionSubject.next(action)
+PS --> CV : action$ (emite)
+CV -> CV : onAction(action)  (cambia banderas o marca acciones pendientes)
 @enduml
 ```

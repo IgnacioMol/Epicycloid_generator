@@ -21,7 +21,10 @@ Ampliar `claude/estructura/` con material de **explicación experta** para defen
 Se detectó que docs **antiguos** (`implementation-notes.md`, `tfg-context.md`, `web-structure-analysis.md`) describen p5 con `ngZone.runOutsideAngular()`, pero el **código actual es zoneless y NO usa `NgZone`**. La fuente de verdad es `canvas.ts` y los docs de `estructura/`; los nuevos documentos lo dejan claro (nota explícita en el 10). Pendiente: limpiar o marcar como obsoletos esos tres docs antiguos.
 
 ### Nota de cap. 4
-Añadida en el anexo A.2 (diagrama de clases) una aclaración de qué son los métodos con prefijo `ng` (hooks de ciclo de vida de Angular).
+Añadida en el anexo A.2 (diagrama de clases) una aclaración de qué son los métodos con prefijo `ng` (hooks de ciclo de vida de Angular). Además, la interfaz `PatternParams` del diagrama de clases pasa a listar sus **17 campos reales** (antes resumía 6 como "factores elípticos e inclinación").
+
+### Cap. 5 — diagramas de secuencia reformulados a operaciones internas
+El usuario detectó que el cap. 4 y el cap. 5 tenían diagramas casi idénticos (p. ej. «Cambiar idioma»), porque el cap. 4 ya cubre los 14 casos de uso y el cap. 5 repetía operaciones de usuario. Tras comparar con el TFG de referencia (cuyo cap. 5 solo muestra unas pocas operaciones), se decidió **reformular el cap. 5 a operaciones INTERNAS / de diseño** que no son casos de uso, eliminando el solapamiento. Los 5 nuevos diagramas: **Inicialización del lienzo**, **Renderizado de un fotograma**, **Reconstrucción del historial de trazas**, **Redimensionado responsivo** y **Comunicación reactiva entre componentes**. Verificado contra `canvas.ts` (setup/draw/windowResized) y `pattern.service.ts`. Hallazgo de paso: el comentario de memoria sobre "al redimensionar se pierde la estela" es **incorrecto** — `windowResized` redimensiona la capa y marca `trailDirty`, y como las trazas están en coords del lienzo, el patrón **se conserva**.
 
 ---
 
