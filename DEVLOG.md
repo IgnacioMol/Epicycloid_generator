@@ -23,6 +23,13 @@ Redactar el borrador del **capítulo 6 (Implementación)** de la memoria, adapta
 ### Decisión de enfoque (debate con el usuario)
 El usuario propuso mostrar funciones principales + flujo de datos + una "simulación en tiempo real" de una acción del usuario + material del DEVLOG. Se validó como mejor que el catálogo plano inicial y se integró: el flujo de datos como sección propia (6.2), la simulación como el trazado de interacciones (6.5), y el material de bitácora **destilado en formal** como decisiones técnicas (6.6) — NO se copia el DEVLOG tal cual (tono informal/fechas/TODOs no van en la memoria).
 
+### Refinamientos posteriores (misma sesión)
+- **Requisitos definitivos** (el usuario los confirmó): RF1–RF14 + RNF1–RNF12, **TODOS completos**. i18n = **RF14** (no RF12); el export/import JSON **no** tiene RF propio. Actualizada la memoria de Claude (`project_epicycloid.md`) y las citas del cap. 6.
+- **Fragmentos de código incrustados** directamente en el capítulo (no en doc aparte): 16 figuras de código (HTML + TS) con su pie de figura, recortadas a lo esencial y copiables a Word. Se descartó crear `memoria-cap6-fragmentos-codigo.md`.
+- **Tabla de decisiones** (decisiones ↔ alternativas ↔ requisito) añadida como Figura 6.37.
+- **Eliminado el diagrama de flujo de datos** (a petición del usuario: los diagramas de secuencia de los cap. 4 y 5 ya cubren la colaboración entre componentes). La sección 6.2 se mantiene en prosa y remite a esos diagramas. Renumeradas las figuras (ahora 6.1–6.37, sin huecos). El árbol de carpetas (6.1) va como texto, no como captura.
+- **Capturas pendientes** (las hace el usuario): solo las de interfaz (Figuras 6.2–6.13, pantallazos de la app).
+
 ### Estado de la memoria
 Capítulos redactados: 4, 5 y ahora 6. Pendientes para igualar la estructura de referencia: 1 (Introducción), 2 (Estado del arte), 3 (Requisitos/costes/riesgos/viabilidad), 7 (Pruebas), 8 (Conclusiones).
 
