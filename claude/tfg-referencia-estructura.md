@@ -59,8 +59,9 @@ pdftotext -layout "claude/Estudio_y_desarrollo_...UrbanGuardian.pdf" salida.txt
 - `requirements.md` — RF1–RF14 / RNF1–RNF12 con estado real verificado contra el código.
 - `memoria-cap4-analisis.md` — cap. 4 completo (casos de uso, clases conceptual, secuencia del sistema, trazabilidad) + anexo Visual Paradigm/PlantUML.
 - `memoria-cap5-diseno.md` — cap. 5 (secuencia de operaciones de diseño + diseño visual) + anexo.
+- `memoria-cap6-implementacion.md` — cap. 6 (estructura del proyecto, desarrollo de la interfaz + componentes, implementación de la lógica por componente, persistencia/integración sin servidor). Adapta la estructura de la referencia (interfaces XML / lógica Java / Firebase) a la SPA Angular + p5.js.
 - `TODO-memoria-i18n.md` — pendientes de redacción relacionados con la i18n (abstract, capturas, conclusiones).
-- **Aún por redactar** para igualar la estructura: cap. 1 (Introducción), cap. 2 (Estado del arte), cap. 3 (Requisitos/costes/riesgos/viabilidad — solo existe la tabla de requisitos), cap. 6 (Implementación), cap. 7 (Pruebas), cap. 8 (Conclusiones).
+- **Aún por redactar** para igualar la estructura: cap. 1 (Introducción), cap. 2 (Estado del arte), cap. 3 (Requisitos/costes/riesgos/viabilidad — solo existe la tabla de requisitos), cap. 7 (Pruebas), cap. 8 (Conclusiones).
 
 ## Pautas del usuario a respetar
 

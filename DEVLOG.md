@@ -4,6 +4,30 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-18 (sesión 8) — Redacción del Capítulo 6 (Implementación) de la memoria
+
+### Objetivo
+Redactar el borrador del **capítulo 6 (Implementación)** de la memoria, adaptando la estructura del TFG de referencia (UrbanGuardian: interfaces XML, lógica Java, Firebase) a nuestra **SPA Angular + p5.js** (sin login, sin BD, sin navegación entre pantallas). Meta de "relleno medido", no excesivo.
+
+### Nuevo documento
+- **`claude/memoria-cap6-implementacion.md`** — capítulo completo. Tras debatir el enfoque con el usuario, se reestructuró del catálogo descriptivo inicial (4 bloques) a **7 bloques**, añadiendo narrativa dinámica + decisiones técnicas:
+  - **6.1 Estructura y organización**: standalone, zoneless, carpetas `models`/`core`/`features`.
+  - **6.2 Flujo de datos** *(nuevo)*: `PatternService` como única fuente de verdad, flujo unidireccional vía `params$`/`action$` + estado `lineHistory`/`sessions`. Con diagrama propio.
+  - **6.3 Desarrollo de la interfaz**: 6.3.1 regiones de la SPA (no "pantallas"); 6.3.2 componentes de interfaz (análogo a "XML" pero HTML+Bootstrap+sintaxis Angular: `[(ngModel)]`, `@if`/`@for`, `| t`, deslizadores+número, `select`, botones, `details`, modales, `canvas`).
+  - **6.4 Implementación de la lógica**: funciones reales por componente (`PatternService`, `Canvas`, `Controls`, `ExportModal`, i18n).
+  - **6.5 Trazado de interacciones completas** *(nuevo, sección estrella)*: tres "simulaciones" de acción de usuario encadenando función→función con bloques de pseudocódigo: (1) Ajustar parámetro + Play, (2) Deshacer sesión, (3) Exportar imagen. Complementa —sin repetir— los diagramas de secuencia del cap. 5 (allí el UML; aquí el código encadenado).
+  - **6.6 Decisiones técnicas** *(nuevo)*: reescritura formal de `claude/estructura/12-decisiones-tecnicas.md` (Angular/RNF2, p5 modo instancia/RNF3, zoneless/RNF5-8, capa incremental, modelo de datos vectorial, i18n propio, Bootstrap). Cada decisión ligada a su requisito.
+  - **6.7 Persistencia e integración sin servidor**: `localStorage`, E/S JSON, export PNG, Netlify — el papel que en la referencia jugaba Firebase.
+- Figuras referenciadas como placeholders (`*(Aquí va la Figura 6.X: … )*`), igual que en cap. 4 y 5. Se citan RF/RNF donde aplica.
+
+### Decisión de enfoque (debate con el usuario)
+El usuario propuso mostrar funciones principales + flujo de datos + una "simulación en tiempo real" de una acción del usuario + material del DEVLOG. Se validó como mejor que el catálogo plano inicial y se integró: el flujo de datos como sección propia (6.2), la simulación como el trazado de interacciones (6.5), y el material de bitácora **destilado en formal** como decisiones técnicas (6.6) — NO se copia el DEVLOG tal cual (tono informal/fechas/TODOs no van en la memoria).
+
+### Estado de la memoria
+Capítulos redactados: 4, 5 y ahora 6. Pendientes para igualar la estructura de referencia: 1 (Introducción), 2 (Estado del arte), 3 (Requisitos/costes/riesgos/viabilidad), 7 (Pruebas), 8 (Conclusiones).
+
+---
+
 ## 2026-06-17 (sesión 7) — Documentación experta para la defensa del TFG
 
 ### Objetivo
