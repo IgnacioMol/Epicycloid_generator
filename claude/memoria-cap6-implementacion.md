@@ -6,11 +6,11 @@
 > de la estructura —desarrollo de la interfaz, implementación de los componentes visuales,
 > implementación de la lógica e integración— pero adaptado a una **aplicación web de página única**
 > (Angular + p5.js), **sin login, sin base de datos y sin navegación entre pantallas**. A las secciones
-> descriptivas se les añaden dos bloques que elevan el capítulo: el **trazado de interacciones completas**
-> (6.5) y las **decisiones técnicas** justificadas (6.6). Los nombres de clase y función son los **reales
-> del código**. Las figuras son capturas de código y de interfaz, referenciadas en el texto. Los diagramas
-> de colaboración entre componentes no se repiten aquí: ya están en los diagramas de secuencia de los
-> capítulos 4 y 5.
+> descriptivas se les añade un bloque que eleva el capítulo: el **trazado de interacciones completas**
+> (6.5). Los nombres de clase y función son los **reales del código**. Las figuras son capturas de código
+> y de interfaz, referenciadas en el texto. Los diagramas de colaboración entre componentes no se repiten
+> aquí (ya están en los diagramas de secuencia de los capítulos 4 y 5), y la justificación de las
+> tecnologías elegidas tampoco, pues se abordó en el capítulo de análisis de tecnologías (estado del arte).
 
 ---
 
@@ -18,11 +18,11 @@ El presente capítulo describe el proceso de desarrollo de la aplicación, centr
 
 A diferencia de una aplicación móvil con múltiples actividades, *Epicycloid Generator* es una **aplicación web de página única (SPA)** que se ejecuta íntegramente en el navegador. Por ello, no existe navegación entre pantallas ni una capa de persistencia remota: toda la interfaz convive en una única vista y el estado se gestiona en memoria, apoyándose puntualmente en el almacenamiento local del navegador. La interfaz se ha construido con **componentes de Angular** (plantillas HTML con la sintaxis declarativa del framework, estilizadas con Bootstrap y CSS propio), mientras que la generación gráfica en tiempo real se delega en la biblioteca **p5.js**, que dibuja sobre un lienzo (`<canvas>`). La lógica se ha programado en **TypeScript** siguiendo un enfoque orientado a componentes y servicios.
 
-Para organizar la exposición, el capítulo se estructura en siete bloques: la **estructura y organización del proyecto** (6.1); el **flujo de datos** que vertebra la aplicación (6.2); el **desarrollo de la interfaz** y sus componentes visuales (6.3); la **implementación de la lógica** detrás de cada componente (6.4); el **trazado de varias interacciones completas** de principio a fin, a modo de simulación del funcionamiento real (6.5); las **decisiones técnicas** más relevantes y sus alternativas descartadas (6.6); y, por último, la **persistencia e integración** del sistema sin servidor (6.7).
+Para organizar la exposición, el capítulo se estructura en seis bloques: la **estructura y organización del proyecto** (6.1); el **flujo de datos** que vertebra la aplicación (6.2); el **desarrollo de la interfaz** y sus componentes visuales (6.3); la **implementación de la lógica** detrás de cada componente (6.4); el **trazado de varias interacciones completas** de principio a fin, a modo de simulación del funcionamiento real (6.5); y, por último, la **persistencia e integración** del sistema sin servidor (6.6).
 
 ## 6.1. Estructura y organización del proyecto
 
-Antes de describir las funciones concretas, conviene presentar cómo se organiza internamente el código, ya que esta estructura condiciona el resto del capítulo. El proyecto se ha construido sobre **Angular** utilizando **componentes independientes** (*standalone*), un modelo que evita los módulos clásicos y permite que cada componente declare directamente sus dependencias. La aplicación es, además, **«zoneless»**: prescinde de la biblioteca de detección automática de cambios habitual en Angular, lo que resulta clave para que el bucle de animación de p5.js (que se repite 60 veces por segundo) no dispare ciclos de actualización innecesarios y se mantenga el rendimiento (esta decisión se justifica en 6.6).
+Antes de describir las funciones concretas, conviene presentar cómo se organiza internamente el código, ya que esta estructura condiciona el resto del capítulo. El proyecto se ha construido sobre **Angular** utilizando **componentes independientes** (*standalone*), un modelo que evita los módulos clásicos y permite que cada componente declare directamente sus dependencias. La aplicación es, además, **«zoneless»**: prescinde de la biblioteca de detección automática de cambios habitual en Angular, lo que resulta clave para que el bucle de animación de p5.js (que se repite 60 veces por segundo) no dispare ciclos de actualización innecesarios y se mantenga el rendimiento (esta decisión, junto con el resto de tecnologías elegidas, se justifica en el capítulo de análisis de tecnologías).
 
 El código fuente se reparte en tres áreas claramente diferenciadas dentro de `src/app`:
 
@@ -357,7 +357,7 @@ p.draw = () => {
 
 *Figura 6.22: esqueleto del bucle `draw()` y bloque de actualización por fotograma (`canvas.ts`).*
 
-**Renderizado optimizado de la estela (capa `trailLayer`).** Las trazas se acumulan sobre una **capa gráfica fuera de pantalla**: cada fotograma pinta solo los segmentos **nuevos** (coste constante), y solo se reconstruye la capa completa cuando es necesario (zoom, redimensionado, limpieza, restablecimiento, cambio de modo o importación). El lienzo principal pinta el fondo, vuelca esa capa y superpone las guías y los planetas. Esta estrategia mantiene la fluidez con miles de líneas (se justifica en 6.6).
+**Renderizado optimizado de la estela (capa `trailLayer`).** Las trazas se acumulan sobre una **capa gráfica fuera de pantalla**: cada fotograma pinta solo los segmentos **nuevos** (coste constante), y solo se reconstruye la capa completa cuando es necesario (zoom, redimensionado, limpieza, restablecimiento, cambio de modo o importación). El lienzo principal pinta el fondo, vuelca esa capa y superpone las guías y los planetas. Esta estrategia es la que mantiene la fluidez con miles de líneas acumuladas, cumpliendo los requisitos de rendimiento.
 
 ```ts
 const paintLines = (from: number, to: number) => {
@@ -747,40 +747,7 @@ La imagen no es una captura del lienzo en pantalla, sino que se **redibuja desde
 
 *Figura 6.36: flujo de llamadas de la exportación — `renderPreview → buildExportCanvas`, ajuste de opciones y `save → toDataURL`.*
 
-## 6.6. Decisiones técnicas destacadas
-
-Más allá de *cómo* se implementó cada parte, conviene justificar *por qué* se eligieron determinadas tecnologías y enfoques frente a sus alternativas, pues estas decisiones condicionan la calidad del resultado y responden, en su mayoría, a requisitos concretos del proyecto. Se recogen aquí las más relevantes.
-
-**Framework: Angular.** Su uso es un **requisito no funcional** del proyecto (RNF2). Más allá de la obligación, aporta una estructura clara (componentes, servicios e inyección de dependencias), tipado fuerte con TypeScript y un modelo de reactividad maduro (señales y RxJS), idóneo para una aplicación de parámetros en tiempo real. Se descartaron React y Vue (no cumplen el requisito) y el JavaScript sin framework (perdería estructura, tipado y mantenibilidad).
-
-**Motor gráfico: p5.js en modo instancia.** p5.js ofrece una API sencilla y expresiva sobre el lienzo 2D, con su propio bucle de render a 60 fps, ideal para arte generativo (RNF3). Se usa en **modo instancia** —en lugar del modo global— para no contaminar el espacio de nombres global e integrarlo limpiamente dentro de un componente Angular. Se descartaron SVG (se degrada con miles de elementos, pues cada línea sería un nodo del DOM), WebGL (potencia excesiva para gráficos 2D de líneas) y programar la API de Canvas «a pelo» (p5 ya resuelve el bucle, el redimensionado y numerosas utilidades).
-
-**Detección de cambios: aplicación «zoneless».** La aplicación prescinde de la biblioteca de detección de cambios habitual; esta se dispara solo por eventos de la interfaz y por señales. El motivo es de rendimiento: el bucle de p5.js se ejecuta 60 veces por segundo y, con la detección automática activada, cada fotograma dispararía un ciclo de actualización **inútil** (el lienzo lo gestiona p5, no Angular), degradando el rendimiento. Sin ella, el dibujo corre por su cuenta y Angular solo trabaja ante acciones reales (RNF5, RNF8). *(Como nota de honestidad técnica: una versión inicial conservaba esa biblioteca y aislaba p5 con un mecanismo de exclusión explícito; se sustituyó por el modelo «zoneless», que logra lo mismo de forma más limpia.)*
-
-**Renderizado de la estela: capa fuera de pantalla incremental.** Repintar las N líneas del historial en cada fotograma tiene coste O(N) y congela la animación cuando hay miles. En su lugar, las líneas se acumulan en una capa fuera de pantalla y cada fotograma pinta solo los segmentos nuevos (coste O(1)), reconstruyendo la capa completa únicamente cuando es imprescindible. Esto mantiene la fluidez sin importar cuántas líneas se acumulen (RNF5, RNF8). Las líneas se guardan como **vectores** y se rerasterizan al nivel de zoom actual, de modo que ampliar no pierde nitidez.
-
-**Modelo de estado: historial de líneas y sesiones (datos, no píxeles).** El dibujo se guarda como datos (`lineHistory` y `sessions`), no como un único mapa de bits. Tener los datos —y no solo los píxeles— es lo que habilita el **deshacer por sesiones**, la **exportación e importación** del patrón como secuencia reproducible y la **rerasterización** al hacer zoom; un mapa de bits impediría todo ello. Como invariante, en pausa el historial equivale a reproducir las sesiones con `replaySessionsToLines()`.
-
-**Internacionalización: sistema propio con señales (RF14).** Se descartó la solución oficial de Angular porque compila un *build* por idioma y no permite el cambio en caliente (obligaría a recargar), y las bibliotecas de terceros resultaban poco fiables de instalar en el entorno de desarrollo. La solución propia es ligera, sin dependencias, permite el cambio de idioma instantáneo y es trivialmente extensible: añadir un idioma se reduce a crear un archivo JSON y registrarlo.
-
-**Estilos: Bootstrap 5.** Aporta una rejilla responsiva y componentes listos para usar con poco esfuerzo (RNF9), sin imponer un aspecto tan marcado como otras bibliotecas. El tema oscuro y la codificación cromática por órbita (azul/rojo) se ajustan con CSS propio.
-
-La tabla siguiente resume estas decisiones, sus alternativas descartadas y el requisito que cada una satisface.
-
-| Aspecto | Decisión adoptada | Alternativas descartadas | Requisito |
-| --- | --- | --- | --- |
-| Framework | Angular (componentes *standalone*) | React, Vue, JavaScript sin framework | RNF2 |
-| Motor gráfico | p5.js en modo instancia | SVG, WebGL, API de Canvas directa | RNF3 |
-| Detección de cambios | Aplicación *zoneless* | Zone.js, aislamiento con `runOutsideAngular` | RNF5, RNF8 |
-| Renderizado de la estela | Capa fuera de pantalla incremental (O(1)) | Repintar todo el historial cada fotograma (O(N)) | RNF5, RNF8 |
-| Modelo de estado | Datos vectoriales (`lineHistory`, `sessions`) | Un único mapa de bits | RF5, RF6, RF7 |
-| Internacionalización | Sistema propio con señales | @angular/localize, ngx-translate, Transloco | RF14 |
-| Estilos | Bootstrap 5 + CSS propio | Angular Material, CSS íntegramente propio | RNF4, RNF9 |
-| Despliegue | Netlify (alojamiento estático) | — | RNF12 |
-
-*Figura 6.37: resumen de las decisiones técnicas, sus alternativas descartadas y el requisito que las motiva.*
-
-## 6.7. Persistencia e integración del sistema
+## 6.6. Persistencia e integración del sistema
 
 A diferencia de una aplicación que se apoya en servicios externos como una base de datos en la nube, *Epicycloid Generator* funciona por completo en el lado del cliente. No obstante, sí integra varios mecanismos de **persistencia ligera** y de **entrada/salida de datos** que cumplen el papel que en otras arquitecturas desempeñaría el servidor.
 

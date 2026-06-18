@@ -29,6 +29,7 @@ El usuario propuso mostrar funciones principales + flujo de datos + una "simulac
 - **Tabla de decisiones** (decisiones ↔ alternativas ↔ requisito) añadida como Figura 6.37.
 - **Eliminado el diagrama de flujo de datos** (a petición del usuario: los diagramas de secuencia de los cap. 4 y 5 ya cubren la colaboración entre componentes). La sección 6.2 se mantiene en prosa y remite a esos diagramas. Renumeradas las figuras (ahora 6.1–6.37, sin huecos). El árbol de carpetas (6.1) va como texto, no como captura.
 - **Capturas pendientes** (las hace el usuario): solo las de interfaz (Figuras 6.2–6.13, pantallazos de la app).
+- **Eliminado el subapartado 6.6 «Decisiones técnicas»** (y su tabla, antigua Figura 6.37): el usuario indicó que la justificación de tecnologías ya está en el capítulo de análisis de tecnologías (estado del arte), por lo que repetirla sería redundante. El cap. 6 queda en **6 secciones** (6.1–6.6, con Persistencia ahora como 6.6) y **figuras 6.1–6.36**. Las referencias internas que apuntaban a 6.6 (en 6.1 zoneless y en 6.4 trailLayer) se reescribieron para remitir al capítulo de análisis de tecnologías / a los requisitos de rendimiento.
 
 ### Estado de la memoria
 Capítulos redactados: 4, 5 y ahora 6. Pendientes para igualar la estructura de referencia: 1 (Introducción), 2 (Estado del arte), 3 (Requisitos/costes/riesgos/viabilidad), 7 (Pruebas), 8 (Conclusiones).
