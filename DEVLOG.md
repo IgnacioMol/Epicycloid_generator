@@ -21,10 +21,7 @@ Ampliar `claude/estructura/` con material de **explicación experta** para defen
 Se detectó que docs **antiguos** (`implementation-notes.md`, `tfg-context.md`, `web-structure-analysis.md`) describen p5 con `ngZone.runOutsideAngular()`, pero el **código actual es zoneless y NO usa `NgZone`**. La fuente de verdad es `canvas.ts` y los docs de `estructura/`; los nuevos documentos lo dejan claro (nota explícita en el 10). Pendiente: limpiar o marcar como obsoletos esos tres docs antiguos.
 
 ### Nota de cap. 4
-Añadida en el anexo A.2 (diagrama de clases) una aclaración de qué son los métodos con prefijo `ng` (hooks de ciclo de vida de Angular). Además, la interfaz `PatternParams` del diagrama de clases pasa a listar sus **17 campos reales** (antes resumía 6 como "factores elípticos e inclinación").
-
-### Cap. 5 — diagramas de secuencia (decisión final)
-El usuario detectó que el cap. 4 y el cap. 5 tenían diagramas casi idénticos (p. ej. «Cambiar idioma»), porque el cap. 4 ya cubre los 14 casos de uso. Se exploraron dos vías: (1) reformular el cap. 5 a operaciones internas de diseño (descartada: se alejaba del estilo del TFG de referencia y algunas sonaban a "mecanismo"), y (2) **quedarse con un conjunto reducido de operaciones de USUARIO representativas, como la referencia**, contadas en clave de diseño. Decisión final: la vía 2, con **3 diagramas** — **Generar y reproducir el patrón**, **Deshacer última sesión** y **Exportar imagen** — más profundos que los del cap. 4 (capa offscreen O(1), replay de sesiones, recomposición de la imagen). Se evita «Cambiar idioma» (era el duplicado más descarado). Numeración: secuencias 5.1–5.3, mockups desde 5.4. Verificado contra `canvas.ts` y `pattern.service.ts`. Hallazgo de paso: el comentario de memoria sobre "al redimensionar se pierde la estela" es **incorrecto** — el patrón **se conserva** (capa redimensionada + `trailDirty` + trazas en coords del lienzo).
+Añadida en el anexo A.2 (diagrama de clases) una aclaración de qué son los métodos con prefijo `ng` (hooks de ciclo de vida de Angular).
 
 ---
 
