@@ -3,22 +3,22 @@
 > Borrador del apartado de implementación de la memoria del TFG *Epicycloid Generator*.
 > **Adaptación de la estructura de referencia (UrbanGuardian):** aquella memoria describe una app
 > Android (interfaces XML, lógica Java, Firebase) pantalla a pantalla. Aquí se mantiene el *espíritu*
-> de la estructura —desarrollo de la interfaz, implementación de los componentes visuales,
-> implementación de la lógica e integración— pero adaptado a una **aplicación web de página única**
-> (Angular + p5.js), **sin login, sin base de datos y sin navegación entre pantallas**. A las secciones
-> descriptivas se les añade un bloque que eleva el capítulo: el **trazado de interacciones completas**
-> (6.5). Los nombres de clase y función son los **reales del código**. Las figuras son capturas de código
-> y de interfaz, referenciadas en el texto. Los diagramas de colaboración entre componentes no se repiten
-> aquí (ya están en los diagramas de secuencia de los capítulos 4 y 5), y la justificación de las
-> tecnologías elegidas tampoco, pues se abordó en el capítulo de análisis de tecnologías (estado del arte).
+> de la estructura —un único bloque «Desarrollo de la aplicación» que recorre interfaces, componentes,
+> lógica e integración— pero adaptado a una **aplicación web de página única** (Angular + p5.js),
+> **sin login, sin base de datos y sin navegación entre pantallas**. A ese bloque se le añade un apartado
+> que eleva el capítulo: el **trazado de interacciones completas** (6.3). Los nombres de clase y función
+> son los **reales del código**. Las figuras son capturas de código y de interfaz, referenciadas en el
+> texto. Los diagramas de colaboración entre componentes no se repiten aquí (ya están en los diagramas de
+> secuencia de los capítulos 4 y 5), y la justificación de las tecnologías elegidas tampoco, pues se
+> abordó en el capítulo de análisis de tecnologías (estado del arte).
 
 ---
 
-El presente capítulo describe el proceso de desarrollo de la aplicación, centrándose en la construcción de sus componentes fundamentales y en la materialización del diseño definido en el capítulo anterior. Se detallan las decisiones técnicas y las herramientas empleadas para implementar la interfaz, la estructura interna del código y la integración de los distintos elementos que componen el sistema.
+El presente capítulo describe el proceso de desarrollo de la aplicación, centrándose en la construcción de sus componentes fundamentales y en la materialización del diseño definido en el capítulo anterior. Se detallan las decisiones de implementación y las herramientas empleadas para construir la interfaz, la estructura interna del código y la integración de los distintos elementos que componen el sistema.
 
 A diferencia de una aplicación móvil con múltiples actividades, *Epicycloid Generator* es una **aplicación web de página única (SPA)** que se ejecuta íntegramente en el navegador. Por ello, no existe navegación entre pantallas ni una capa de persistencia remota: toda la interfaz convive en una única vista y el estado se gestiona en memoria, apoyándose puntualmente en el almacenamiento local del navegador. La interfaz se ha construido con **componentes de Angular** (plantillas HTML con la sintaxis declarativa del framework, estilizadas con Bootstrap y CSS propio), mientras que la generación gráfica en tiempo real se delega en la biblioteca **p5.js**, que dibuja sobre un lienzo (`<canvas>`). La lógica se ha programado en **TypeScript** siguiendo un enfoque orientado a componentes y servicios.
 
-Para organizar la exposición, el capítulo se estructura en seis bloques: la **estructura y organización del proyecto** (6.1); el **flujo de datos** que vertebra la aplicación (6.2); el **desarrollo de la interfaz** y sus componentes visuales (6.3); la **implementación de la lógica** detrás de cada componente (6.4); el **trazado de varias interacciones completas** de principio a fin, a modo de simulación del funcionamiento real (6.5); y, por último, la **persistencia e integración** del sistema sin servidor (6.6).
+Para organizar la exposición, el capítulo se estructura en tres bloques. El primero (6.1) presenta la **estructura y organización del proyecto**, incluido el flujo de datos que lo vertebra. El segundo (6.2), **desarrollo de la aplicación**, constituye el núcleo del capítulo y recorre sucesivamente las interfaces, los componentes visuales, la implementación de la lógica y la persistencia e integración del sistema. El tercero (6.3) ofrece el **trazado de varias interacciones completas** de principio a fin, a modo de simulación del funcionamiento real.
 
 ## 6.1. Estructura y organización del proyecto
 
@@ -54,9 +54,9 @@ src/app/
 
 *Figura 6.1: organización del código fuente en `src/app`, repartido en `models`, `core` y `features`.*
 
-## 6.2. Flujo de datos de la aplicación
+### Flujo de datos entre componentes
 
-Comprender cómo circulan los datos es la clave para entender el resto del capítulo, por lo que se aborda antes de entrar en los componentes individuales. La comunicación entre las partes de la aplicación **no** se realiza pasando datos directamente de un componente a otro, sino a través del servicio `PatternService`, que actúa como **única fuente de verdad**. Este diseño desacopla por completo el panel de control (la entrada) del lienzo (el motor de dibujo): ninguno conoce al otro, ambos solo conocen al servicio.
+Comprender cómo circulan los datos es la clave para entender el resto del capítulo. La comunicación entre las partes de la aplicación **no** se realiza pasando datos directamente de un componente a otro, sino a través del servicio `PatternService`, que actúa como **única fuente de verdad**. Este diseño desacopla por completo el panel de control (la entrada) del lienzo (el motor de dibujo): ninguno conoce al otro, ambos solo conocen al servicio.
 
 El flujo es **unidireccional** y se articula en torno a dos canales que el servicio expone como **flujos observables**:
 
@@ -67,11 +67,13 @@ Junto a esos dos canales, el servicio conserva el **estado del dibujo** como dat
 
 El recorrido completo, por tanto, es siempre el mismo: **el usuario actúa sobre `Controls` → `Controls` traslada la acción o el cambio a `PatternService` → el servicio lo emite o lo almacena → `Canvas` reacciona y dibuja → el resultado vuelve al usuario en el lienzo**. Esta circulación cerrada y de sentido único facilita razonar sobre el sistema y depurarlo, y permite que componentes nuevos se sumen sin tocar a los existentes. Este flujo es, precisamente, el que reflejan los diagramas de secuencia presentados en los capítulos 4 y 5, donde se observa cómo el usuario, `Controls`, `PatternService` y `Canvas` colaboran en cada operación.
 
-## 6.3. Desarrollo de la interfaz y componentes
+## 6.2. Desarrollo de la aplicación
 
-Este apartado describe la interfaz: las zonas que la componen y los componentes visuales reutilizables con los que se han construido. Dado que la aplicación es de página única, no se describen «pantallas» que se suceden, sino las **regiones** de la única vista y los **diálogos** que se superponen a ella cuando el usuario lo solicita. Se ha seguido un enfoque centrado en la experiencia de usuario, con una interfaz intuitiva, coherente y accesible que permite percibir de inmediato el efecto de cada ajuste sobre la composición.
+Este apartado constituye el núcleo del capítulo y recorre el desarrollo de la aplicación en cuatro planos sucesivos, de lo que el usuario percibe a lo que ocurre por debajo: las **interfaces** que ve el usuario (6.2.1), los **componentes** visuales con que se construyen (6.2.2), la **lógica** que las anima (6.2.3) y la **integración** que da persistencia a los datos (6.2.4).
 
-### 6.3.1. Regiones e interfaces de la aplicación
+### 6.2.1. Interfaces
+
+Dado que la aplicación es de página única, no se describen «pantallas» que se suceden, sino las **regiones** de la única vista y los **diálogos** que se superponen a ella cuando el usuario lo solicita. Se ha seguido un enfoque centrado en la experiencia de usuario, con una interfaz intuitiva, coherente y accesible que permite percibir de inmediato el efecto de cada ajuste sobre la composición.
 
 **Vista principal (`AppComponent`)**
 
@@ -109,7 +111,7 @@ Es una ventana modal que se muestra automáticamente la primera vez que se abre 
 
 Es un botón desplegable, fijo en una esquina, que permite cambiar el idioma de toda la interfaz sin recargar la página. Al pulsarlo se despliega la lista de idiomas disponibles (español, catalán, inglés, indonesio y checo); al seleccionar uno, todos los textos se traducen de inmediato. La lista se genera automáticamente a partir de la configuración de idiomas, de modo que añadir uno nuevo no obliga a modificar la interfaz.
 
-### 6.3.2. Implementación de los componentes de interfaz
+### 6.2.2. Componentes de la interfaz
 
 El diseño visual se ha estructurado mediante **plantillas HTML de Angular**, estilizadas con **Bootstrap** y con hojas de estilo propias (CSS) para los elementos específicos. A lo largo de la interfaz se repiten una serie de componentes que constituyen los «ladrillos» de las distintas regiones. Frente al desarrollo en XML de una app Android, aquí los elementos se declaran en HTML y se enlazan con la lógica mediante la sintaxis de Angular: el **enlace bidireccional** `[(ngModel)]` (que sincroniza un control con una variable del componente), los manejadores de eventos `(click)`/`(ngModelChange)`, los bloques de control de flujo `@if` y `@for`, y el **pipe de traducción** `| t`, que sustituye cada etiqueta por su texto en el idioma activo.
 
@@ -202,13 +204,13 @@ El diseño visual se ha estructurado mediante **plantillas HTML de Angular**, es
 
 **Lienzo (`canvas`).** Es un componente singular: no se rellena con marcado declarativo, sino que p5.js crea y gobierna sobre él el dibujo en tiempo real. Es el elemento central pero único de la interfaz.
 
-## 6.4. Implementación de la lógica
+### 6.2.3. Implementación de la lógica
 
 Una vez descrita la interfaz, este apartado detalla el comportamiento lógico que hay detrás de cada componente. Se expone componente por componente, comenzando por el servicio que coordina a todos los demás.
 
-### Servicio central — `PatternService`
+#### Servicio central — `PatternService`
 
-`PatternService` es el núcleo de la aplicación, conforme al flujo descrito en 6.2.
+`PatternService` es el núcleo de la aplicación, conforme al flujo descrito en 6.1.
 
 **`updateParams` y `dispatch`.** Son los dos puntos de entrada. `updateParams()` recibe una nueva configuración y la emite por `params$`, lo que provoca que el lienzo redibuje. `dispatch()` emite por `action$` una acción del usuario, que el lienzo interpreta.
 
@@ -296,7 +298,7 @@ replaySessionsToLines(sessions: SimulationSession[]): LineRecord[] {
 
 *Figura 6.20: deshacer y reconstrucción del dibujo — `removeLastSession` y `replaySessionsToLines` (`pattern.service.ts`). El cálculo trigonométrico interno se ha omitido por brevedad.*
 
-### Lienzo — `Canvas`
+#### Lienzo — `Canvas`
 
 **`initSketch` y el bucle de dibujo (`draw`).** `initSketch()` crea una instancia de p5.js en **modo instancia**, con su propio bucle a 60 fps. Dentro de ese bucle, `draw()` es el corazón de la aplicación y donde se materializa la generación de la composición epicicloidal a partir de los parámetros (RF1): cada fotograma calcula la posición de los dos planetas con los algoritmos paramétricos, traza la nueva línea entre ellos —o, en modo curva, el segmento que une el punto anterior con el actual—, dibuja las guías y los planetas, y avanza los ángulos. Si la animación está activa, registra cada nuevo segmento en el historial del servicio.
 
@@ -426,7 +428,7 @@ private onAction(action: CanvasAction): void {
 
 *Figura 6.24: `onAction` traduce cada acción recibida del servicio en un cambio de estado del lienzo (`canvas.ts`).*
 
-### Panel de control — `Controls`
+#### Panel de control — `Controls`
 
 **`onParamChange`, `applyPreset` y `toggleMode`.** `onParamChange()` se ejecuta al modificar un parámetro y envía la nueva configuración al servicio, redibujando al instante. `applyPreset()` carga un ejemplo predefinido (RF7), fusionando sus valores sobre los por defecto para dejar el panel en un estado completo y reproducible. `toggleMode()` alterna entre curva e intersección de líneas (RF8).
 
@@ -550,7 +552,7 @@ private onFileSelected(event: Event): void {
 
 *Figura 6.28: exportación (`exportJson`) e importación con validación (`onFileSelected`) de composiciones en formato JSON (`controls.ts`).*
 
-### Diálogo de exportación — `ExportModal`
+#### Diálogo de exportación — `ExportModal`
 
 **`buildExportCanvas`, `renderPreview`, `save`.** `buildExportCanvas()` construye, sobre un lienzo auxiliar en memoria, la imagen de exportación: pinta el fondo (o lo deja transparente), dibuja todas las líneas a **calidad vectorial** y, opcionalmente, las guías y el punto central, aplicando el zoom y la resolución elegidos. `renderPreview()` reutiliza ese lienzo para la previsualización escalada y se reinvoca con cada cambio de opción. `save()` genera la imagen final y la descarga como PNG.
 
@@ -601,7 +603,7 @@ save(): void {
 
 *Figura 6.30: `save` genera la imagen final y la descarga como archivo PNG (`export-modal.ts`).*
 
-### Internacionalización — `I18nService` y `TranslatePipe`
+#### Internacionalización — `I18nService` y `TranslatePipe`
 
 El soporte multilingüe (RF14) se ha resuelto con un sistema de internacionalización propio en tiempo de ejecución. `I18nService` mantiene el idioma activo en una **señal** y ofrece `setLang()` (cambiar y persistir) y `translate()` (resolver una clave al idioma actual); `detectInitialLang()` elige el idioma al arrancar según la preferencia guardada o el del navegador. Los textos viven en **diccionarios JSON** anidados, uno por idioma. El `TranslatePipe` (`| t`) es un pipe **impuro** a propósito: se reevalúa en cada ciclo de detección de cambios, de modo que al cambiar de idioma toda la interfaz se traduce de forma instantánea sin recargar.
 
@@ -646,11 +648,23 @@ export class TranslatePipe implements PipeTransform {
 
 *Figura 6.32: `TranslatePipe`, pipe impuro (`pure: false`) que se reevalúa en cada ciclo de detección de cambios para traducir al instante (`translate.pipe.ts`).*
 
-## 6.5. Trazado de interacciones completas
+### 6.2.4. Persistencia e integración
+
+A diferencia de una aplicación que se apoya en servicios externos como una base de datos en la nube, *Epicycloid Generator* funciona por completo en el lado del cliente. No obstante, sí integra varios mecanismos de **persistencia ligera** y de **entrada/salida de datos** que cumplen el papel que en otras arquitecturas desempeñaría el servidor.
+
+**Persistencia local con `localStorage`.** Las preferencias que deben sobrevivir entre visitas se guardan en el **almacenamiento local del navegador**: el idioma elegido, que `I18nService` recupera al arrancar, y la marca «No volver a mostrar» del tutorial, que evita que la ventana de bienvenida reaparezca. Es un almacenamiento sencillo, sin sesión ni servidor, suficiente para el alcance de la aplicación.
+
+**Entrada y salida de composiciones (JSON).** En lugar de almacenar las composiciones en una base de datos remota, la aplicación permite **exportarlas e importarlas como archivos JSON**. Al exportar, las sesiones se serializan en un archivo que el usuario descarga; al importar, ese archivo se valida y se reconstruye fielmente el dibujo. Este enfoque otorga al usuario el control total de sus creaciones —puede guardarlas, archivarlas o compartirlas— sin necesidad de registro ni de infraestructura de servidor.
+
+**Exportación de imágenes (PNG).** La composición puede guardarse también como imagen PNG mediante el diálogo de exportación. La imagen se genera en el navegador, a resolución configurable y con calidad vectorial, y se descarga directamente.
+
+**Despliegue.** Al ser una SPA sin componente de servidor, su despliegue se reduce a publicar los archivos estáticos resultantes de la compilación en un servicio de **alojamiento estático** (Netlify), accesible desde cualquier navegador moderno (RNF12). Esto simplifica la puesta en producción y elimina los costes y la complejidad de mantener una infraestructura de *backend*.
+
+## 6.3. Trazado de interacciones completas
 
 Las secciones anteriores describen cada pieza por separado. Para mostrar cómo **colaboran en conjunto**, este apartado recorre tres interacciones del usuario de principio a fin, siguiendo el camino que toman los datos a través de las funciones reales del código. Sirve de complemento a los diagramas de secuencia del capítulo 5: allí se representó *qué objetos intervienen* en cada operación; aquí se detalla *qué función llama a qué función* y qué ocurre en cada paso, encadenando los fragmentos de código implicados. Es, en esencia, una simulación del funcionamiento real de la aplicación.
 
-### 6.5.1. Interacción «Ajustar un parámetro y reproducir»
+### 6.3.1. Interacción «Ajustar un parámetro y reproducir»
 
 Es la interacción central de la aplicación y combina las dos fases del flujo de datos: primero la edición de parámetros (canal `params$`) y después una acción (canal `action$`).
 
@@ -692,7 +706,7 @@ Cada fotograma añade una línea al historial y la pinta sobre la capa acumulada
 
 **Fin — el usuario pulsa «Pausar».** `Controls.pause()` emite `dispatch('pause')`; el lienzo, en `onAction('pause')`, llama a `PatternService.endSession()`, que cierra el bloque y lo añade a `sessions` con su estado final. El dibujo permanece en pantalla y la aplicación queda lista para una nueva sesión.
 
-### 6.5.2. Interacción «Deshacer la última sesión»
+### 6.3.2. Interacción «Deshacer la última sesión»
 
 Esta interacción muestra la potencia del modelo de datos por sesiones: deshacer no «borra píxeles», sino que **reconstruye** el dibujo a partir de los bloques que quedan.
 
@@ -718,7 +732,7 @@ El punto clave es `replaySessionsToLines()`: en lugar de intentar «despintar» 
 
 *Figura 6.35: flujo de llamadas del deshacer — `clear → removeLastSession → replaySessionsToLines → onAction('undo')`.*
 
-### 6.5.3. Interacción «Exportar la composición como imagen»
+### 6.3.3. Interacción «Exportar la composición como imagen»
 
 Esta interacción atraviesa un componente distinto —el diálogo de exportación— y demuestra cómo `lineHistory` se reutiliza para producir una imagen de calidad independiente del tamaño del lienzo en pantalla.
 
@@ -746,15 +760,3 @@ Usuario pulsa «Guardar»
 La imagen no es una captura del lienzo en pantalla, sino que se **redibuja desde cero** a partir de los vectores de `lineHistory`, aplicando el factor de resolución elegido (1×, 2× o 4×). Así, la exportación conserva la calidad por mucho que se amplíe, sin pixelado (RF6). El mismo método (`buildExportCanvas()`) alimenta tanto la previsualización como el guardado, lo que garantiza que lo que el usuario ve es exactamente lo que descarga.
 
 *Figura 6.36: flujo de llamadas de la exportación — `renderPreview → buildExportCanvas`, ajuste de opciones y `save → toDataURL`.*
-
-## 6.6. Persistencia e integración del sistema
-
-A diferencia de una aplicación que se apoya en servicios externos como una base de datos en la nube, *Epicycloid Generator* funciona por completo en el lado del cliente. No obstante, sí integra varios mecanismos de **persistencia ligera** y de **entrada/salida de datos** que cumplen el papel que en otras arquitecturas desempeñaría el servidor.
-
-**Persistencia local con `localStorage`.** Las preferencias que deben sobrevivir entre visitas se guardan en el **almacenamiento local del navegador**: el idioma elegido, que `I18nService` recupera al arrancar, y la marca «No volver a mostrar» del tutorial, que evita que la ventana de bienvenida reaparezca. Es un almacenamiento sencillo, sin sesión ni servidor, suficiente para el alcance de la aplicación.
-
-**Entrada y salida de composiciones (JSON).** En lugar de almacenar las composiciones en una base de datos remota, la aplicación permite **exportarlas e importarlas como archivos JSON**. Al exportar, las sesiones se serializan en un archivo que el usuario descarga; al importar, ese archivo se valida y se reconstruye fielmente el dibujo. Este enfoque otorga al usuario el control total de sus creaciones —puede guardarlas, archivarlas o compartirlas— sin necesidad de registro ni de infraestructura de servidor.
-
-**Exportación de imágenes (PNG).** La composición puede guardarse también como imagen PNG mediante el diálogo de exportación. La imagen se genera en el navegador, a resolución configurable y con calidad vectorial, y se descarga directamente.
-
-**Despliegue.** Al ser una SPA sin componente de servidor, su despliegue se reduce a publicar los archivos estáticos resultantes de la compilación en un servicio de **alojamiento estático** (Netlify), accesible desde cualquier navegador moderno (RNF12). Esto simplifica la puesta en producción y elimina los costes y la complejidad de mantener una infraestructura de *backend*.
