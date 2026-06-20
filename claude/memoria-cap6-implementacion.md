@@ -210,7 +210,7 @@ Una vez descrita la interfaz, este apartado detalla el comportamiento lógico qu
 
 #### Servicio central — `PatternService`
 
-`PatternService` es el núcleo de la aplicación, conforme al flujo descrito en 6.1.
+`PatternService` es el núcleo de la aplicación: actúa como única fuente de verdad y centraliza tanto los parámetros del patrón como el historial de trazas y las sesiones de animación. Al ser un servicio compartido, desacopla por completo el panel de control del lienzo, de modo que ninguno de los dos componentes necesita conocer al otro: ambos se comunican exclusivamente a través de él. De esta forma, cualquier cambio en los parámetros o cualquier acción del usuario fluye por un único punto, lo que mantiene el estado coherente y facilita la mantenibilidad y la ampliación del sistema.
 
 **`updateParams` y `dispatch`.** Este fragmento de código implementa los dos puntos de entrada del servicio. Por un lado, el método `updateParams()` recibe una nueva configuración de parámetros y la emite a través del flujo `params$`, lo que provoca que el lienzo se redibuje al instante. Por otro lado, el método `dispatch()` emite a través del flujo `action$` una acción solicitada por el usuario, que el lienzo interpretará posteriormente. Esta separación permite mantener un flujo de datos claro y unidireccional entre el panel de control y el lienzo.
 

@@ -4,6 +4,25 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-20 (sesión 9) — Redacción del Capítulo 7 (Pruebas y resultados) de la memoria
+
+### Objetivo
+Redactar el borrador del **capítulo 7 (Pruebas y resultados)** copiando la estructura del TFG de referencia (UrbanGuardian) y adaptándola a la SPA Angular + p5.js.
+
+### Nuevo documento
+- **`claude/memoria-cap7-pruebas.md`** — capítulo completo siguiendo la estructura de la referencia:
+  - **7.1 Pruebas funcionales**: 15 fichas PF (PF1–PF15) con el formato de la referencia (Prueba funcional / Requisito cumplido / Prueba realizada / Resultado esperado / Resultado obtenido), cubriendo RF1–RF14 + una prueba de robustez (PF15, valores inválidos → RNF10).
+    - **7.1.1 Trazabilidad requisitos↔pruebas**: tabla RF1–RF14 ↔ PF + párrafos de conclusión.
+  - **7.2 Pruebas de rendimiento**: medición con DevTools del navegador (fps/CPU/memoria) en el escenario más exigente (animación continua con estela densa), en dos equipos.
+    - **7.2.1 Análisis de características** (hardware de los dos equipos) y **7.2.2 Análisis de resultados** (fps/CPU/memoria/GPU + conclusiones ligadas a RNF5/RNF8).
+  - **7.3 Pruebas de usabilidad**: 5 principios + **7.3.1** cuestionario (8 dimensiones adaptadas a herramienta creativa) + **7.3.2** análisis de resultados.
+
+### Pendiente para el usuario
+- **Sustituir las cifras representativas** marcadas con ⚠️ en 7.2 (características de los equipos, fps/CPU/memoria) y en 7.3.2 (n.º de participantes y porcentajes del cuestionario) por las mediciones reales.
+- Capturas de DevTools (Figuras 7.x de rendimiento) y, en su caso, del cuestionario.
+
+---
+
 ## 2026-06-18 (sesión 8) — Redacción del Capítulo 6 (Implementación) de la memoria
 
 ### Objetivo
