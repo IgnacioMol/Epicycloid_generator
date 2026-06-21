@@ -1031,7 +1031,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 |**Descripción**|El usuario inicia la animación; el sistema comienza a acumular<br>trazas según los parámetros activos.|
 |**Requisitos cumplidos**|RF1, RF3, RF4|
 |**Precondiciones**|Existen parámetros válidos (siempre los hay, por defecto).|
-|**Flujo de eventos**|1. El usuario pulsa «Play». 2. El sistema anima la geometría y va<br>añadiendo las trazas resultantes al lienzo. 3. Los controles se<br>bloquean mientras la animación está activa.|
+|**Flujo de eventos**|1. El usuario pulsa “Play”. 2. El sistema anima la geometría y va<br>añadiendo las trazas resultantes al lienzo. 3. Los controles se<br>bloquean mientras la animación está activa.|
 |**Postcondiciones**|La animación está en marcha y la composición crece<br>progresivamente.|
 
 
@@ -1045,7 +1045,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 |**Descripción**|El usuario detiene la animación en curso.|
 |**Requisitos cumplidos**|RF4|
 |**Precondiciones**|La animación está en marcha.|
-|**Flujo de eventos**|1. El usuario pulsa «Pausa». 2. El sistema detiene la animación y<br>conserva el dibujo acumulado. 3. Los controles vuelven a estar<br>disponibles.|
+|**Flujo de eventos**|1. El usuario pulsa “Pausa”. 2. El sistema detiene la animación y<br>conserva el dibujo acumulado. 3. Los controles vuelven a estar<br>disponibles.|
 |**Postcondiciones**|La composición queda detenida y editable.|
 
 
@@ -1056,11 +1056,11 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 |---|---|
 |**ID del caso de uso**|CU4 — Alternar modo de visualización|
 |**Actor principal**|Usuario|
-|**Descripción**|El usuario cambia entre el modo «intersección de líneas» y el modo|
+|**Descripción**|El usuario cambia entre el modo “intersección de líneas” y el modo|
 
 
 
-||«curva epicicloidal».|
+||“curva epicicloidal”.|
 |---|---|
 |**Requisitos cumplidos**|RF8|
 |**Precondiciones**|La animación está pausada.|
@@ -1096,7 +1096,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Precondiciones**|Ninguna.|
 |---|---|
-|**Flujo de eventos**|1. El usuario pulsa «Reset». 2. El sistema restaura los valores por<br>defecto y borra el dibujo.|
+|**Flujo de eventos**|1. El usuario pulsa “Reset”. 2. El sistema restaura los valores por<br>defecto y borra el dibujo.|
 |**Postcondiciones**|Los parámetros vuelven a sus valores iniciales y el lienzo queda<br>limpio.|
 
 
@@ -1121,7 +1121,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 |---|---|
 |**ID del caso de uso**|CU8 — Exportar imagen|
 |**Actor principal**|Usuario|
-|**Descripción**|El usuario guarda la composición actual como una<br>imagen.**Incluye**«Configurar opciones de exportación».|
+|**Descripción**|El usuario guarda la composición actual como una<br>imagen.**Incluye**”Configurar opciones de exportación”.|
 |**Requisitos cumplidos**|RF6|
 |**Precondiciones**|Existe un dibujo en el lienzo.|
 |**Flujo de eventos**|1. El usuario solicita exportar la imagen. 2. El sistema muestra una<br>previsualización. 3. El usuario configura fondo, zoom, resolución y<br>visibilidad de guías (caso de uso incluido). 4. El usuario confirma la<br>descarga. 5. El sistema genera y entrega la imagen.|
@@ -1149,7 +1149,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 |---|---|
 |**ID del caso de uso**|CU10 — Importar patrón|
 |**Actor principal**|Usuario|
-|**Descripción**|El usuario carga un archivo de patrón previamente exportado y<br>recupera el dibujo.**Incluye**«Reconstruir el dibujo».|
+|**Descripción**|El usuario carga un archivo de patrón previamente exportado y<br>recupera el dibujo.**Incluye**”Reconstruir el dibujo”.|
 |**Requisitos cumplidos**|RF7|
 |**Precondiciones**|El usuario dispone de un archivo de patrón válido.|
 |**Flujo de eventos**|1. El usuario selecciona un archivo de patrón. 2. El sistema<br>reconstruye la composición a partir de la información del archivo<br>(caso de uso incluido). 3. El sistema actualiza los parámetros<br>mostrados al estado del patrón cargado.|
@@ -1183,7 +1183,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 |---|---|
 |**ID del caso de uso**|CU12 — Generar variación aleatoria|
 |**Actor principal**|Usuario|
-|**Descripción**|El usuario solicita generar una composición «única» asignando de<br>forma automática valores aleatorios al conjunto de parámetros que<br>definen el patrón, conservando el modo de visualización elegido.|
+|**Descripción**|El usuario solicita generar una composición “única” asignando de<br>forma automática valores aleatorios al conjunto de parámetros que<br>definen el patrón, conservando el modo de visualización elegido.|
 |**Requisitos cumplidos**|RF12|
 |**Precondiciones**|La animación está pausada.|
 |**Flujo de eventos**|1. El usuario solicita aleatorizar los parámetros. 2. El sistema asigna<br>a cada parámetro un valor aleatorio comprendido dentro de su rango<br>permitido (variación_controlada_). 3. El sistema refleja<br>inmediatamente la nueva configuración en la vista.|
@@ -1220,7 +1220,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 |**Descripción**|El usuario selecciona uno de los ejemplos de patrones predefinidos<br>que ofrece la aplicación y el sistema ajusta automáticamente todos<br>los parámetros a esa configuración, dejando la composición lista<br>para reproducirse.|
 |**Requisitos cumplidos**|RF7|
 |**Precondiciones**|Ninguna. La animación no debe estar en curso.|
-|**Flujo de eventos**|1. El usuario abre el desplegable de ejemplos. 2. El usuario elige<br>uno de los ejemplos disponibles. 3. El sistema ajusta todos los<br>parámetros del panel a la configuración guardada del ejemplo. 4. El<br>usuario pulsa «Play» y el sistema dibuja el patrón correspondiente.|
+|**Flujo de eventos**|1. El usuario abre el desplegable de ejemplos. 2. El usuario elige<br>uno de los ejemplos disponibles. 3. El sistema ajusta todos los<br>parámetros del panel a la configuración guardada del ejemplo. 4. El<br>usuario pulsa “Play” y el sistema dibuja el patrón correspondiente.|
 |**Postcondiciones**|Los parámetros del panel reflejan el ejemplo elegido y la<br>composición se genera al reproducir.|
 |**Flujo alternativo**|2a.**Lienzo en blanco:**el desplegable parte de una opción vacía; si<br>el usuario la mantiene o la vuelve a elegir, el sistema restablece los<br>parámetros por defecto. 3a. Si la animación está en curso, la acción<br>no está disponible; el usuario debe pausar antes de aplicar un<br>ejemplo. 4a. Si tras aplicar el ejemplo el usuario modifica|
 
@@ -1284,35 +1284,35 @@ Dado que _Epicycloid Generator_ es una aplicación web de página única (Single
 
 ## 5.1. Diagrama de secuencia de operaciones del sistema 
 
-## **Diagrama de secuencia de la operación «Generar y reproducir el patrón»** 
+## **Diagrama de secuencia de la operación “Generar y reproducir el patrón”** 
 
 Este diagrama representa la operación central de la aplicación. El usuario ajusta los parámetros en el panel de control y el sistema actualiza al instante la representación en el lienzo. Al reproducir, el sistema inicia una sesión de animación y, mediante un bucle (loop), dibuja la composición fotograma a fotograma acumulando las trazas resultantes. Cuando el usuario pausa, el sistema cierra la sesión y la registra como un bloque, conservando el dibujo acumulado. 
 
-_(Aquí va la Figura 5.1: Diagrama de secuencia «Generar y reproducir el patrón» — ver anexo.)_ 
+_(Aquí va la Figura 5.1: Diagrama de secuencia “Generar y reproducir el patrón” — ver anexo.)_ 
 
-## **Diagrama de secuencia de la operación «Deshacer última sesión»** 
+## **Diagrama de secuencia de la operación “Deshacer última sesión”** 
 
 Este diagrama ilustra el deshacer incremental de la composición. Al solicitar deshacer, un primer bloque condicional (alt) contempla que, si hay una animación en curso, el sistema la pausa primero para tomarla como la sesión a eliminar. A continuación, un segundo bloque alternativo distingue dos casos: si quedan sesiones anteriores, el sistema retira la última, reconstruye el dibujo con las restantes y restaura los parámetros previos; si no queda ninguna, el lienzo se vacía. En ambos casos, la estela se actualiza para reflejar el resultado. 
 
-_(Aquí va la Figura 5.2: Diagrama de secuencia «Deshacer última sesión» — ver anexo.)_ 
+_(Aquí va la Figura 5.2: Diagrama de secuencia “Deshacer última sesión” — ver anexo.)_ 
 
-## **Diagrama de secuencia de la operación «Exportar imagen»** 
+## **Diagrama de secuencia de la operación “Exportar imagen”** 
 
 Este diagrama describe el guardado de la composición como imagen. El usuario abre el diálogo de exportación y el sistema genera una previsualización a partir de la composición actual. Un bloque opcional (opt) recoge el ajuste de las opciones de exportación —fondo, zoom, resolución y elementos visibles—, que actualizan la previsualización. Al confirmar, el sistema genera la imagen final y la descarga. 
 
-_(Aquí va la Figura 5.3: Diagrama de secuencia «Exportar imagen» — ver anexo.)_ 
+_(Aquí va la Figura 5.3: Diagrama de secuencia “Exportar imagen” — ver anexo.)_ 
 
-## **Diagrama de secuencia de la operación «Importar patrón»** 
+## **Diagrama de secuencia de la operación “Importar patrón”** 
 
 Este diagrama representa la recuperación de una composición guardada. El usuario selecciona un archivo, que el sistema lee y valida. Un bloque condicional (alt) distingue dos rutas: si el archivo es válido, el sistema reconstruye el dibujo y actualiza los parámetros mostrados al estado del patrón cargado; si no lo es, la importación se descarta. 
 
-_(Aquí va la Figura 5.4: Diagrama de secuencia «Importar patrón» — ver anexo.)_ 
+_(Aquí va la Figura 5.4: Diagrama de secuencia “Importar patrón” — ver anexo.)_ 
 
-## **Diagrama de secuencia de la operación «Cambiar idioma»** 
+## **Diagrama de secuencia de la operación “Cambiar idioma”** 
 
 Este diagrama refleja la detección automática y el cambio manual de idioma. Un bloque condicional (alt) contempla que, en el primer acceso, el sistema detecta el idioma del navegador. Para el cambio manual, el usuario abre el selector y elige un idioma; el sistema actualiza de inmediato todos los textos de la interfaz y recuerda la preferencia para futuras visitas, sin recargar la página. 
 
-_(Aquí va la Figura 5.5: Diagrama de secuencia «Cambiar idioma» — ver anexo.)_ 
+_(Aquí va la Figura 5.5: Diagrama de secuencia “Cambiar idioma” — ver anexo.)_ 
 
 ## 5.2. Diseño visual 
 
@@ -1362,23 +1362,201 @@ La aplicación se ha desarrollado como una _Single Page Application_ (SPA) utili
 
 ## 6.1. Estructura y organización del proyecto 
 
-## 7. Pruebas y resultados 
+El proyecto se ha construido sobre **Angular** utilizando **componentes independientes** ( _standalone_ ), un modelo que evita los módulos clásicos y permite que cada componente declare directamente sus dependencias. La aplicación es, además, **”zoneless”** : prescinde de la biblioteca de detección automática de cambios habitual en Angular, lo que resulta clave para que el bucle de animación de p5.js, el cual se repite 60 veces por segundo, no dispare ciclos de actualización innecesarios y se mantenga el rendimiento. 
 
-- 7.1. Pruebas funcionales 
+El código fuente se reparte en tres áreas claramente diferenciadas dentro de src/app: 
 
-- 7.2. Pruebas de rendimiento 
+- **models** : las **interfaces** que definen el modelo de datos. La principal es PatternParams, que reúne todos los parámetros configurables del patrón (radios, velocidades en RPM, fases iniciales, factores de elipse, inclinaciones, color, opacidad, grosor de trazo, intervalo entre líneas y modo de visualización). Junto a ella se definen ExportOptions (opciones de exportación), LineRecord (un segmento dibujado, con sus coordenadas y color) y SimulationSession (un bloque de animación grabado, base del deshacer y de la exportación a JSON). 
 
-- 7.3. Pruebas de usabilidad 
+- **core** : la lógica transversal. Contiene el servicio central PatternService, que coordina los parámetros, el historial de trazas y las sesiones de animación, y el subsistema de internacionalización (I18nService y TranslatePipe). 
 
-## 8. Conclusiones 
+- **features** : los **componentes** que materializan cada parte de la interfaz: el lienzo (Canvas), el panel de control (Controls), el diálogo de exportación (ExportModal) y el tutorial de bienvenida (Tutorial). El catálogo de ejemplos predefinidos (presets) se ha modelado como un módulo de datos, no como un componente. 
 
-8.1. Revisión de objetivos 
+Por encima de todos ellos, el componente raíz AppComponent compone la vista: distribuye el lienzo y el panel de control en una disposición a dos columnas y aloja los elementos flotantes (tutorial y selector de idioma). 
 
-- 8.2. Trabajo futuro 
+## **Flujo de datos entre componentes** 
 
-- 8.3. Conclusiones 
+La comunicación entre las partes de la aplicación no se realiza pasando datos directamente de un componente a otro, sino a través del servicio PatternService, que actúa como única fuente de verdad. Este diseño desacopla por completo el panel de control del lienzo: ninguno conoce al otro, ambos solo conocen al servicio. 
 
-## A. Apéndice 
+El flujo es unidireccional y se articula en torno a dos canales que el servicio expone como flujos observables: 
+
+- **params$** : transporta la configuración del patrón. Cuando el usuario modifica un control, el panel publica los nuevos parámetros en el servicio y este los emite por params$. El lienzo, suscrito a ese flujo, recibe los valores actualizados y redibuja en el siguiente fotograma. Es lo que hace posible la edición en tiempo real. 
+
+- **action$** : transporta las órdenes del usuario (reproducir, pausar, deshacer, restablecer, importar). El panel las publica con dispatch() y el lienzo las interpreta en onAction(), cambiando su estado de animación. 
+
+Junto a esos dos canales, el servicio conserva el estado del dibujo como datos: el historial de segmentos (lineHistory) y la lista de sesiones grabadas (sessions). El lienzo escribe en ese historial a medida que dibuja, y otros componentes lo leen cuando lo necesitan. 
+
+El flujo de la aplicación sigue una estructura clara y unidireccional: el usuario interactúa con los controles de la interfaz, estos delegan los cambios en el PatternService, que se encarga de gestionar y emitir el estado correspondiente, y finalmente el lienzo (Canvas) reacciona a dichas actualizaciones para representar el resultado visual. Este modelo de comunicación facilita la comprensión del sistema, simplifica su depuración y permite incorporar nuevos componentes sin necesidad de modificar los ya existentes. 
+
+## 6.2. Desarrollo de la aplicación 
+
+## 6.2.1. Interfaces 
+
+## **Vista principal** 
+
+Es la estructura general de la aplicación y lo primero que percibe el usuario al acceder a ella, organizada en dos zonas principales: a la izquierda se encuentra el lienzo, que ocupa aproximadamente el 70 % del ancho y constituye el espacio donde se generan y visualizan las composiciones, mientras que a la derecha se sitúa el panel de control, con alrededor del 30 % del ancho, desde el cual se gestionan todos los parámetros y acciones del sistema. Complementariamente, se incluyen dos elementos flotantes persistentes: el botón de ayuda, que permite reabrir el tutorial en cualquier momento, y el selector de idioma, ubicado de forma discreta en una esquina para no interferir con la visualización del contenido. Esta disposición lateral entre controles y resultado no es arbitraria, sino que responde a una decisión de diseño orientada a reforzar la relación directa entre manipulación y visualización, favoreciendo así una experiencia de edición en tiempo real más clara e intuitiva. 
+
+## **Lienzo** 
+
+Es la zona donde se representa la composición. Contiene el contenedor sobre el que p5.js crea el <canvas> y un grupo de botones de **zoom** (acercar y alejar); además, el usuario puede ampliar o reducir con la rueda del ratón sobre el propio lienzo. En él se dibujan las trazas acumuladas del patrón, las **guías orbitales** (las elipses y radios de cada órbita) y los **planetas** (los dos puntos que se desplazan), que ayudan a comprender de dónde surge cada trazo. Estos elementos de apoyo se distinguen por color: azul para la primera órbita y rojo para la segunda, en coherencia con el panel de control. 
+
+## **Panel de control** 
+
+Es el centro de interacción de la aplicación. Reúne, ordenados de lo general a lo específico, todos los parámetros del patrón: un **desplegable de ejemplos** predefinidos como punto de partida opcional, el **modo de visualización** , las secciones de **órbita 1** y **órbita 2** (radio, velocidad y fase inicial), los **ajustes visuales** (color, opacidad, grosor e intervalo entre líneas) y, plegada por defecto, una sección de **parámetros avanzados** (factores de elipse e inclinación de cada órbita). En la parte inferior, siempre accesibles, se sitúan las **acciones** : aleatorizar, reproducir, pausar, deshacer la última sesión, restablecer, exportar imagen, exportar patrón e importar patrón. Mientras la animación está en marcha, los parámetros se bloquean visualmente y un aviso informa de ello, evitando estados inconsistentes. 
+
+## **Diálogo de exportación de imagen** 
+
+Es una ventana modal que se superpone a la vista principal cuando el usuario decide guardar la composición como. Muestra una **previsualización** de la imagen resultante y un conjunto de opciones: color de fondo (con la posibilidad de fondo transparente), zoom de la exportación, factor de resolución (1×, 2× o 4×) y casillas para incluir o no las guías orbitales y el punto central. La previsualización se actualiza al instante con cada cambio, de modo que el usuario sabe exactamente qué obtendrá antes de descargar el archivo PNG. 
+
+## **Tutorial de bienvenida** 
+
+Es una ventana modal que se muestra automáticamente la primera vez que se abre la aplicación y que puede reabrirse en cualquier momento mediante el botón de ayuda. Presenta, en una lista de pasos numerados con iconos, las acciones principales de la 
+
+aplicación. Incluye una casilla “No volver a mostrar” que, al marcarse, recuerda la preferencia para futuras visitas. 
+
+## **Selector de idioma** 
+
+Es un botón desplegable, fijo en una esquina, que permite cambiar el idioma de toda la interfaz sin recargar la página. Al pulsarlo se despliega la lista de idiomas disponibles (español, catalán, inglés, indonesio y checo); al seleccionar uno, todos los textos se traducen de inmediato. La lista se genera automáticamente a partir de la configuración de idiomas, de modo que añadir uno nuevo no obliga a modificar la interfaz. 
+
+## 6.2.2. Componentes de la interfaz 
+
+El diseño visual de la aplicación se ha estructurado mediante plantillas HTML, siguiendo el modelo de desarrollo de interfaces de Angular y apoyándose en la biblioteca de estilos Bootstrap. A lo largo de la aplicación se han empleado distintos 
+
+elementos de interfaz gráfica para ofrecer una experiencia de usuario clara e intuitiva. Entre los componentes más utilizados se encuentran las etiquetas, empleadas para mostrar información estática como el nombre de cada parámetro o su unidad; los campos numéricos y los deslizadores, que permiten al usuario introducir y ajustar los valores que definen el patrón; y los botones, que sirven para ejecutar acciones como reproducir la animación, restablecer los parámetros o exportar la composición. Además, se han utilizado contenedores y secciones plegables para organizar estos elementos de forma jerárquica y ordenada dentro del panel. También se han incorporado componentes más dinámicos, como los desplegables, que muestran listas de opciones como los ejemplos predefinidos, y las ventanas modales, que superponen diálogos sobre la vista principal. 
+
+## **Deslizadores y campos numéricos** 
+
+Constituyen el componente predominante del panel de control. Cada parámetro numérico se presenta siguiendo un patrón uniforme, compuesto por una etiqueta (label), un campo numérico (input type="number") que permite introducir un valor exacto y un deslizador (input type="range") que permite ajustarlo de forma continua. Ambos controles están enlazados a la misma variable mediante [(ngModel)], de manera que mover el deslizador actualiza el número y viceversa, y cualquiera de los dos dispara el método onParamChange() para redibujar el patrón al instante. Los 
+
+atributos min, max y step definen el rango válido y la granularidad de cada control. Además, al editar el campo numérico, el evento (change) invoca clampParams() para corregir los valores que queden fuera de rango. 
+
+_Figura 6.14: estructura HTML de un control de parámetro_ 
+
+## **Selectores desplegables** 
+
+Se emplean para que el usuario elija entre un conjunto de opciones predefinidas. El más destacado es el desplegable de ejemplos, cuyas opciones se generan dinámicamente mediante el bloque @for a partir del catálogo de ejemplos, y cuyo nombre visible se traduce con una clave dinámica. Al cambiar la selección, el componente invoca el método applyPreset(), que carga la configuración elegida. 
+
+_Figura 6.15: desplegable de ejemplos generado dinámicamente con @for (controls.html)._ 
+
+## **Botones** 
+
+Se encargan de ejecutar las acciones de la aplicación. Para ello se ha utilizado el sistema de estilos de Bootstrap (btn), con variantes de color coherentes con el significado de cada acción: verde para reproducir, ámbar para pausar o rojo para restablecer. Cabe destacar que algunos botones se deshabilitan de forma condicional mediante [disabled]; por ejemplo, los parámetros y el botón de reproducir quedan inhabilitados mientras la animación está en marcha, lo que impide interacciones que dejarían el sistema en un estado inconsistente. Por último, el propio botón de modo de visualización cambia de estilo y de texto según el modo activo, ofreciendo retroalimentación visual inmediata 
+
+_Figura 6.16: botones de acción, con bloqueo condicional mediante [disabled] (controls.html)._ 
+
+## **Secciones colapsables** 
+
+Con el fin de no saturar el panel, los parámetros menos habituales se han agrupado en una sección plegable construida con el elemento nativo details/summary, que el usuario puede desplegar bajo demanda. De este modo se mantiene la interfaz limpia, respetando la jerarquía de lo general a lo específico. 
+
+_Figura 6.17: sección de parámetros avanzados, plegable con el elemento nativo details/summary (controls.html)._ 
+
+## **Ventanas modales y superposiciones** 
+
+Tanto el diálogo de exportación como el tutorial se implementan como superposiciones, mostradas de forma condicional mediante el bloque @if. Una capa semitransparente cubre la vista y centra una tarjeta con el contenido; al pulsar fuera de ella o en el botón de cierre, la superposición se oculta. Este mismo mecanismo se emplea también para cerrar el menú del selector de idioma. 
+
+## **Lienzo** 
+
+A diferencia del resto de elementos, no se rellena con marcado declarativo, sino que es p5.js quien crea y gobierna sobre él el dibujo en tiempo real. Se trata, por tanto, del elemento central pero único de la interfaz, directamente ligado a la representación gráfica de la composición. 
+
+## 6.2.3. Implementación de la lógica 
+
+## 6.2.3.1. Servicio central: PatternService 
+
+PatternService es el núcleo de la aplicación. Actúa como única fuente de verdad y centraliza tanto los parámetros del patrón como el historial de trazas y las sesiones de animación. Al ser un servicio compartido, desacopla por completo el panel de control del lienzo, de modo que ninguno de los dos componentes necesita conocer al otro: ambos se comunican exclusivamente a través de él. 
+
+## **updateParams y dispatch** 
+
+Este fragmento de código implementa los dos puntos de entrada del servicio. Por un lado, el método updateParams() recibe una nueva configuración de parámetros y la emite a través del flujo params$, lo que provoca que el lienzo se redibuje al instante. Por otro lado, el método dispatch() emite a través del flujo action$ una acción solicitada por el usuario, que el lienzo interpretará posteriormente. Esta separación permite mantener un flujo de datos claro y unidireccional entre el panel de control y el lienzo. 
+
+## **Gestión de sesiones: beginSession, endSession, snapshotActiveSession** 
+
+Este conjunto de métodos se encarga de gestionar el ciclo de vida de una sesión de animación, entendida como un bloque que graba los parámetros empleados y el número de fotogramas dibujados. Primero, cada vez que el usuario 
+
+reproduce, beginSession() inicia la grabación. A continuación, mientras la animación avanza, incrementSessionFrame() actualiza el contador de fotogramas. Finalmente, al pausar, endSession() cierra el bloque y lo añade a la lista de sesiones, registrando además su estado final para poder retomar el dibujo más adelante. Asimismo, el método snapshotActiveSession() devuelve una copia de la sesión en curso, lo que permite exportar la composición aunque la animación no se haya detenido. 
+
+## **Deshacer y reconstruir: removeLastSession,  replaySessionsToLines** 
+
+Estas dos funciones implementan el borrado de las sesiones de forma individual de la composición. Primero, el método removeLastSession() cierra la sesión activa si la hubiera, retira la última de la lista y reconstruye el historial reproduciendo las restantes. Esa reconstrucción la realiza replaySessionsToLines(), que recorre cada sesión fotograma a fotograma aplicando la misma fórmula que el lienzo y regenera así la lista completa de segmentos. Cabe destacar que esta segunda función se reutiliza también al importar un patrón, de modo que una única rutina garantiza que tanto deshacer como importar produzcan exactamente el mismo resultado que el dibujo original. 
+
+## 6.2.3.2. Lienzo: Canvas 
+
+## **initSketch y el bucle de dibujo (draw)** 
+
+El método initSketch() crea una instancia de p5.js en modo instancia, con su propio bucle de dibujo a 60 fotogramas por segundo. Dentro de ese bucle, la función draw() constituye el corazón de la aplicación, pues en ella se materializa la generación de la composición epicicloidal a partir de los parámetros. En cada fotograma, primero calcula la posición de los dos planetas mediante las ecuaciones 
+
+paramétricas. A continuación, traza la nueva línea entre ellos. Seguidamente dibuja las guías orbitales y los planetas; y, por último, avanza los ángulos para el siguiente fotograma. Si la animación está activa, además registra cada nuevo segmento en el historial del servicio. 
+
+## **Renderizado optimizado de la estela (capa trailLayer)** 
+
+Este fragmento de código implementa la lógica que acumula las trazas sobre una capa gráfica fuera de pantalla, con el fin de mantener el rendimiento. En lugar de repintar todo el historial en cada fotograma, el sistema pinta únicamente los segmentos nuevos, y solo reconstruye la capa completa cuando resulta imprescindible: al hacer zoom, redimensionar la ventana, limpiar, restablecer, cambiar de modo o importar. El lienzo principal se limita entonces a pintar el fondo, volcar esa capa y superponer sobre ella las guías y los planetas. Esta estrategia es la que permite mantener la fluidez de la 
+
+animación incluso con miles de líneas acumuladas, cumpliendo así los requisitos de rendimiento del proyecto. 
+
+## **onAction y Zoom** 
+
+El método onAction() se encarga de traducir cada acción recibida del servicio en un cambio de estado del lienzo: iniciar o pausar la animación, marcar como pendiente una limpieza o un restablecimiento, o restaurar el estado de dibujo tras un deshacer o una importación. Por su parte, los métodos zoomIn() y zoomOut() ajustan el factor de zoom dentro de unos límites establecidos y marcan la estela para que se vuelva a rasterizar a la nueva escala, conservando así la nitidez del trazo vectorial al ampliar. 
+
+## 6.2.3.3. Panel de control: Controls 
+
+## **onParamChange, applyPreset y toggleMode** 
+
+Este conjunto de métodos gestiona la interacción del usuario con los parámetros. El método onParamChange() se ejecuta cada vez que se modifica un parámetro y envía la nueva configuración al servicio, lo que redibuja el patrón al instante. Por su parte, applyPreset() carga un ejemplo predefinido, fusionando sus valores sobre los valores por defecto para dejar el panel en un estado completo y reproducible. Finalmente, toggleMode() permite alternar entre los dos modos de visualización. 
+
+## **Acciones de animación: play, pause, clear, reset** 
+
+Estas funciones gobiernan la animación delegando en el servicio. Los métodos play() y pause() inician y detienen el dibujo. El método clear() implementa el deshacer incremental, retirando la última sesión y restaurando los parámetros previos. Por último, reset() reinicia la animación, vacía el lienzo para empezar de cero y restablece toda la configuración a sus valores por defecto. Asimismo, la marca interna isPlaying controla el bloqueo de los parámetros mientras la animación está en curso, evitando estados inconsistentes. 
+
+## **Randomize y clampParams** 
+
+El método randomize() genera una variación aleatoria del patrón. Para ello, asigna a cada parámetro un valor al azar dentro de su rango válido y respetando su paso, además de un color aleatorio, de modo que el resultado sea siempre reproducible de forma manual por el usuario. Por su parte, clampParams() se encarga de la validación de la entrada: tras editar un campo, comprueba cada valor y, si se ha salido del rango permitido o no es numérico, lo ajusta al mínimo o al máximo correspondiente, evitando así configuraciones inválidas. 
+
+## **Exportación e importación de patrones: exportJson, triggerImport, onFileSelected** 
+
+Estas funciones permiten guardar y recuperar composiciones sin necesidad de una base de datos. El método exportJson() serializa las sesiones grabadas en un archivo JSON descargable. Para la importación, triggerImport() abre el selector de archivos del navegador y, una vez elegido uno, onFileSelected() lo lee y valida su estructura. Si el archivo es correcto, reconstruye el dibujo mediante replaySessionsToLines() y restaura los parámetros del patrón; en caso contrario, la importación se descarta de forma silenciosa para no interrumpir la experiencia del usuario. 
+
+**==> picture [392 x 670] intentionally omitted <==**
+
+**----- Start of picture text -----**<br>
+exportison(): void {<br>const completed = [...this.patternService.sessions];<br>const active = this.patternService. snapshotActiveSession( );<br>const allSessions = active ? [...completed, active] : completed;<br>if (allSessions.length === @) return;<br>const data = {<br>metadata: {<br>exportedAt: new Date().tolSOString(),<br>totalSessions: allSessions-length,<br>visualizationMode: this.params.visualizationMode,<br>ane<br>sessions: allSessions,<br>is<br>const blob = new Blob([JSON.stringify(data, null, 2)], { type: ‘application/json' });<br>const url = URL.createObjectURL (blob);<br>const link = document.createElement(‘a');<br>const date = new Date().toISOString().slice(@, 10);<br>link.download = ~“epicycloidpatron ${date}.json ;<br>link href = url;<br>link.click();<br>URL .revokeObjectURL(ur1);<br>+<br>private onFileSelected(event: Event): void {<br>const file = (event.target as HTMLInputElement).files?.[@];<br>if (!file) return;<br>const reader = new FileReader();<br>reader.onload = (e) => {<br>try {<br>const data = JSON.parse(e.target?.result as string);<br>if (!data?.sessions || !Array.isArray(data.sessions) || data.sessions.length === @) return;<br>const sessions: SimulationSession[] = data.sessions;<br>for (const s of sessions) {<br>if (!s.params || typeof s.frameCount !== 'number') return;<br>const computedLines = this.patternService.replaySessionsToLines(sessions);<br>const lastSession = sessions[sessions.length - 1];<br>const lastParams: PatternParams = lastSession.params;<br>this.isPlaying = false;<br>this.selectedPresetId = "';<br>this.patternService.endSession();<br>this.params = { ...lastParams };<br>this. patternService.updateParams(lastParams);<br>this.patternService.importState = {<br>anglel: lastSession.endAnglel,<br>angle?: lastSession.endAngle?,<br>tipxX: lastSession.endTipxX,<br>tipY: lastSession.endTipyY,<br>firstPoint: lastSession.endFirstPoint,<br>33<br>this.patternService.dispatch("import-json");<br>this.patternService.lineHistory = computedLines;<br>this.patternS$ervice.sessions = sessions;<br>} catch {<br>}<br>hs<br>reader. readAsText(file);<br>t<br>**----- End of picture text -----**<br>
+
+
+## 6.2.3.4. Diálogo de exportación: ExportModal 
+
+## **buildExportCanvas, renderPreview, save** 
+
+Este conjunto de métodos se encarga de generar la imagen final de la composición. El método buildExportCanvas() construye, sobre un lienzo auxiliar en memoria, la imagen de exportación: primero pinta el fondo, a continuación dibuja todas las líneas del historial a calidad vectorial y, opcionalmente, añade las guías orbitales y el punto central, aplicando el zoom y el factor de resolución elegidos. Por su parte, renderPreview() reutiliza ese mismo lienzo para mostrar una previsualización escalada, y se vuelve a invocar cada vez que el usuario cambia una opción, de modo que la vista previa refleje siempre el resultado real. Finalmente, el método save() genera la imagen a partir del lienzo de exportación y la descarga como archivo PNG. 
+
+## 6.2.3.5. Internacionalización: I18nService y TranslatePipe 
+
+El soporte multilingüe se ha resuelto mediante un sistema de internacionalización propio que funciona en tiempo de ejecución. El servicio I18nService mantiene el idioma activo en una señal reactiva y ofrece los métodos setLang(), que cambia y persiste el idioma, y translate(), que resuelve una clave de texto al idioma actual. Asimismo, el método detectInitialLang() se encarga de elegir el idioma al arrancar la aplicación, tomando primero la preferencia guardada del usuario y, en su defecto, el idioma del navegador. Los textos se almacenan en diccionarios JSON anidados, uno por idioma. Por último, cabe destacar que el TranslatePipe (empleado en las plantillas como | t) es un pipe impuro a propósito: al reevaluarse en cada ciclo de detección de cambios, consigue que al cambiar de idioma toda la interfaz se traduzca de forma instantánea, sin necesidad de recargar la página. 
+
+## 6.2.4. Persistencia e integración 
+
+A diferencia de una aplicación que se apoya en servicios externos como una base de datos en la nube, _Epicycloid Generator_ funciona por completo en el lado del cliente. No obstante, sí integra varios mecanismos de **persistencia ligera** y de **entrada/salida de datos** que cumplen el papel que en otras arquitecturas desempeñaría el servidor. 
+
+- **Persistencia local con localStorage.** En el localStorage únicamente se almacenan dos parámetros. El primero es el idioma de preferencia del usuario, que se consulta al iniciar la aplicación para mostrar automáticamente la interfaz en el idioma seleccionado. El segundo indica si el usuario ha marcado la opción “No volver a mostrar” del tutorial. Si este valor está almacenado, la ventana de bienvenida no volverá a aparecer al recargar o volver a abrir la aplicación. Al tratarse de una aplicación sin autenticación ni servidor, el uso de localStorage es suficiente para conservar estas preferencias entre sesiones. 
+
+- **Entrada y salida de composiciones.** En lugar de guardar los patrones en una base de datos externa, la aplicación permite al usuario exportar e importar patrones ya generados como archivos JSON. Cuando se exporta, las diferentes sesiones de dibujado se guardan en un único archivo JSON y es descargado automáticamente por el navegador. Al importar, el archivo es validado y se reconstruye el patrón descrito en el archivo. Este punto de vista permite al usuario un control total de sus creaciones sin la necesidad de estar registrado. 
+
+   - **Exportación de imágenes en PNG.** Al igual que se puede exportar el patron como JSON para ser reconstruido más adelante, el programa también permite al usuario exportar el patrón como imagen PNG. El usuario puede configurar si desea el fondo transparente o no, la resolución, el tamaño y el nombre. También puede añadir las circunferencias de referencia y el punto central. 
+
+   - - **Despliegue.** Al ser un SPA sin componente de servidor, su despliegue se reduce a un servicio de alojamiento estático gratuito (Netlify), el cual es accesible desde cualquier navegador moderno. Esto simplifica la puesta en producción y elimina los costes y la complejidad de mantener una infraestructura de backend. Pruebas y resultados 
+
+- 6.3. Pruebas funcionales 
+
+- 6.4. Pruebas de rendimiento 
+
+- 6.5. Pruebas de usabilidad 
+
+## 7. Conclusiones 
+
+- 7.1. Revisión de objetivos 
+
+- 7.2. Trabajo futuro 
+
+- 7.3. Conclusiones 
+
+A. Apéndice 
 
 ## Bibliografía 
 
