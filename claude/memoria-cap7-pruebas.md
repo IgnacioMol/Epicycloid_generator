@@ -323,3 +323,46 @@ Cabe destacar que más del **80 %** *(valor a confirmar)* de los participantes a
 Estos datos respaldan la validez del enfoque de diseño centrado en el usuario y confirman que la aplicación cumple con los principios básicos de usabilidad, accesibilidad y eficiencia, en línea con el requisito de ofrecer una interfaz intuitiva para usuarios sin conocimientos técnicos (RNF4).
 
 No obstante, algunas observaciones sugieren oportunidades de mejora, especialmente en lo relativo a la comprensión de los parámetros más avanzados, donde parte de los usuarios manifestó dudas sobre su efecto. Esta retroalimentación se ha tenido en cuenta como posible línea de mejora futura, abordada en el capítulo de conclusiones.
+
+## Anexo: Cómo obtener los parámetros de rendimiento en distintos navegadores
+
+Las cifras del apartado 7.2 (tasa de cuadros, uso de CPU y consumo de memoria) se obtienen con las herramientas de desarrollo que incorpora el propio navegador, sin instalar nada adicional. Este anexo describe el procedimiento en los navegadores de escritorio más habituales. La escena de medición recomendada es siempre la misma, la animación en modo continuo con una estela densa, para que los valores sean comparables entre navegadores y equipos.
+
+### Navegadores basados en Chromium (Google Chrome, Microsoft Edge, Opera, Brave, Vivaldi)
+
+Todos estos navegadores comparten el mismo motor (Chromium) y, por tanto, las mismas herramientas de desarrollo, de modo que el procedimiento es prácticamente idéntico en todos ellos.
+
+**Tasa de cuadros (fps).**
+
+1. Abrir la aplicación y pulsar **F12** para abrir las herramientas de desarrollo.
+2. Pulsar **Ctrl+Shift+P** (Cmd+Shift+P en Mac) para abrir el menú de comandos.
+3. Escribir «Rendering» y elegir **«Show Rendering»**. En el panel que aparece, marcar la casilla **«Frame Rendering Stats»** (en español, «Estadísticas de renderizado de fotogramas»).
+4. En la esquina del lienzo aparece un recuadro superpuesto con los fps en tiempo real. Al iniciar la animación se puede leer el valor sostenido.
+
+**Uso de CPU y memoria.**
+
+- **Administrador de tareas del navegador.** En Google Chrome y Microsoft Edge se abre con **Shift+Esc**. En Opera se abre desde el menú principal, en la sección de herramientas para desarrolladores. Muestra, para cada pestaña, el uso de CPU, la memoria y la memoria de GPU. Basta con localizar la fila de la pestaña de la aplicación y leer sus valores en reposo y durante la animación.
+- **Monitor de rendimiento.** Con **Ctrl+Shift+P** se escribe «Performance monitor» y se obtiene una vista en vivo de CPU, memoria de JavaScript y otros indicadores.
+
+**Gráfica detallada de fps en el tiempo.** En la pestaña **«Rendimiento» (Performance)** se pulsa grabar (**Ctrl+E**), se deja correr la animación unos segundos y se detiene. El informe incluye una gráfica de fps a lo largo del tiempo, muy útil como figura para la memoria.
+
+### Mozilla Firefox
+
+Firefox utiliza su propio motor (Gecko) y sus herramientas difieren ligeramente de las de Chromium.
+
+**Tasa de cuadros (fps).** Firefox no ofrece un recuadro de fps tan directo como Chromium. Se usa la pestaña **«Rendimiento» (Performance)** de las herramientas de desarrollo (**F12**), donde se pulsa grabar, se ejecuta la animación unos segundos y se detiene. El informe muestra la tasa de cuadros durante la grabación. Como alternativa válida en cualquier navegador, se puede dibujar en el lienzo el valor que devuelve la función `frameRate()` de p5.js, tal como se indica en el apartado 7.2.
+
+**Uso de CPU y memoria.** Firefox dispone de su propio administrador de tareas, accesible escribiendo **`about:performance`** en la barra de direcciones, que muestra el consumo de energía y de memoria por pestaña. Para un análisis de memoria más detallado, la pestaña **«Memoria» (Memory)** de las herramientas de desarrollo permite tomar instantáneas del uso de la memoria dinámica.
+
+### Resumen por navegador
+
+| Navegador | Abrir herramientas | Tasa de cuadros (fps) | CPU y memoria |
+|---|---|---|---|
+| Google Chrome | F12 | Menú de comandos, «Frame Rendering Stats» | Shift+Esc (administrador de tareas) |
+| Microsoft Edge | F12 | Igual que Chrome | Shift+Esc |
+| Opera | F12 o Ctrl+Shift+I | Igual que Chrome | Administrador de tareas (menú) |
+| Mozilla Firefox | F12 | Pestaña «Rendimiento», grabar | `about:performance` |
+
+### Nota sobre la comparabilidad de las medidas
+
+Para que las cifras sean comparables conviene tomar todas las medidas en las mismas condiciones, la misma escena (animación en modo continuo con estela densa), el mismo tamaño de lienzo, el mismo nivel de zoom y sin otras pestañas o aplicaciones que consuman recursos de forma significativa. Es recomendable repetir cada medición varias veces y anotar el valor típico. Dado que los valores dependen del equipo y del navegador empleados, la tabla del apartado 7.2 debe reflejar la configuración concreta con la que se han obtenido.
