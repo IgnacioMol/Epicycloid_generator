@@ -18,7 +18,7 @@ src/
     │   └── i18n/
     │       ├── i18n.service.ts  I18nService — idioma activo, detección, persistencia
     │       ├── translate.pipe.ts  TranslatePipe — pipe `| t`
-    │       └── es/en/id/cs.json   Diccionarios de traducción
+    │       └── es/ca/en/id/cs.json   Diccionarios de traducción (5 idiomas)
     ├── models/
     │   └── pattern-params.model.ts   Interfaces del modelo de datos
     └── features/
@@ -26,7 +26,7 @@ src/
         ├── controls/       Controls — panel de parámetros y acciones
         ├── export-modal/   ExportModal — diálogo de exportación de imagen
         ├── tutorial/       Tutorial — guía de bienvenida
-        └── presets/        Presets — placeholder vacío (RF7 no implementado)
+        └── presets/        presets.ts — catálogo de ejemplos (RF7, módulo de datos)
 ```
 
 Esta organización **por *features*** (cada componente en su carpeta con `.ts`/`.html`/`.css`) más un **`core`** para servicios y un **`models`** para tipos responde a **RNF6** (modularidad, mantenibilidad, escalabilidad).
@@ -74,4 +74,5 @@ AppComponent (app-root)
 
 ## Nota sobre archivos "scaffold"
 
-- [pattern.ts](src/app/core/pattern.ts) (`class Pattern {}`) y el componente [presets](src/app/features/presets/presets.ts) están **vacíos**: son andamiaje generado que no se usa. `Presets` corresponde a **RF7**, aún no implementado.
+- [pattern.ts](src/app/core/pattern.ts) (`class Pattern {}`) está **vacío**: es andamiaje generado que no se usa (no confundir con `pattern.service.ts`, que es el servicio real).
+- [presets.ts](src/app/features/presets/presets.ts) **sí está implementado**, pero no como componente: es un **módulo de datos** que exporta la interfaz `PatternPreset` y el catálogo `PATTERN_PRESETS` (RF7). `Controls` lo importa para poblar el desplegable de ejemplos. Detalle en [18 — Presets](18-presets.md).

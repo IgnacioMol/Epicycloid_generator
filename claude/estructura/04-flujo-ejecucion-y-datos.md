@@ -68,6 +68,6 @@ Una **sesión** es cada bloque de animación entre que el usuario pulsa **Play**
 - Mientras dibuja, `incrementSessionFrame()` cuenta fotogramas y `setCurrentState()` guarda el estado final (ángulos y punto extremo).
 - `pause()` → `endSession()` registra la sesión en `sessions[]` (con sus parámetros, nº de fotogramas, duración y estado final).
 
-**Por qué importan:** las sesiones permiten (a) **exportar/importar** el patrón como una secuencia de bloques reproducible (RF6/RF7-parcial), y (b) el **deshacer por sesiones** (RF5): quitar la última sesión y recomputar el dibujo reproduciendo las restantes con `replaySessionsToLines()`.
+**Por qué importan:** las sesiones permiten (a) **exportar/importar** el patrón como una secuencia de bloques reproducible (E/S JSON, parte de RF7), y (b) el **deshacer por sesiones** (RF5): quitar la última sesión y recomputar el dibujo reproduciendo las restantes con `replaySessionsToLines()`.
 
 **Invariante clave:** estando en pausa, `lineHistory` equivale exactamente al *replay* de `sessions[]`. Sobre esa garantía se construyen el deshacer y la importación.

@@ -27,7 +27,7 @@ Es una herramienta **interactiva, de página única, que se ejecuta íntegrament
 
 ## Mapa rápido de requisitos
 
-**Funcionales (RF1–RF14):** generación de patrones (RF1), edición de parámetros en tiempo real (RF2), redibujado dinámico sin recargar (RF3), play/pausa/reinicio (RF4), limpiar/deshacer (RF5), exportar imagen (RF6), presets (RF7 — *no implementado*), alternar modos (RF8), controles interactivos (RF9), mostrar valores actuales (RF10), lienzo responsivo (RF11), variaciones aleatorias (RF12), restablecer (RF13), multilingüe (RF14).
+**Funcionales (RF1–RF14):** generación de patrones (RF1), edición de parámetros en tiempo real (RF2), redibujado dinámico sin recargar (RF3), play/pausa/reinicio (RF4), limpiar/deshacer (RF5), exportar imagen (RF6), ejemplos predefinidos / presets (RF7), alternar modos (RF8), controles interactivos (RF9), mostrar valores actuales (RF10), lienzo responsivo (RF11), variaciones aleatorias (RF12), restablecer (RF13), multilingüe (RF14).
 
 **No funcionales (RNF1–RNF12):** navegadores modernos (RNF1), Angular (RNF2), p5.js integrado (RNF3), UI intuitiva (RNF4), rendimiento fluido (RNF5), arquitectura modular (RNF6), código documentado (RNF7), bajo consumo de CPU (RNF8), responsive (RNF9), gestión de errores/validación (RNF10), compatibilidad de navegadores (RNF11), despliegue en Netlify (RNF12).
 
@@ -35,5 +35,7 @@ La trazabilidad detallada (qué archivo/función implementa cada requisito) est�
 
 ## Estado del proyecto
 
-- **Completo:** prácticamente todo. RF1–RF6, RF8–RF14 implementados.
-- **Pendiente real:** **RF7 (presets con nombre)** — el componente `Presets` es un placeholder vacío sin ruta. **RNF12 (Netlify)** — configurado (`netlify.toml`) pero pendiente de confirmar el despliegue público.
+- **Completo:** RF1–RF14 implementados. **RF7** se ha resuelto como un **catálogo de ejemplos predefinidos** (un desplegable con configuraciones con nombre que el usuario aplica para explorar), no como presets de usuario persistidos; la entrada/salida de patrones en JSON (exportar/importar) complementa esa capacidad. Detalle en [18 — Presets](18-presets.md).
+- **Pendiente real:** **RNF12 (Netlify)** — configurado (`netlify.toml`) pero pendiente de confirmar el despliegue público; **RNF11** — verificación manual cruzada en los cuatro navegadores objetivo.
+
+> Nota: el componente `features/presets/` no es un componente Angular, sino un **módulo de datos** ([presets.ts](src/app/features/presets/presets.ts)) que exporta el catálogo `PATTERN_PRESETS`. El antiguo scaffold vacío ya no aplica.

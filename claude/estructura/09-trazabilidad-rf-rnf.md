@@ -12,7 +12,7 @@ Dónde se implementa cada requisito y su estado real (verificado contra el códi
 | RF4 | Play / Pausa / Reiniciar | `controls.ts` · `play()`/`pause()`/`reset()` → `canvas.ts` · `onAction()` | ✅ |
 | RF5 | Limpiar → deshacer por sesiones | `controls.ts` · `clear()` + `pattern.service.ts` · `removeLastSession()`/`replaySessionsToLines()` + `onAction('undo')` | ✅ |
 | RF6 | Exportar imagen (PNG) | `export-modal.ts` · `buildExportCanvas()`/`save()` | ✅ |
-| RF7 | Presets con nombre persistidos | `features/presets/` (placeholder vacío) | ❌ No implementado |
+| RF7 | Ejemplos predefinidos / presets | `presets.ts` · `PATTERN_PRESETS` + `controls.ts` · `applyPreset()`; E/S JSON con `exportJson()`/`onFileSelected()` | ✅ (catálogo de ejemplos + E/S JSON) |
 | RF8 | Alternar modos (curva/líneas) | `controls.ts` · `toggleMode()`; cambio de modo en `canvas.ts` · `draw()` | ✅ |
 | RF9 | Controles interactivos | `controls.html` (sliders, números, color) | ✅ |
 | RF10 | Mostrar valores actuales | `controls.html` (inputs con `ngModel`) | ✅ |
@@ -40,6 +40,7 @@ Dónde se implementa cada requisito y su estado real (verificado contra el códi
 
 ## Pendientes reales del proyecto
 
-1. **RF7 — Presets:** implementar `Presets` (guardar/recuperar configuraciones con nombre, p. ej. en `localStorage`) e integrarlo en la UI.
-2. **RNF12 — Despliegue:** completar y verificar el despliegue en Netlify.
-3. **RNF11 — Verificación:** pruebas manuales cruzadas en los cuatro navegadores.
+1. **RNF12 — Despliegue:** completar y verificar el despliegue en Netlify.
+2. **RNF11 — Verificación:** pruebas manuales cruzadas en los cuatro navegadores.
+
+> Posible mejora futura (no requisito): permitir que el usuario **guarde sus propios presets** con nombre en `localStorage`, además del catálogo integrado de RF7.

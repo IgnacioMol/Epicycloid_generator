@@ -2,7 +2,7 @@
 
 Esta carpeta documenta **a fondo** el proyecto: cómo está organizado, cómo funciona cada pieza, el flujo de ejecución y de datos, y el **porqué** de cada decisión, enlazando con los requisitos funcionales (RF) y no funcionales (RNF) cuando procede.
 
-> Generada el 2026-06-14 a partir del código real. Si el código cambia, actualizar estos documentos.
+> Generada el 2026-06-14 a partir del código real; ampliada y revisada el 2026-06-21. Si el código cambia, actualizar estos documentos.
 
 ## Índice
 
@@ -13,8 +13,18 @@ Esta carpeta documenta **a fondo** el proyecto: cómo está organizado, cómo fu
 5. [05 — Renderizado y rendimiento](05-renderizado-rendimiento.md) — la capa de estela, el bucle de dibujo y el zoom.
 6. [06 — Funcionalidades](06-funcionalidades.md) — cada RF explicado: dónde, cómo y por qué.
 7. [07 — Internacionalización (i18n)](07-i18n.md) — el sistema multilingüe (RF14).
+7b. [07b — El pipe de traducción en detalle](07b-pipe-traduccion.md) — cómo funciona `| t` y por qué impuro.
 8. [08 — Interfaz y diseño](08-interfaz-diseno.md) — UI/UX, estilos, validación (RNF4/RNF9/RNF10).
 9. [09 — Trazabilidad RF/RNF → código](09-trazabilidad-rf-rnf.md) — tabla de qué implementa cada requisito.
+
+### Referencia detallada del código (clase a clase, archivo a archivo)
+
+15. [15 — Referencia de componentes](15-referencia-componentes.md) — cada componente, miembro a miembro, con líneas de código.
+16. [16 — PatternService (API completa)](16-pattern-service-api.md) — el estado central: canales, estado y métodos.
+17. [17 — Modelo de datos](17-modelo-de-datos.md) — todas las interfaces y tipos, campo a campo.
+18. [18 — Presets (RF7)](18-presets.md) — el catálogo de ejemplos predefinidos y su integración.
+19. [19 — Pruebas (testing)](19-pruebas-testing.md) — estado real de los *specs* y recomendaciones.
+20. [20 — Configuración, build y despliegue](20-configuracion-build-despliegue.md) — arranque, tsconfig, angular.json, dependencias, Netlify.
 
 ### Para la defensa ante el tribunal (explicación experta)
 
