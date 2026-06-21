@@ -72,15 +72,6 @@ export class I18nService {
     document.documentElement.lang = lang;
   }
 
-  /** Alterna entre español e inglés. */
-  toggle(): void {
-    this.setLang(this.lang() === 'es' ? 'en' : 'es');
-  }
-
-  /**
-   * Traduce una clave separada por puntos (p. ej. "controls.title") al idioma
-   * activo. Si la clave no existe, devuelve la propia clave como aviso visible.
-   */
   translate(key: string): string {
     const value = key
       .split('.')

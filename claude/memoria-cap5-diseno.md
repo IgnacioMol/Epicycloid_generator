@@ -2,7 +2,9 @@
 
 > Borrador del apartado de diseño de la memoria del TFG *Epicycloid Generator*.
 > **Nivel de diseño**: los diagramas de secuencia detallan, con más profundidad que los del
-> capítulo 4, la **colaboración entre las clases reales** del sistema durante las operaciones clave.
+> capítulo 4, la **colaboración entre las clases reales** del sistema en las **funciones más relevantes**
+> del código. En lugar de describir una operación de principio a fin, cada diagrama profundiza en una
+> **función concreta** y muestra su lógica interna y los mensajes que intercambia con el resto de clases.
 > Los mensajes se expresan mediante **funciones reales** (pseudocódigo) y las líneas de vida son las
 > **clases del código** (`Controls`, `Canvas`, `PatternService`, `ExportModal`), de modo que sirvan de
 > base directa para la implementación. Los diagramas se han elaborado en Visual Paradigm; las
@@ -12,37 +14,37 @@
 
 Tras el análisis de los requisitos del proyecto y la posterior elaboración de los respectivos casos de uso, se ha diseñado la estructura que deberá seguir la aplicación durante el desarrollo.
 
-En este apartado se presentan los diagramas de secuencia que describen el flujo de las operaciones clave del sistema, detallando cómo colaboran sus distintos elementos para llevarlas a cabo. Además, se explican las decisiones visuales tomadas para la interfaz de la aplicación, priorizando la claridad, la accesibilidad y la coherencia estética.
+En este apartado se presentan los diagramas de secuencia que analizan el comportamiento interno de las funciones más relevantes del sistema, detallando cómo colaboran sus distintos elementos para llevarlas a cabo. Además, se explican las decisiones visuales tomadas para la interfaz de la aplicación, priorizando la claridad, la accesibilidad y la coherencia estética.
 
-A diferencia de la aplicación en que se inspira esta estructura, *Epicycloid Generator* es una aplicación web de página única, sin inicio de sesión ni navegación entre múltiples pantallas. Por ello, las operaciones representadas no corresponden a transiciones entre pantallas, sino a las interacciones significativas del usuario con la única vista de la aplicación (el lienzo y el panel de control).
+A diferencia de la aplicación en que se inspira esta estructura, *Epicycloid Generator* es una aplicación web de página única, sin inicio de sesión ni navegación entre múltiples pantallas. Por ello, los diagramas no representan transiciones entre pantallas, sino la lógica interna de las funciones que sostienen las interacciones significativas del usuario con la única vista de la aplicación (el lienzo y el panel de control).
 
-## 5.1. Diagramas de secuencia de operaciones del sistema
+## 5.1. Diagramas de secuencia de las funciones principales
 
-Los diagramas de secuencia de esta sección describen el comportamiento dinámico del sistema durante sus operaciones más relevantes. En ellos intervienen el usuario y los componentes que colaboran en cada operación —principalmente el panel de control, el lienzo y el servicio que coordina los parámetros, las sesiones y el historial de trazas, además del diálogo de exportación—. Se emplean fragmentos combinados (`loop`, `alt` y `opt`) para reflejar la repetición y la lógica condicional de cada flujo.
+Los diagramas de secuencia de esta sección analizan el comportamiento dinámico del sistema a través de sus **funciones más significativas**: en vez de recorrer una operación completa de principio a fin, cada uno profundiza en una función concreta del código y muestra su lógica interna y los mensajes que intercambia con las demás clases para cumplir su cometido. Se han escogido cuatro funciones por concentrar la lógica esencial de la aplicación —el bucle de dibujo del lienzo, el deshacer incremental, la generación de la imagen de exportación y la importación de un patrón—. En los diagramas intervienen el usuario y las clases que colaboran en cada función —principalmente el lienzo (`Canvas`), el panel de control (`Controls`) y el servicio que coordina los parámetros, las sesiones y el historial de trazas (`PatternService`), además del diálogo de exportación (`ExportModal`)—. Se emplean fragmentos combinados (`loop`, `alt` y `opt`) para reflejar la repetición y la lógica condicional de cada función.
 
-### Diagrama de secuencia de la operación «Generar y reproducir el patrón»
+### Función `draw()` — bucle de dibujo del lienzo
 
-Este diagrama representa la operación central de la aplicación. El usuario ajusta los parámetros en el panel de control y el sistema actualiza al instante la representación en el lienzo. Al reproducir, el sistema inicia una sesión de animación y, mediante un bucle (`loop`), dibuja la composición fotograma a fotograma acumulando las trazas resultantes. Cuando el usuario pausa, el sistema cierra la sesión y la registra como un bloque, conservando el dibujo acumulado.
+Es la función más importante de la aplicación: el bucle que p5.js ejecuta 60 veces por segundo y en el que se materializa la generación del patrón fotograma a fotograma (RF1). El diagrama detalla su recorrido en cada fotograma: primero lee los parámetros vigentes y atiende cualquier acción pendiente —limpieza, restablecimiento o cambio de modo— (`opt`); a continuación calcula la posición de los dos planetas, cuyo origen difiere según el modo de visualización (un bloque `alt` distingue el modo curva del modo líneas); después actualiza la capa de estela fuera de pantalla, repintando solo los segmentos nuevos salvo que sea necesaria una reconstrucción completa (segundo `alt`); y, por último, si la animación está activa (`opt`), registra el nuevo segmento en el historial, incrementa el contador de la sesión y avanza los ángulos para el siguiente fotograma. Esta función concentra tanto el cálculo geométrico como la estrategia de rendimiento del sistema, lo que la convierte en la más interesante de analizar.
 
-*(Aquí va la Figura 5.1: Diagrama de secuencia «Generar y reproducir el patrón» — ver anexo.)*
+*(Aquí va la Figura 5.1: Diagrama de secuencia de la función `draw()` — ver anexo.)*
 
-### Diagrama de secuencia de la operación «Deshacer última sesión»
+### Función `removeLastSession()` — deshacer incremental
 
-Este diagrama ilustra el deshacer incremental de la composición. Al solicitar deshacer, un primer bloque condicional (`alt`) contempla que, si hay una animación en curso, el sistema la pausa primero para tomarla como la sesión a eliminar. A continuación, un segundo bloque alternativo distingue dos casos: si quedan sesiones anteriores, el sistema retira la última, reconstruye el dibujo con las restantes y restaura los parámetros previos; si no queda ninguna, el lienzo se vacía. En ambos casos, la estela se actualiza para reflejar el resultado.
+Esta función implementa el deshacer incremental de la composición (RF5) y es un buen ejemplo de colaboración entre el panel de control, el servicio y el lienzo. Invocada desde `clear()`, comienza cerrando la sesión activa si la hubiera (`opt`). A continuación, un bloque `alt` distingue dos casos: si no quedan sesiones anteriores, vacía el historial de trazas; si quedan, retira la última y reconstruye el dibujo completo con las restantes mediante `replaySessionsToLines()`, que recorre cada sesión fotograma a fotograma regenerando los segmentos. Tras ello, el panel restaura los parámetros de la sesión previa y ordena al lienzo (`dispatch('undo')`) que reconstruya la estela y muestre el resultado. Conviene destacar que esa misma rutina de reconstrucción se reutiliza en la importación, lo que garantiza un resultado idéntico al dibujo original.
 
-*(Aquí va la Figura 5.2: Diagrama de secuencia «Deshacer última sesión» — ver anexo.)*
+*(Aquí va la Figura 5.2: Diagrama de secuencia de la función `removeLastSession()` — ver anexo.)*
 
-### Diagrama de secuencia de la operación «Exportar imagen»
+### Función `buildExportCanvas()` — generación de la imagen de exportación
 
-Este diagrama describe el guardado de la composición como imagen. El usuario abre el diálogo de exportación y el sistema genera una previsualización a partir de la composición actual. Un bloque opcional (`opt`) recoge el ajuste de las opciones de exportación —fondo, zoom, resolución y elementos visibles—, que actualizan la previsualización. Al confirmar, el sistema genera la imagen final y la descarga.
+Esta función genera la imagen final de la composición (RF6) sobre un lienzo auxiliar en memoria, independiente del lienzo principal. El diagrama detalla su construcción: crea el lienzo a la resolución elegida (las dimensiones del lienzo multiplicadas por el factor de escala); pinta el fondo solo si no se ha pedido transparente (`opt`); recorre todo el historial de líneas dibujándolas a calidad vectorial (`loop`); y, opcionalmente, superpone las guías orbitales y el punto central (`opt`), aplicando el zoom y la resolución seleccionados. La función la reutilizan tanto `renderPreview()` —para la previsualización en tiempo real— como `save()` —para la descarga del PNG—, de modo que lo que el usuario ve en la vista previa coincide exactamente con el archivo obtenido.
 
-*(Aquí va la Figura 5.3: Diagrama de secuencia «Exportar imagen» — ver anexo.)*
+*(Aquí va la Figura 5.3: Diagrama de secuencia de la función `buildExportCanvas()` — ver anexo.)*
 
-### Diagrama de secuencia de la operación «Importar patrón»
+### Función `onFileSelected()` — importación de un patrón
 
-Este diagrama representa la recuperación de una composición guardada. El usuario selecciona un archivo, que el sistema lee y valida. Un bloque condicional (`alt`) distingue dos rutas: si el archivo es válido, el sistema reconstruye el dibujo y actualiza los parámetros mostrados al estado del patrón cargado; si no lo es, la importación se descarta.
+Esta función recupera una composición guardada a partir de un archivo JSON (RF7), incorporando la validación de la entrada (RNF10). El diagrama muestra cómo, tras leer y parsear el archivo, un bloque `alt` distingue dos rutas. Si el archivo es válido —se comprueba que contenga sesiones y que cada una tenga sus parámetros y su número de fotogramas (`loop` de validación)—, reconstruye el dibujo con `replaySessionsToLines()`, actualiza los parámetros mostrados al estado del patrón cargado y ordena al lienzo que restaure ese estado. Si no lo es, la importación se descarta de forma silenciosa para no interrumpir la experiencia del usuario.
 
-*(Aquí va la Figura 5.4: Diagrama de secuencia «Importar patrón» — ver anexo.)*
+*(Aquí va la Figura 5.4: Diagrama de secuencia de la función `onFileSelected()` — ver anexo.)*
 
 ## 5.2. Diseño visual
 
@@ -90,131 +92,160 @@ Se presentan las principales vistas de la aplicación, con el objetivo de mostra
 > con el nombre de la función. Para los fragmentos, selecciona los mensajes implicados y `right-click →
 > Enclose with → Combined Fragment`, eligiendo el tipo (`loop` / `alt` / `opt`) y escribiendo la condición.
 
-## A.1. Figura 5.1 — «Generar y reproducir el patrón»
+## A.1. Figura 5.1 — Función `draw()` (bucle de dibujo del lienzo)
 
-**Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
+**Líneas de vida:** `Bucle p5 (60 fps)`, `Canvas`, `trailLayer (capa p5)`, `PatternService`.
 
 ```plantuml
-@startuml SecGenerarReproducir
-actor Usuario
-participant "Controls" as C
-participant "PatternService" as PS
+@startuml SecFuncDraw
+participant "Bucle p5 (60 fps)" as P5
 participant "Canvas" as CV
+participant "trailLayer (capa p5)" as TL
+participant "PatternService" as PS
 
-Usuario -> C : onParamChange()
-C -> PS : updateParams(params)
-PS --> CV : params$ (suscripción)
-CV -> CV : draw()
+P5 -> CV : draw()
+activate CV
 
-Usuario -> C : play()
-C -> PS : dispatch('play')
-PS --> CV : onAction('play')
-CV -> PS : beginSession(params)
+CV -> CV : leer parámetros actuales
 
-loop cada fotograma mientras isDrawing
-  CV -> CV : draw() (computa posiciones, paintLines)
-  CV -> PS : lineHistory.push(record)
-  CV -> PS : incrementSessionFrame()
-  CV -> PS : setCurrentState(...)
+opt hay acción pendiente (clear / reset / cambio de modo)
+  CV -> CV : trailDirty = true
 end
 
-Usuario -> C : pause()
-C -> PS : dispatch('pause')
-PS --> CV : onAction('pause')
-CV -> PS : endSession()
+CV -> CV : calcular posición de planeta1 y planeta2
+alt modo curva
+  CV -> CV : planeta2 parte de planeta1
+else modo líneas
+  CV -> CV : ambos planetas desde el centro
+end
+
+alt trailDirty (reconstrucción completa)
+  CV -> TL : clear() + paintLines(0, n)
+else solo segmentos nuevos
+  CV -> TL : paintLines(renderizadas, n)
+end
+CV -> CV : pintar fondo + volcar trailLayer + guías + planetas
+
+opt animación activa (!isPaused && isDrawing)
+  alt modo curva
+    CV -> PS : lineHistory.push(record(prevTip, tip))
+  else modo líneas
+    CV -> PS : lineHistory.push(record(p1, p2)) cada framesNeeded
+  end
+  CV -> PS : incrementSessionFrame()
+  CV -> CV : avanzar angle1, angle2
+  CV -> PS : setCurrentState(angle1, angle2, ...)
+end
+
+deactivate CV
 @enduml
 ```
 
-## A.2. Figura 5.2 — «Deshacer última sesión»
+## A.2. Figura 5.2 — Función `removeLastSession()` (deshacer incremental)
 
 **Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
 
 ```plantuml
-@startuml SecDeshacerSesion
+@startuml SecFuncRemoveLastSession
 actor Usuario
 participant "Controls" as C
 participant "PatternService" as PS
 participant "Canvas" as CV
 
 Usuario -> C : clear()
+C -> PS : removeLastSession()
+activate PS
 
-alt isPlaying
-  C -> C : pause()
-  C -> PS : dispatch('pause')
-  PS --> CV : onAction('pause') / endSession()
+opt sesión activa en curso
+  PS -> PS : endSession()
 end
 
-C -> PS : removeLastSession()
-
-alt quedan sesiones
+alt no quedan sesiones
+  PS -> PS : lineHistory = []
+  PS --> C : null
+else quedan sesiones
   PS -> PS : sessions.pop()
   PS -> PS : replaySessionsToLines(sessions)
+  note right of PS : recorre cada sesión\nfotograma a fotograma\ny regenera lineHistory
   PS --> C : sesión eliminada
-  C -> PS : updateParams(prevParams)
-else no quedan sesiones
-  PS -> PS : lineHistory = []
 end
+deactivate PS
 
+opt se eliminó una sesión
+  C -> PS : updateParams(prevParams)
+end
 C -> PS : dispatch('undo')
-PS --> CV : onAction('undo') (reconstruye o vacía la estela)
-CV --> Usuario : mostrar el resultado
+PS --> CV : onAction('undo')
+CV -> CV : restaurar estado + trailDirty = true
+CV --> Usuario : mostrar el dibujo reconstruido
 @enduml
 ```
 
-## A.3. Figura 5.3 — «Exportar imagen»
+## A.3. Figura 5.3 — Función `buildExportCanvas()` (generación de la imagen)
 
-**Líneas de vida:** `Usuario`, `Controls`, `ExportModal`, `PatternService`.
+**Líneas de vida:** `ExportModal`, `PatternService`, `Lienzo auxiliar (canvas 2D)`.
 
 ```plantuml
-@startuml SecExportarImagenDiseno
-actor Usuario
-participant "Controls" as C
+@startuml SecFuncBuildExportCanvas
 participant "ExportModal" as EM
 participant "PatternService" as PS
+participant "Lienzo auxiliar (canvas 2D)" as CX
 
-Usuario -> C : showExportModal = true
-C -> EM : crear <app-export-modal>
-EM -> EM : ngAfterViewInit()
-EM -> EM : renderPreview()
-EM -> PS : getCurrentParams() / lineHistory / canvasDimensions
 EM -> EM : buildExportCanvas()
-EM --> Usuario : previsualización
+activate EM
 
-opt ajustar opciones de exportación
-  Usuario -> EM : onTransparentToggle() / onOptionChange()
-  EM -> EM : renderPreview()
+EM -> PS : canvasDimensions
+EM -> CX : crear canvas (w·escala, h·escala)
+
+opt fondo no transparente
+  EM -> CX : fillRect(fondo)
 end
 
-Usuario -> EM : save()
-EM -> EM : buildExportCanvas()
-EM -> EM : toDataURL() + descarga
-EM --> Usuario : archivo PNG
+EM -> PS : lineHistory
+EM -> CX : translate + scale (zoom · resolución)
+loop cada línea del historial
+  EM -> CX : strokeStyle / lineWidth
+  EM -> CX : moveTo + lineTo + stroke
+end
+
+opt incluir guías y punto central
+  EM -> CX : dibujar guías orbitales + punto central
+end
+
+EM --> EM : devuelve el lienzo de exportación
+deactivate EM
 @enduml
 ```
 
-## A.4. Figura 5.4 — «Importar patrón»
+## A.4. Figura 5.4 — Función `onFileSelected()` (importación de un patrón)
 
 **Líneas de vida:** `Usuario`, `Controls`, `PatternService`, `Canvas`.
 
 ```plantuml
-@startuml SecImportarPatronDiseno
+@startuml SecFuncOnFileSelected
 actor Usuario
 participant "Controls" as C
 participant "PatternService" as PS
 participant "Canvas" as CV
 
-Usuario -> C : triggerImport()
 Usuario -> C : onFileSelected(event)
-C -> C : JSON.parse() + validar
+activate C
+C -> C : FileReader.readAsText(archivo)
+C -> C : JSON.parse(contenido)
 
 alt archivo válido
+  loop cada sesión del archivo
+    C -> C : validar params y frameCount
+  end
   C -> PS : replaySessionsToLines(sessions)
   C -> PS : updateParams(lastParams)
   C -> PS : dispatch('import-json')
-  PS --> CV : onAction('import-json') (restaura estado)
+  PS --> CV : onAction('import-json')
+  CV -> CV : restaurar estado + trailDirty = true
   CV --> Usuario : mostrar la composición importada
 else archivo no válido
-  C -> C : catch (descarta la importación)
+  C -> C : return / catch (descarta la importación)
 end
+deactivate C
 @enduml
 ```

@@ -5,8 +5,7 @@
 > Android (interfaces XML, lógica Java, Firebase) pantalla a pantalla. Aquí se mantiene el *espíritu*
 > de la estructura —un único bloque «Desarrollo de la aplicación» que recorre interfaces, componentes,
 > lógica e integración— pero adaptado a una **aplicación web de página única** (Angular + p5.js),
-> **sin login, sin base de datos y sin navegación entre pantallas**. A ese bloque se le añade un apartado
-> que eleva el capítulo: el **trazado de interacciones completas** (6.3). Los nombres de clase y función
+> **sin login, sin base de datos y sin navegación entre pantallas**. Los nombres de clase y función
 > son los **reales del código**. Las figuras son capturas de código y de interfaz, referenciadas en el
 > texto. Los diagramas de colaboración entre componentes no se repiten aquí (ya están en los diagramas de
 > secuencia de los capítulos 4 y 5), y la justificación de las tecnologías elegidas tampoco, pues se
@@ -18,7 +17,7 @@ El presente capítulo describe el proceso de desarrollo de la aplicación, centr
 
 A diferencia de una aplicación móvil con múltiples actividades, *Epicycloid Generator* es una **aplicación web de página única (SPA)** que se ejecuta íntegramente en el navegador. Por ello, no existe navegación entre pantallas ni una capa de persistencia remota: toda la interfaz convive en una única vista y el estado se gestiona en memoria, apoyándose puntualmente en el almacenamiento local del navegador. La interfaz se ha construido con **componentes de Angular** (plantillas HTML con la sintaxis declarativa del framework, estilizadas con Bootstrap y CSS propio), mientras que la generación gráfica en tiempo real se delega en la biblioteca **p5.js**, que dibuja sobre un lienzo (`<canvas>`). La lógica se ha programado en **TypeScript** siguiendo un enfoque orientado a componentes y servicios.
 
-Para organizar la exposición, el capítulo se estructura en tres bloques. El primero (6.1) presenta la **estructura y organización del proyecto**, incluido el flujo de datos que lo vertebra. El segundo (6.2), **desarrollo de la aplicación**, constituye el núcleo del capítulo y recorre sucesivamente las interfaces, los componentes visuales, la implementación de la lógica y la persistencia e integración del sistema. El tercero (6.3) ofrece el **trazado de varias interacciones completas** de principio a fin, a modo de simulación del funcionamiento real.
+Para organizar la exposición, el capítulo se estructura en dos bloques. El primero (6.1) presenta la **estructura y organización del proyecto**, incluido el flujo de datos que lo vertebra. El segundo (6.2), **desarrollo de la aplicación**, constituye el núcleo del capítulo y recorre sucesivamente las interfaces, los componentes visuales, la implementación de la lógica y la persistencia e integración del sistema.
 
 ## 6.1. Estructura y organización del proyecto
 
@@ -660,103 +659,3 @@ A diferencia de una aplicación que se apoya en servicios externos como una base
 
 **Despliegue.** Al ser una SPA sin componente de servidor, su despliegue se reduce a publicar los archivos estáticos resultantes de la compilación en un servicio de **alojamiento estático** (Netlify), accesible desde cualquier navegador moderno (RNF12). Esto simplifica la puesta en producción y elimina los costes y la complejidad de mantener una infraestructura de *backend*.
 
-## 6.3. Trazado de interacciones completas
-
-Las secciones anteriores describen cada pieza por separado. Para mostrar cómo **colaboran en conjunto**, este apartado recorre tres interacciones del usuario de principio a fin, siguiendo el camino que toman los datos a través de las funciones reales del código. Sirve de complemento a los diagramas de secuencia del capítulo 5: allí se representó *qué objetos intervienen* en cada operación; aquí se detalla *qué función llama a qué función* y qué ocurre en cada paso, encadenando los fragmentos de código implicados. Es, en esencia, una simulación del funcionamiento real de la aplicación.
-
-### 6.3.1. Interacción «Ajustar un parámetro y reproducir»
-
-Es la interacción central de la aplicación y combina las dos fases del flujo de datos: primero la edición de parámetros (canal `params$`) y después una acción (canal `action$`).
-
-**Fase 1 — el usuario sube el radio de la órbita 1.** Al arrastrar el deslizador, el enlace `[(ngModel)]` actualiza `params.orbit1Radius` y se dispara `onParamChange()`:
-
-```
-Usuario arrastra el deslizador de radio
-  → Controls.onParamChange()
-      → PatternService.updateParams({ ...params })   // emite por params$
-          → Canvas (suscrito a params$) actualiza su copia de params
-              → en el siguiente fotograma, draw() usa el nuevo radio
-                  → el lienzo refleja la órbita ampliada al instante
-```
-
-No hace falta pulsar nada ni recargar la página para ver el cambio: como el bucle `draw()` de p5.js está siempre activo, en cuanto el lienzo recibe los nuevos parámetros el siguiente fotograma ya los dibuja. Esto es lo que produce la sensación de **edición en tiempo real** (RF2) y la **actualización dinámica** de la representación (RF3).
-
-*Figura 6.33: flujo de llamadas de la fase de edición — `onParamChange → updateParams → params$ → draw`.*
-
-**Fase 2 — el usuario pulsa «Reproducir».** Ahora se usa el canal de acciones:
-
-```
-Usuario pulsa Play
-  → Controls.play()        // isPlaying = true (bloquea los parámetros)
-      → PatternService.dispatch('play')              // emite por action$
-          → Canvas.onAction('play')
-              → PatternService.beginSession(params)   // arranca la grabación
-              → isDrawing = true
-  → bucle draw() en cada fotograma, mientras isDrawing:
-      → calcula las posiciones de planeta1 y planeta2
-      → push de un LineRecord en PatternService.lineHistory
-      → paintLines(): pinta solo el segmento nuevo en trailLayer
-      → PatternService.incrementSessionFrame()
-      → avanza angle1 y angle2 para el siguiente fotograma
-```
-
-Cada fotograma añade una línea al historial y la pinta sobre la capa acumulada, de modo que el patrón «crece» suavemente ante el usuario. La sesión registra cuántos fotogramas dura, dato que será imprescindible para deshacer y exportar.
-
-*Figura 6.34: flujo de llamadas de la reproducción — `play → dispatch → onAction → beginSession → bucle draw`.*
-
-**Fin — el usuario pulsa «Pausar».** `Controls.pause()` emite `dispatch('pause')`; el lienzo, en `onAction('pause')`, llama a `PatternService.endSession()`, que cierra el bloque y lo añade a `sessions` con su estado final. El dibujo permanece en pantalla y la aplicación queda lista para una nueva sesión.
-
-### 6.3.2. Interacción «Deshacer la última sesión»
-
-Esta interacción muestra la potencia del modelo de datos por sesiones: deshacer no «borra píxeles», sino que **reconstruye** el dibujo a partir de los bloques que quedan.
-
-```
-Usuario pulsa «Deshacer última sesión»
-  → Controls.clear()
-      → si isPlaying: pause()        // cierra antes la sesión en curso
-      → PatternService.removeLastSession()
-          → si hay sesión activa, endSession()
-          → sessions.pop()                       // retira el último bloque
-          → lineHistory = replaySessionsToLines(sessions)  // reconstruye
-      → restaura params al estado de la sesión que queda (o la eliminada)
-      → PatternService.updateParams(params)       // refleja esos params
-      → PatternService.dispatch('undo')           // emite por action$
-          → Canvas.onAction('undo')
-              → restaura ángulos y último punto al final de la última sesión
-              → trailDirty = true                 // fuerza repintar la estela
-                  → draw() reconstruye trailLayer con el historial recalculado
-                      → el lienzo muestra el dibujo sin el último bloque
-```
-
-El punto clave es `replaySessionsToLines()`: en lugar de intentar «despintar» las últimas líneas (imposible sobre un mapa de píxeles), se vacía el historial y se vuelve a generar reproduciendo las sesiones restantes. Como esa función es determinista, el resultado es exactamente el dibujo previo a la sesión eliminada. Además, los parámetros del panel se restauran al estado de esa sesión, de modo que el usuario puede continuar desde donde estaba.
-
-*Figura 6.35: flujo de llamadas del deshacer — `clear → removeLastSession → replaySessionsToLines → onAction('undo')`.*
-
-### 6.3.3. Interacción «Exportar la composición como imagen»
-
-Esta interacción atraviesa un componente distinto —el diálogo de exportación— y demuestra cómo `lineHistory` se reutiliza para producir una imagen de calidad independiente del tamaño del lienzo en pantalla.
-
-```
-Usuario pulsa «Exportar imagen»
-  → Controls: showExportModal = true
-      → Angular crea <app-export-modal> (bloque @if)
-          → ExportModal.ngAfterViewInit()
-              → renderPreview()
-                  → buildExportCanvas()           // lee lineHistory y params
-                      → pinta fondo + líneas (vectorial) + guías/punto opcionales
-                  → vuelca el resultado escalado en el lienzo de previsualización
-
-opt  el usuario ajusta opciones (fondo, zoom, resolución, guías)
-  → ExportModal.onOptionChange() / onTransparentToggle()
-      → renderPreview()                           // la vista previa se actualiza
-
-Usuario pulsa «Guardar»
-  → ExportModal.save()
-      → buildExportCanvas()                       // genera la imagen final
-      → canvas.toDataURL('image/png') + descarga
-          → el navegador descarga el archivo PNG
-```
-
-La imagen no es una captura del lienzo en pantalla, sino que se **redibuja desde cero** a partir de los vectores de `lineHistory`, aplicando el factor de resolución elegido (1×, 2× o 4×). Así, la exportación conserva la calidad por mucho que se amplíe, sin pixelado (RF6). El mismo método (`buildExportCanvas()`) alimenta tanto la previsualización como el guardado, lo que garantiza que lo que el usuario ve es exactamente lo que descarga.
-
-*Figura 6.36: flujo de llamadas de la exportación — `renderPreview → buildExportCanvas`, ajuste de opciones y `save → toDataURL`.*

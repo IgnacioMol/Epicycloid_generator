@@ -56,17 +56,10 @@ export class Controls {
   constructor(public patternService: PatternService) {}
 
   onParamChange(): void {
-    // Una edición manual deja de corresponder a un ejemplo: el desplegable vuelve a vacío.
     this.selectedPresetId = '';
     this.patternService.updateParams({ ...this.params });
   }
-
-  /**
-   * Aplica el ejemplo elegido en el desplegable (RF7). Fusiona sus parámetros sobre
-   * los valores por defecto, de modo que el panel queda en un estado completo y
-   * reproducible; al pulsar "Play" se dibuja el patrón guardado. La opción vacía
-   * ('') restablece los parámetros por defecto (lienzo en blanco).
-   */
+  
   applyPreset(): void {
     const preset = this.presets.find((p) => p.id === this.selectedPresetId);
     this.params = preset
@@ -93,14 +86,6 @@ export class Controls {
     this.patternService.dispatch('pause');
   }
 
-  /**
-   * Deshace la última sesión dibujada. Si la animación está en curso, primero la
-   * pausa (lo que cierra la sesión activa) y a continuación la retira, de modo que
-   * cada pulsación elimina el último bloque dibujado. Los parámetros del panel se
-   * restauran al estado previo a la sesión eliminada: los de la sesión anterior
-   * (la que queda en pantalla) o, si el lienzo queda vacío, la configuración con
-   * la que se inició la sesión eliminada.
-   */
   clear(): void {
     if (this.isPlaying) this.pause();
     const removed = this.patternService.removeLastSession();
@@ -139,12 +124,8 @@ export class Controls {
     this.selectedPresetId = '';
     this.patternService.updateParams({ ...this.params });
   }
-
-  /**
-   * Comprueba que todos los parámetros numéricos están dentro de su rango válido.
-   * Si un valor se ha salido (por arriba o por abajo) o es inválido, lo fija al
-   * máximo o mínimo correspondiente. Se invoca al confirmar la edición de cualquier input.
-   */
+  
+  
   clampParams(): void {
     for (const key of Object.keys(PARAM_RANGES) as NumericParam[]) {
       const { min, max } = PARAM_RANGES[key];
