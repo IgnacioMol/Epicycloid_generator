@@ -1,4 +1,4 @@
-# Capítulo 4 — Análisis
+# Capítulo 4: Análisis
 
 > Borrador del apartado de análisis de la memoria del TFG *Epicycloid Generator*.
 > **Nivel conceptual**: describe QUÉ hace el sistema y cómo interactúa el usuario, sin detalles de implementación (esto va antes del capítulo de implementación). Los diagramas no contienen funciones reales ni tecnologías.
@@ -57,22 +57,22 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU1 — Configurar parámetros |
+| **ID del caso de uso** | CU1, Configurar parámetros |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario ajusta los parámetros matemáticos y visuales de la composición (radios, velocidades, fases, factores elípticos, inclinación, color, opacidad, grosor e intervalo). |
 | **Requisitos cumplidos** | RF2, RF9, RF10 |
 | **Precondiciones** | La animación está pausada. |
 | **Flujo de eventos** | 1. El usuario abre uno de los grupos de parámetros (Órbita 1, Órbita 2, Visual, Avanzados). 2. El usuario modifica el valor de un control. 3. El sistema registra el nuevo valor y lo refleja inmediatamente en la vista. |
 | **Postcondiciones** | Los parámetros activos quedan actualizados y reflejados en el lienzo. |
-| **Flujo alternativo** | 2a. Si la animación está en curso, los controles no están disponibles; el usuario debe pausar antes de poder modificar parámetros. 2b. Si el usuario introduce un valor fuera del rango permitido, el sistema lo ajusta automáticamente al límite más cercano (mínimo o máximo). |
+| **Flujo alternativo** | 2a. Si la animación está en curso, los controles no están disponibles, el usuario debe pausar antes de poder modificar parámetros. 2b. Si el usuario introduce un valor fuera del rango permitido, el sistema lo ajusta automáticamente al límite más cercano (mínimo o máximo). |
 
 **CU2: Reproducir animación**
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU2 — Reproducir animación |
+| **ID del caso de uso** | CU2, Reproducir animación |
 | **Actor principal** | Usuario |
-| **Descripción** | El usuario inicia la animación; el sistema comienza a acumular trazas según los parámetros activos. |
+| **Descripción** | El usuario inicia la animación, el sistema comienza a acumular trazas según los parámetros activos. |
 | **Requisitos cumplidos** | RF1, RF3, RF4 |
 | **Precondiciones** | Existen parámetros válidos (siempre los hay, por defecto). |
 | **Flujo de eventos** | 1. El usuario pulsa «Play». 2. El sistema anima la geometría y va añadiendo las trazas resultantes al lienzo. 3. Los controles se bloquean mientras la animación está activa. |
@@ -82,7 +82,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU3 — Pausar animación |
+| **ID del caso de uso** | CU3, Pausar animación |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario detiene la animación en curso. |
 | **Requisitos cumplidos** | RF4 |
@@ -94,7 +94,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU4 — Alternar modo de visualización |
+| **ID del caso de uso** | CU4, Alternar modo de visualización |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario cambia entre el modo «intersección de líneas» y el modo «curva epicicloidal». |
 | **Requisitos cumplidos** | RF8 |
@@ -106,20 +106,20 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU5 — Deshacer última sesión |
+| **ID del caso de uso** | CU5, Deshacer última sesión |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario elimina la última sesión (bloque de animación) dibujada. Cada pulsación sucesiva retira un bloque más, sin afectar al resto de la composición. |
 | **Requisitos cumplidos** | RF5 |
 | **Precondiciones** | Existe al menos una sesión dibujada o una en curso. |
 | **Flujo de eventos** | 1. El usuario solicita deshacer la última sesión. 2. Si hay una animación en curso, el sistema la detiene y la toma como la sesión a eliminar. 3. El sistema elimina la última sesión y reconstruye el dibujo con las sesiones restantes. 4. El sistema restaura los parámetros al estado previo a esa sesión (los de la sesión anterior que permanece en el lienzo). |
-| **Postcondiciones** | La última sesión desaparece del lienzo; las anteriores se conservan y los parámetros reflejan el estado previo a la sesión eliminada. |
+| **Postcondiciones** | La última sesión desaparece del lienzo, las anteriores se conservan y los parámetros reflejan el estado previo a la sesión eliminada. |
 | **Flujo alternativo** | 1a. Si no existe ninguna sesión dibujada, la acción no está disponible. |
 
 **CU6: Restablecer parámetros**
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU6 — Restablecer parámetros |
+| **ID del caso de uso** | CU6, Restablecer parámetros |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario restaura todos los parámetros a sus valores por defecto. |
 | **Requisitos cumplidos** | RF4, RF13 |
@@ -131,19 +131,19 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU7 — Ajustar zoom |
+| **ID del caso de uso** | CU7, Ajustar zoom |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario acerca o aleja la vista del lienzo. |
 | **Requisitos cumplidos** | RF11 |
 | **Precondiciones** | Ninguna. |
 | **Flujo de eventos** | 1. El usuario usa la rueda del ratón sobre el lienzo o los botones ＋/−. 2. El sistema acerca o aleja la vista dentro del rango permitido. |
-| **Postcondiciones** | La vista se reescala; la composición no se altera. |
+| **Postcondiciones** | La vista se reescala, la composición no se altera. |
 
 **CU8: Exportar imagen**
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU8 — Exportar imagen |
+| **ID del caso de uso** | CU8, Exportar imagen |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario guarda la composición actual como una imagen. **Incluye** «Configurar opciones de exportación». |
 | **Requisitos cumplidos** | RF6 |
@@ -155,7 +155,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU9 — Exportar patrón |
+| **ID del caso de uso** | CU9, Exportar patrón |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario guarda el estado completo del dibujo en un archivo, para poder recuperarlo más adelante. |
 | **Requisitos cumplidos** | RF7 |
@@ -167,7 +167,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU10 — Importar patrón |
+| **ID del caso de uso** | CU10, Importar patrón |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario carga un archivo de patrón previamente exportado y recupera el dibujo. **Incluye** «Reconstruir el dibujo». |
 | **Requisitos cumplidos** | RF7 |
@@ -180,7 +180,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU11 — Consultar tutorial |
+| **ID del caso de uso** | CU11, Consultar tutorial |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario consulta la guía de bienvenida que explica los modos y los controles básicos. |
 | **Requisitos cumplidos** | RNF4 |
@@ -192,40 +192,40 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU12 — Generar variación aleatoria |
+| **ID del caso de uso** | CU12, Generar variación aleatoria |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario solicita generar una composición «única» asignando de forma automática valores aleatorios al conjunto de parámetros que definen el patrón, conservando el modo de visualización elegido. |
 | **Requisitos cumplidos** | RF12 |
 | **Precondiciones** | La animación está pausada. |
 | **Flujo de eventos** | 1. El usuario solicita aleatorizar los parámetros. 2. El sistema asigna a cada parámetro un valor aleatorio comprendido dentro de su rango permitido (variación *controlada*). 3. El sistema refleja inmediatamente la nueva configuración en la vista. |
 | **Postcondiciones** | Los parámetros quedan actualizados con valores aleatorios válidos, listos para reproducirse. |
-| **Flujo alternativo** | 1a. Si la animación está en curso, la acción no está disponible; el usuario debe pausar antes de generar una variación. |
+| **Flujo alternativo** | 1a. Si la animación está en curso, la acción no está disponible, el usuario debe pausar antes de generar una variación. |
 
 **CU13: Cambiar idioma**
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU13 — Cambiar idioma |
+| **ID del caso de uso** | CU13, Cambiar idioma |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario cambia el idioma de la interfaz seleccionándolo entre los idiomas disponibles. El cambio afecta a todos los textos de la aplicación. |
 | **Requisitos cumplidos** | RF14 |
 | **Precondiciones** | Ninguna. |
 | **Flujo de eventos** | 1. El usuario abre el selector de idioma. 2. El usuario elige uno de los idiomas disponibles. 3. El sistema actualiza inmediatamente todos los textos de la interfaz al idioma seleccionado y conserva la preferencia para futuras visitas. |
 | **Postcondiciones** | La interfaz se muestra en el idioma elegido, que queda recordado. |
-| **Flujo alternativo** | 1a. **Detección automática:** en el primer acceso, antes de cualquier elección manual, el sistema determina el idioma a partir de la configuración del navegador del usuario y muestra la interfaz en ese idioma; si el idioma del navegador no está disponible, utiliza el idioma predeterminado (inglés). |
+| **Flujo alternativo** | 1a. **Detección automática:** en el primer acceso, antes de cualquier elección manual, el sistema determina el idioma a partir de la configuración del navegador del usuario y muestra la interfaz en ese idioma, si el idioma del navegador no está disponible, utiliza el idioma predeterminado (inglés). |
 
 **CU14: Aplicar ejemplo predefinido**
 
 | Campo | Contenido |
 |---|---|
-| **ID del caso de uso** | CU14 — Aplicar ejemplo predefinido |
+| **ID del caso de uso** | CU14, Aplicar ejemplo predefinido |
 | **Actor principal** | Usuario |
 | **Descripción** | El usuario selecciona uno de los ejemplos de patrones predefinidos que ofrece la aplicación y el sistema ajusta automáticamente todos los parámetros a esa configuración, dejando la composición lista para reproducirse. |
 | **Requisitos cumplidos** | RF7 |
 | **Precondiciones** | Ninguna. La animación no debe estar en curso. |
 | **Flujo de eventos** | 1. El usuario abre el desplegable de ejemplos. 2. El usuario elige uno de los ejemplos disponibles. 3. El sistema ajusta todos los parámetros del panel a la configuración guardada del ejemplo. 4. El usuario pulsa «Play» y el sistema dibuja el patrón correspondiente. |
 | **Postcondiciones** | Los parámetros del panel reflejan el ejemplo elegido y la composición se genera al reproducir. |
-| **Flujo alternativo** | 2a. **Lienzo en blanco:** el desplegable parte de una opción vacía; si el usuario la mantiene o la vuelve a elegir, el sistema restablece los parámetros por defecto. 3a. Si la animación está en curso, la acción no está disponible; el usuario debe pausar antes de aplicar un ejemplo. 4a. Si tras aplicar el ejemplo el usuario modifica manualmente un parámetro, el desplegable vuelve a la opción vacía, pues la configuración ya no corresponde a un ejemplo con nombre. |
+| **Flujo alternativo** | 2a. **Lienzo en blanco:** el desplegable parte de una opción vacía, si el usuario la mantiene o la vuelve a elegir, el sistema restablece los parámetros por defecto. 3a. Si la animación está en curso, la acción no está disponible, el usuario debe pausar antes de aplicar un ejemplo. 4a. Si tras aplicar el ejemplo el usuario modifica manualmente un parámetro, el desplegable vuelve a la opción vacía, pues la configuración ya no corresponde a un ejemplo con nombre. |
 
 ## 4.2. Diagramas de clases conceptual
 
@@ -239,28 +239,28 @@ Asimismo, la aplicación incorpora un conjunto de ejemplos predefinidos: configu
 
 El diagrama conceptual mostrado a continuación representa dichas relaciones desde un punto de vista funcional, sin entrar todavía en detalles específicos de implementación.
 
-*(Aquí va la Figura 4.2: Diagrama de clases conceptual — ver especificación para Visual Paradigm al final del documento.)*
+*(Aquí va la Figura 4.2: Diagrama de clases conceptual, ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.3. Diagramas de secuencia del sistema
 
-Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones a lo largo del tiempo durante la ejecución de cada caso de uso. En estos diagramas, en lugar de tratar el sistema como una única caja negra, se reflejan los **componentes reales** que colaboran y las **funciones** (en pseudocódigo) que se invocan en cada paso, lo que permite trazar cada caso de uso con la lógica que realmente se ejecuta. Las líneas de vida son el actor **Usuario** y los componentes que intervienen según el caso: `Controls` (panel de control), `PatternService` (estado y sesiones), `Canvas` (lienzo), `ExportModal` (diálogo de exportación), `Tutorial`, `App` (componente raíz) e `I18nService` (idioma). A continuación se incluye un diagrama para **cada uno** de los casos de uso (CU1–CU14), ordenados según su numeración.
+Los diagramas de secuencia del sistema representan de forma visual y ordenada cómo se desarrollan las interacciones a lo largo del tiempo durante la ejecución de cada caso de uso. En estos diagramas, en lugar de tratar el sistema como una única caja negra, se reflejan los **componentes reales** que colaboran y las **funciones** (en pseudocódigo) que se invocan en cada paso, lo que permite trazar cada caso de uso con la lógica que realmente se ejecuta. Las líneas de vida son el actor **Usuario** y los componentes que intervienen según el caso: `Controls` (panel de control), `PatternService` (estado y sesiones), `Canvas` (lienzo), `ExportModal` (diálogo de exportación), `Tutorial`, `App` (componente raíz) e `I18nService` (idioma). A continuación se incluye un diagrama para **cada uno** de los casos de uso (CU1 a CU14), ordenados según su numeración.
 
-- **Configurar parámetros (CU1) — Figura 4.3:** el usuario solicita modificar un parámetro y el sistema responde actualizando la vista con el nuevo valor.
-- **Reproducir animación (CU2) — Figura 4.4:** el usuario solicita reproducir; el sistema anima y acumula trazas de forma continua hasta que el usuario solicita pausar.
-- **Pausar animación (CU3) — Figura 4.5:** el usuario solicita pausar y el sistema detiene la animación, conservando el dibujo acumulado.
-- **Alternar modo de visualización (CU4) — Figura 4.6:** el usuario selecciona el otro modo; el sistema limpia el lienzo y pasa a representar el nuevo modo.
-- **Deshacer última sesión (CU5) — Figura 4.7:** el usuario solicita deshacer; el sistema elimina la última sesión dibujada, reconstruye el resto de la composición y restaura los parámetros al estado previo a esa sesión.
-- **Restablecer parámetros (CU6) — Figura 4.8:** el usuario solicita restablecer y el sistema restaura los valores por defecto y limpia el lienzo.
-- **Ajustar zoom (CU7) — Figura 4.9:** el usuario acerca o aleja la vista y el sistema la reescala sin alterar la composición.
-- **Exportar imagen (CU8) — Figura 4.10:** el usuario solicita exportar; el sistema muestra una previsualización; el usuario ajusta las opciones y confirma; el sistema entrega la imagen.
-- **Exportar patrón (CU9) — Figura 4.11:** el usuario solicita exportar el patrón y el sistema entrega un archivo reutilizable con la información de la composición.
-- **Importar patrón (CU10) — Figura 4.12:** el usuario selecciona un archivo; el sistema reconstruye el dibujo, lo muestra y actualiza los parámetros visibles.
-- **Consultar tutorial (CU11) — Figura 4.13:** el usuario abre la guía, el sistema la muestra y el usuario la cierra.
-- **Generar variación aleatoria (CU12) — Figura 4.14:** el usuario solicita aleatorizar y el sistema asigna valores aleatorios válidos y actualiza la vista.
-- **Cambiar idioma (CU13) — Figura 4.15:** el usuario selecciona un idioma y el sistema actualiza de inmediato todos los textos de la interfaz, sin recargar la página.
-- **Aplicar ejemplo predefinido (CU14) — Figura 4.16:** el usuario elige un ejemplo del desplegable y el sistema ajusta automáticamente todos los parámetros del panel a la configuración guardada, dejándola lista para reproducir.
+- **Configurar parámetros (CU1), Figura 4.3:** el usuario solicita modificar un parámetro y el sistema responde actualizando la vista con el nuevo valor.
+- **Reproducir animación (CU2), Figura 4.4:** el usuario solicita reproducir, el sistema anima y acumula trazas de forma continua hasta que el usuario solicita pausar.
+- **Pausar animación (CU3), Figura 4.5:** el usuario solicita pausar y el sistema detiene la animación, conservando el dibujo acumulado.
+- **Alternar modo de visualización (CU4), Figura 4.6:** el usuario selecciona el otro modo, el sistema limpia el lienzo y pasa a representar el nuevo modo.
+- **Deshacer última sesión (CU5), Figura 4.7:** el usuario solicita deshacer, el sistema elimina la última sesión dibujada, reconstruye el resto de la composición y restaura los parámetros al estado previo a esa sesión.
+- **Restablecer parámetros (CU6), Figura 4.8:** el usuario solicita restablecer y el sistema restaura los valores por defecto y limpia el lienzo.
+- **Ajustar zoom (CU7), Figura 4.9:** el usuario acerca o aleja la vista y el sistema la reescala sin alterar la composición.
+- **Exportar imagen (CU8), Figura 4.10:** el usuario solicita exportar, el sistema muestra una previsualización, el usuario ajusta las opciones y confirma, el sistema entrega la imagen.
+- **Exportar patrón (CU9), Figura 4.11:** el usuario solicita exportar el patrón y el sistema entrega un archivo reutilizable con la información de la composición.
+- **Importar patrón (CU10), Figura 4.12:** el usuario selecciona un archivo, el sistema reconstruye el dibujo, lo muestra y actualiza los parámetros visibles.
+- **Consultar tutorial (CU11), Figura 4.13:** el usuario abre la guía, el sistema la muestra y el usuario la cierra.
+- **Generar variación aleatoria (CU12), Figura 4.14:** el usuario solicita aleatorizar y el sistema asigna valores aleatorios válidos y actualiza la vista.
+- **Cambiar idioma (CU13), Figura 4.15:** el usuario selecciona un idioma y el sistema actualiza de inmediato todos los textos de la interfaz, sin recargar la página.
+- **Aplicar ejemplo predefinido (CU14), Figura 4.16:** el usuario elige un ejemplo del desplegable y el sistema ajusta automáticamente todos los parámetros del panel a la configuración guardada, dejándola lista para reproducir.
 
-*(Aquí van las Figuras 4.3 a 4.16 — ver especificación para Visual Paradigm al final del documento.)*
+*(Aquí van las Figuras 4.3 a 4.16, ver especificación para Visual Paradigm al final del documento.)*
 
 ## 4.4. Trazabilidad entre requisitos funcionales y casos de uso
 
@@ -283,11 +283,11 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 | RF13 | Restablecer los parámetros a sus valores predeterminados | CU6 |
 | RF14 | Soporte multilingüe: cambiar dinámicamente el idioma de la interfaz | CU13 |
 
-Como se observa en la matriz, todos los requisitos funcionales tienen al menos un caso de uso asociado, lo que garantiza que la totalidad de las funcionalidades previstas han sido contempladas durante el análisis. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema (la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana), que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo. De forma análoga, RF14 incorpora un comportamiento automático —la detección del idioma del navegador en el primer acceso— que complementa la acción manual de cambio de idioma recogida en CU13.
+Como se observa en la matriz, todos los requisitos funcionales tienen al menos un caso de uso asociado, lo que garantiza que la totalidad de las funcionalidades previstas han sido contempladas durante el análisis. Conviene matizar que RF3 y RF11 describen además comportamientos automáticos del sistema (la actualización inmediata de la vista al modificar un parámetro y el reajuste del lienzo cuando cambia el tamaño de la ventana), que no constituyen acciones explícitas del usuario pero quedan reflejados en el caso de uso más próximo. De forma análoga, RF14 incorpora un comportamiento automático, la detección del idioma del navegador en el primer acceso, que complementa la acción manual de cambio de idioma recogida en CU13.
 
 ---
 
-# Anexo — Construcción de los diagramas en Visual Paradigm
+# Anexo, Construcción de los diagramas en Visual Paradigm
 
 > Especificación de cada diagrama (elementos + relaciones) para reproducirlos en **Visual Paradigm**. El diagrama de **casos de uso** se mantiene a nivel de dominio (acciones del usuario, sin tecnologías). El diagrama de **clases** (A.2) y los de **secuencia** (A.3) usan los **nombres reales de las clases del código** y de sus **funciones** (pseudocódigo), de modo que sirvan de base directa para la implementación.
 
@@ -324,24 +324,24 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 
 ## A.2. Diagrama de clases (Figura 4.2)
 
-> Las clases llevan los **nombres reales del código** e incluyen sus **métodos** (funciones) y los atributos principales, expresados en **pseudocódigo** (nombres reales, sin tipos del lenguaje ni marcadores de visibilidad). Los componentes y servicios son clases; el modelo de datos se representa con interfaces (estereotipo `«interface»`).
+> Las clases llevan los **nombres reales del código** e incluyen sus **métodos** (funciones) y los atributos principales, expresados en **pseudocódigo** (nombres reales, sin tipos del lenguaje ni marcadores de visibilidad). Los componentes y servicios son clases, el modelo de datos se representa con interfaces (estereotipo `«interface»`).
 
 **Pasos en Visual Paradigm:**
 1. `File → New → Class Diagram`.
 2. Crea las clases con sus atributos y **operaciones** (botón derecho → Add → Operation):
-   - `AppComponent` — atrib.: `langMenuOpen` · métodos: `currentLanguageLabel()`, `selectLang(code)`
-   - `Canvas` — atrib.: `params`, `isPaused`, `isDrawing`, `zoom` · métodos: `ngAfterViewInit()`, `ngOnDestroy()`, `zoomIn()`, `zoomOut()`, `onAction(action)`, `initSketch()`
-   - `Controls` — atrib.: `params`, `isPlaying`, `showExportModal`, `selectedPresetId`, `presets` · métodos: `onParamChange()`, `applyPreset()`, `toggleMode()`, `play()`, `pause()`, `clear()`, `reset()`, `randomize()`, `clampParams()`, `formatInterval(s)`, `exportJson()`, `triggerImport()`
-   - `ExportModal` — atrib.: `options`, `isTransparent`, `exportZoom`, `exportScale` · métodos: `renderPreview()`, `buildExportCanvas()`, `onOptionChange()`, `onTransparentToggle()`, `save()`
-   - `Tutorial` — atrib.: `visible`, `dontShowAgain` · métodos: `open()`, `close()`
-   - `PatternService` — atrib.: `lineHistory`, `sessions`, `params$`, `action$` · métodos: `updateParams(p)`, `getCurrentParams()`, `dispatch(a)`, `beginSession(p)`, `incrementSessionFrame()`, `setCurrentState(...)`, `endSession()`, `snapshotActiveSession()`, `removeLastSession()`, `replaySessionsToLines(s)`, `clearSessions()`
-   - `I18nService` — atrib.: `lang`, `languages` · métodos: `setLang(l)`, `toggle()`, `translate(key)`, `detectInitialLang()`
-   - `TranslatePipe` — método: `transform(key)`
-   - `«interface» PatternParams` — `orbit1Radius`, `orbit2Radius`, `orbit1EllipseX`, `orbit1EllipseY`, `orbit2EllipseX`, `orbit2EllipseY`, `orbit1Angle`, `orbit2Angle`, `orbit1SpeedRpm`, `orbit2SpeedRpm`, `initialAngle1`, `initialAngle2`, `lineColor`, `lineAlpha`, `strokeWeight`, `lineInterval`, `visualizationMode`
-   - `«interface» SimulationSession` — `sessionIndex`, `params`, `frameCount`, `durationSeconds`, `endAngle1/2`, `endTipX/Y`, `endFirstPoint`
-   - `«interface» LineRecord` — `x1`, `y1`, `x2`, `y2`, `r`, `g`, `b`, `a`, `sw`
-   - `«interface» ExportOptions` — `bgColor`, `showGuides`, `showCenterDot`
-   - `«interface» PatternPreset` — `id`, `params`
+   - `AppComponent`, atrib.: `langMenuOpen` · métodos: `currentLanguageLabel()`, `selectLang(code)`
+   - `Canvas`, atrib.: `params`, `isPaused`, `isDrawing`, `zoom` · métodos: `ngAfterViewInit()`, `ngOnDestroy()`, `zoomIn()`, `zoomOut()`, `onAction(action)`, `initSketch()`
+   - `Controls`, atrib.: `params`, `isPlaying`, `showExportModal`, `selectedPresetId`, `presets` · métodos: `onParamChange()`, `applyPreset()`, `toggleMode()`, `play()`, `pause()`, `clear()`, `reset()`, `randomize()`, `clampParams()`, `formatInterval(s)`, `exportJson()`, `triggerImport()`
+   - `ExportModal`, atrib.: `options`, `isTransparent`, `exportZoom`, `exportScale` · métodos: `renderPreview()`, `buildExportCanvas()`, `onOptionChange()`, `onTransparentToggle()`, `save()`
+   - `Tutorial`, atrib.: `visible`, `dontShowAgain` · métodos: `open()`, `close()`
+   - `PatternService`, atrib.: `lineHistory`, `sessions`, `params$`, `action$` · métodos: `updateParams(p)`, `getCurrentParams()`, `dispatch(a)`, `beginSession(p)`, `incrementSessionFrame()`, `setCurrentState(...)`, `endSession()`, `snapshotActiveSession()`, `removeLastSession()`, `replaySessionsToLines(s)`, `clearSessions()`
+   - `I18nService`, atrib.: `lang`, `languages` · métodos: `setLang(l)`, `toggle()`, `translate(key)`, `detectInitialLang()`
+   - `TranslatePipe`, método: `transform(key)`
+   - `«interface» PatternParams`, `orbit1Radius`, `orbit2Radius`, `orbit1EllipseX`, `orbit1EllipseY`, `orbit2EllipseX`, `orbit2EllipseY`, `orbit1Angle`, `orbit2Angle`, `orbit1SpeedRpm`, `orbit2SpeedRpm`, `initialAngle1`, `initialAngle2`, `lineColor`, `lineAlpha`, `strokeWeight`, `lineInterval`, `visualizationMode`
+   - `«interface» SimulationSession`, `sessionIndex`, `params`, `frameCount`, `durationSeconds`, `endAngle1/2`, `endTipX/Y`, `endFirstPoint`
+   - `«interface» LineRecord`, `x1`, `y1`, `x2`, `y2`, `r`, `g`, `b`, `a`, `sw`
+   - `«interface» ExportOptions`, `bgColor`, `showGuides`, `showCenterDot`
+   - `«interface» PatternPreset`, `id`, `params`
 
 > **Nota sobre los métodos con prefijo `ng`:** `ngAfterViewInit` y `ngOnDestroy` (en `Canvas` y `ExportModal`) son *hooks del ciclo de vida* de Angular. No se invocan manualmente, sino que el framework los ejecuta de forma automática en momentos concretos de la vida del componente: `ngAfterViewInit` se ejecuta una vez creada la vista (se aprovecha para inicializar p5.js sobre el lienzo y las suscripciones), y `ngOnDestroy` al destruirse el componente (libera las suscripciones y elimina el sketch de p5 para evitar fugas de memoria).
 
@@ -352,16 +352,16 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
    - `Controls` ┄┄▶ `ExportModal` (**Dependency**, *crea*)
    - `TranslatePipe` ──▶ `I18nService` (*usa*)
    - `PatternService` ──▶ `SimulationSession` (1 a *, `sessions`) y ──▶ `LineRecord` (1 a *, `lineHistory`)
-   - `SimulationSession` ──▶ `PatternParams` (1 a 1) ; `ExportModal` ──▶ `ExportOptions` (1 a 1)
-   - `Controls` ──▶ `PatternPreset` (1 a *, catálogo `PATTERN_PRESETS`, *usa*) ; `PatternPreset` ──▶ `PatternParams` (1 a 1, configuración que aplica)
+   - `SimulationSession` ──▶ `PatternParams` (1 a 1), `ExportModal` ──▶ `ExportOptions` (1 a 1)
+   - `Controls` ──▶ `PatternPreset` (1 a *, catálogo `PATTERN_PRESETS`, *usa*), `PatternPreset` ──▶ `PatternParams` (1 a 1, configuración que aplica)
 
 > Ajusta las multiplicidades en los extremos de cada conector (botón derecho → Multiplicity). Fíjate en el `1 a 2` de las órbitas: siempre hay exactamente dos.
 
-## A.3. Diagramas de secuencia del sistema (Figuras 4.3–4.16)
+## A.3. Diagramas de secuencia del sistema (Figuras 4.3 a 4.16)
 
-**Pasos en Visual Paradigm:** `File → New → Sequence Diagram` (uno por cada caso de uso). Coloca las líneas de vida indicadas en cada figura (el **Actor** `Usuario` y los **componentes reales** que intervienen) y traza los **Message** etiquetados con el **nombre de la función** que se ejecuta. Para las respuestas usa **mensaje de retorno** (flecha discontinua); usa **Combined Fragment** `loop`/`alt`/`opt` y **mensaje a sí mismo** (self-message) donde se indique.
+**Pasos en Visual Paradigm:** `File → New → Sequence Diagram` (uno por cada caso de uso). Coloca las líneas de vida indicadas en cada figura (el **Actor** `Usuario` y los **componentes reales** que intervienen) y traza los **Message** etiquetados con el **nombre de la función** que se ejecuta. Para las respuestas usa **mensaje de retorno** (flecha discontinua), usa **Combined Fragment** `loop`/`alt`/`opt` y **mensaje a sí mismo** (self-message) donde se indique.
 
-- **Fig. 4.3 — Configurar parámetros (CU1):** Usuario, Controls, PatternService, Canvas.
+- **Fig. 4.3, Configurar parámetros (CU1):** Usuario, Controls, PatternService, Canvas.
   1. Usuario → Controls: editar un control `(ngModelChange)`
   2. Controls → Controls: `onParamChange()`
   3. Controls → PatternService: `updateParams(params)`
@@ -369,7 +369,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
   5. Canvas → Canvas: `draw()` (refleja los nuevos parámetros)
   6. Usuario → Controls: confirmar valor `(change)` → `clampParams()` → PatternService: `updateParams(params)`
 
-- **Fig. 4.4 — Reproducir animación (CU2):** Usuario, Controls, PatternService, Canvas. Fragmento `loop` «cada fotograma mientras `isDrawing`».
+- **Fig. 4.4, Reproducir animación (CU2):** Usuario, Controls, PatternService, Canvas. Fragmento `loop` «cada fotograma mientras `isDrawing`».
   1. Usuario → Controls: `play()`
   2. Controls → PatternService: `dispatch('play')`
   3. PatternService ⤍ Canvas: `onAction('play')`
@@ -378,73 +378,73 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
   6. Usuario → Controls: `pause()` → PatternService: `dispatch('pause')`
   7. PatternService ⤍ Canvas: `onAction('pause')` → Canvas → PatternService: `endSession()`
 
-- **Fig. 4.5 — Pausar animación (CU3):** Usuario, Controls, PatternService, Canvas.
+- **Fig. 4.5, Pausar animación (CU3):** Usuario, Controls, PatternService, Canvas.
   1. Usuario → Controls: `pause()`
   2. Controls → PatternService: `dispatch('pause')`
   3. PatternService ⤍ Canvas: `onAction('pause')`
   4. Canvas → PatternService: `endSession()`
 
-- **Fig. 4.6 — Alternar modo de visualización (CU4):** Usuario, Controls, PatternService, Canvas.
+- **Fig. 4.6, Alternar modo de visualización (CU4):** Usuario, Controls, PatternService, Canvas.
   1. Usuario → Controls: `toggleMode()`
   2. Controls → PatternService: `updateParams(params)` (nuevo `visualizationMode`)
   3. PatternService ⤍ Canvas: `params$`
   4. Canvas → Canvas: `draw()` (detecta el cambio de modo) → PatternService: `endSession()`, `clearSessions()`
 
-- **Fig. 4.7 — Deshacer última sesión (CU5):** Usuario, Controls, PatternService, Canvas. Fragmentos `alt`.
+- **Fig. 4.7, Deshacer última sesión (CU5):** Usuario, Controls, PatternService, Canvas. Fragmentos `alt`.
   1. Usuario → Controls: `clear()`
   2. *(alt `isPlaying`)* Controls → Controls: `pause()` → PatternService: `dispatch('pause')` → `endSession()`
   3. Controls → PatternService: `removeLastSession()`
-  4. *(alt quedan sesiones)* PatternService: `sessions.pop()`, `replaySessionsToLines(sessions)`; Controls → PatternService: `updateParams(prevParams)`
+  4. *(alt quedan sesiones)* PatternService: `sessions.pop()`, `replaySessionsToLines(sessions)`. Controls → PatternService: `updateParams(prevParams)`
   5. Controls → PatternService: `dispatch('undo')`
   6. PatternService ⤍ Canvas: `onAction('undo')` (reconstruye la estela)
 
-- **Fig. 4.8 — Restablecer parámetros (CU6):** Usuario, Controls, PatternService, Canvas.
+- **Fig. 4.8, Restablecer parámetros (CU6):** Usuario, Controls, PatternService, Canvas.
   1. Usuario → Controls: `reset()`
   2. Controls → PatternService: `updateParams(DEFAULT_PARAMS)`
   3. Controls → PatternService: `dispatch('reset')`
   4. PatternService ⤍ Canvas: `onAction('reset')` → Canvas → PatternService: `endSession()`, `clearSessions()`
 
-- **Fig. 4.9 — Ajustar zoom (CU7):** Usuario, Canvas.
+- **Fig. 4.9, Ajustar zoom (CU7):** Usuario, Canvas.
   1. Usuario → Canvas: `mouseWheel()` / `zoomIn()` / `zoomOut()`
   2. Canvas → Canvas: `trailDirty = true` → `draw()` (reescala la vista)
 
-- **Fig. 4.10 — Exportar imagen (CU8):** Usuario, Controls, ExportModal, PatternService. Fragmento `opt`.
+- **Fig. 4.10, Exportar imagen (CU8):** Usuario, Controls, ExportModal, PatternService. Fragmento `opt`.
   1. Usuario → Controls: `showExportModal = true`
   2. Controls → ExportModal: crear `<app-export-modal>`
   3. ExportModal → ExportModal: `ngAfterViewInit()` → `renderPreview()` → `buildExportCanvas()` (lee `getCurrentParams()`, `lineHistory` de PatternService)
   4. *(opt ajustar opciones)* Usuario → ExportModal: `onTransparentToggle()` / `onOptionChange()` → `renderPreview()`
   5. Usuario → ExportModal: `save()` → `buildExportCanvas()` → `toDataURL()`
 
-- **Fig. 4.11 — Exportar patrón (CU9):** Usuario, Controls, PatternService.
+- **Fig. 4.11, Exportar patrón (CU9):** Usuario, Controls, PatternService.
   1. Usuario → Controls: `exportJson()`
   2. Controls → PatternService: `snapshotActiveSession()` + `sessions`
   3. Controls → Controls: construir `Blob` y enlace de descarga
 
-- **Fig. 4.12 — Importar patrón (CU10):** Usuario, Controls, PatternService, Canvas. Fragmento `alt`.
+- **Fig. 4.12, Importar patrón (CU10):** Usuario, Controls, PatternService, Canvas. Fragmento `alt`.
   1. Usuario → Controls: `triggerImport()`
   2. Usuario → Controls: `onFileSelected(event)`
   3. *(alt archivo válido)* Controls → PatternService: `replaySessionsToLines(sessions)`, `updateParams(lastParams)`, `dispatch('import-json')` → PatternService ⤍ Canvas: `onAction('import-json')`
   4. *(else inválido)* Controls → Controls: `catch` (descarta la importación)
 
-- **Fig. 4.13 — Consultar tutorial (CU11):** Usuario, Tutorial.
+- **Fig. 4.13, Consultar tutorial (CU11):** Usuario, Tutorial.
   1. Usuario → Tutorial: `open()`
   2. Tutorial ⤍ Usuario: muestra la guía (`visible = true`)
   3. Usuario → Tutorial: `close()`
 
-- **Fig. 4.14 — Generar variación aleatoria (CU12):** Usuario, Controls, PatternService, Canvas.
+- **Fig. 4.14, Generar variación aleatoria (CU12):** Usuario, Controls, PatternService, Canvas.
   1. Usuario → Controls: `randomize()`
   2. Controls → Controls: `randInRange()` / `randColor()`
   3. Controls → PatternService: `updateParams(params)`
   4. PatternService ⤍ Canvas: `params$` → `draw()`
 
-- **Fig. 4.15 — Cambiar idioma (CU13):** Usuario, App, I18nService. Fragmento `alt`.
+- **Fig. 4.15, Cambiar idioma (CU13):** Usuario, App, I18nService. Fragmento `alt`.
   1. *(alt primer acceso)* I18nService → I18nService: `detectInitialLang()`
   2. Usuario → App: abrir selector (`langMenuOpen = true`)
   3. Usuario → App: `selectLang(code)`
   4. App → I18nService: `setLang(code)` → `lang.set(code)` + `localStorage` + `document.documentElement.lang`
   5. I18nService ⤍ Usuario: `TranslatePipe` (`| t`) reevalúa los textos
 
-- **Fig. 4.16 — Aplicar ejemplo predefinido (CU14):** Usuario, Controls, PatternService, Canvas. Fragmento `alt`.
+- **Fig. 4.16, Aplicar ejemplo predefinido (CU14):** Usuario, Controls, PatternService, Canvas. Fragmento `alt`.
   1. Usuario → Controls: seleccionar ejemplo en el desplegable (`(ngModelChange)` sobre `selectedPresetId`)
   2. Controls → Controls: `applyPreset()`
   3. *(alt ejemplo elegido)* Controls → Controls: buscar el preset en `PATTERN_PRESETS` y fusionar `params` sobre los valores por defecto
@@ -456,7 +456,7 @@ Como se observa en la matriz, todos los requisitos funcionales tienen al menos u
 
 ## A.4. (Opcional) Código PlantUML para vista previa rápida
 
-> Solo para previsualizar antes de montarlo en Visual Paradigm. Los diagramas de casos de uso y de clases son conceptuales; los de **secuencia** usan nombres de funciones reales (pseudocódigo) y los componentes reales como líneas de vida.
+> Solo para previsualizar antes de montarlo en Visual Paradigm. Los diagramas de casos de uso y de clases son conceptuales, los de **secuencia** usan nombres de funciones reales (pseudocódigo) y los componentes reales como líneas de vida.
 
 ```plantuml
 @startuml CasosDeUso
@@ -646,7 +646,7 @@ PatternPreset "1" --> "1" PatternParams
 @enduml
 ```
 
-**Figura 4.3 — Configurar parámetros (CU1)**
+**Figura 4.3, Configurar parámetros (CU1)**
 
 ```plantuml
 @startuml SecConfigurar
@@ -666,7 +666,7 @@ C -> PS : updateParams(params)
 @enduml
 ```
 
-**Figura 4.4 — Reproducir animación (CU2)**
+**Figura 4.4, Reproducir animación (CU2)**
 
 ```plantuml
 @startuml SecReproducir
@@ -692,7 +692,7 @@ CV -> PS : endSession()
 @enduml
 ```
 
-**Figura 4.5 — Pausar animación (CU3)**
+**Figura 4.5, Pausar animación (CU3)**
 
 ```plantuml
 @startuml SecPausar
@@ -708,7 +708,7 @@ CV -> PS : endSession()
 @enduml
 ```
 
-**Figura 4.6 — Alternar modo de visualización (CU4)**
+**Figura 4.6, Alternar modo de visualización (CU4)**
 
 ```plantuml
 @startuml SecAlternarModo
@@ -726,7 +726,7 @@ CV -> PS : clearSessions()
 @enduml
 ```
 
-**Figura 4.7 — Deshacer última sesión (CU5)**
+**Figura 4.7, Deshacer última sesión (CU5)**
 
 ```plantuml
 @startuml SecDeshacer
@@ -752,7 +752,7 @@ PS --> CV : onAction('undo') (reconstruye estela)
 @enduml
 ```
 
-**Figura 4.8 — Restablecer parámetros (CU6)**
+**Figura 4.8, Restablecer parámetros (CU6)**
 
 ```plantuml
 @startuml SecRestablecer
@@ -770,7 +770,7 @@ CV -> PS : clearSessions()
 @enduml
 ```
 
-**Figura 4.9 — Ajustar zoom (CU7)**
+**Figura 4.9, Ajustar zoom (CU7)**
 
 ```plantuml
 @startuml SecZoom
@@ -783,7 +783,7 @@ CV -> CV : draw() (reescala la vista)
 @enduml
 ```
 
-**Figura 4.10 — Exportar imagen (CU8)**
+**Figura 4.10, Exportar imagen (CU8)**
 
 ```plantuml
 @startuml SecExportarImagen
@@ -807,7 +807,7 @@ EM --> Usuario : descarga PNG
 @enduml
 ```
 
-**Figura 4.11 — Exportar patrón (CU9)**
+**Figura 4.11, Exportar patrón (CU9)**
 
 ```plantuml
 @startuml SecExportarPatron
@@ -822,7 +822,7 @@ C --> Usuario : descarga JSON
 @enduml
 ```
 
-**Figura 4.12 — Importar patrón (CU10)**
+**Figura 4.12, Importar patrón (CU10)**
 
 ```plantuml
 @startuml SecImportar
@@ -845,7 +845,7 @@ end
 @enduml
 ```
 
-**Figura 4.13 — Consultar tutorial (CU11)**
+**Figura 4.13, Consultar tutorial (CU11)**
 
 ```plantuml
 @startuml SecTutorial
@@ -858,7 +858,7 @@ Usuario -> T : close()
 @enduml
 ```
 
-**Figura 4.14 — Generar variación aleatoria (CU12)**
+**Figura 4.14, Generar variación aleatoria (CU12)**
 
 ```plantuml
 @startuml SecAleatorizar
@@ -875,7 +875,7 @@ CV -> CV : draw()
 @enduml
 ```
 
-**Figura 4.15 — Cambiar idioma (CU13)**
+**Figura 4.15, Cambiar idioma (CU13)**
 
 ```plantuml
 @startuml SecCambiarIdioma
@@ -894,7 +894,7 @@ I18N --> Usuario : TranslatePipe (| t) reevalúa los textos
 @enduml
 ```
 
-**Figura 4.16 — Aplicar ejemplo predefinido (CU14)**
+**Figura 4.16, Aplicar ejemplo predefinido (CU14)**
 
 ```plantuml
 @startuml SecAplicarEjemplo

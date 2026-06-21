@@ -1,10 +1,10 @@
-# Capítulo 6 — Implementación
+# Capítulo 6: Implementación
 
 > Borrador del apartado de implementación de la memoria del TFG *Epicycloid Generator*.
 > **Adaptación de la estructura de referencia (UrbanGuardian):** aquella memoria describe una app
 > Android (interfaces XML, lógica Java, Firebase) pantalla a pantalla. Aquí se mantiene el *espíritu*
-> de la estructura —un único bloque «Desarrollo de la aplicación» que recorre interfaces, componentes,
-> lógica e integración— pero adaptado a una **aplicación web de página única** (Angular + p5.js),
+> de la estructura, un único bloque «Desarrollo de la aplicación» que recorre interfaces, componentes,
+> lógica e integración, pero adaptado a una **aplicación web de página única** (Angular + p5.js),
 > **sin login, sin base de datos y sin navegación entre pantallas**. Los nombres de clase y función
 > son los **reales del código**. Las figuras son capturas de código y de interfaz, referenciadas en el
 > texto. Los diagramas de colaboración entre componentes no se repiten aquí (ya están en los diagramas de
@@ -59,10 +59,10 @@ Comprender cómo circulan los datos es la clave para entender el resto del capí
 
 El flujo es **unidireccional** y se articula en torno a dos canales que el servicio expone como **flujos observables**:
 
-- **`params$`** — transporta la **configuración** del patrón. Cuando el usuario modifica un control, el panel publica los nuevos parámetros en el servicio y este los emite por `params$`. El lienzo, suscrito a ese flujo, recibe los valores actualizados y redibuja en el siguiente fotograma. Es lo que hace posible la **edición en tiempo real**.
-- **`action$`** — transporta las **órdenes** del usuario (reproducir, pausar, deshacer, restablecer, importar). El panel las publica con `dispatch()` y el lienzo las interpreta en `onAction()`, cambiando su estado de animación.
+- **`params$`**, transporta la **configuración** del patrón. Cuando el usuario modifica un control, el panel publica los nuevos parámetros en el servicio y este los emite por `params$`. El lienzo, suscrito a ese flujo, recibe los valores actualizados y redibuja en el siguiente fotograma. Es lo que hace posible la **edición en tiempo real**.
+- **`action$`**, transporta las **órdenes** del usuario (reproducir, pausar, deshacer, restablecer, importar). El panel las publica con `dispatch()` y el lienzo las interpreta en `onAction()`, cambiando su estado de animación.
 
-Junto a esos dos canales, el servicio conserva el **estado del dibujo** como datos —no como píxeles—: el historial de segmentos (`lineHistory`) y la lista de sesiones grabadas (`sessions`). El lienzo escribe en ese historial a medida que dibuja, y otros componentes (como el diálogo de exportación) lo leen cuando lo necesitan.
+Junto a esos dos canales, el servicio conserva el **estado del dibujo** como datos, no como píxeles: el historial de segmentos (`lineHistory`) y la lista de sesiones grabadas (`sessions`). El lienzo escribe en ese historial a medida que dibuja, y otros componentes (como el diálogo de exportación) lo leen cuando lo necesitan.
 
 El recorrido completo, por tanto, es siempre el mismo: **el usuario actúa sobre `Controls` → `Controls` traslada la acción o el cambio a `PatternService` → el servicio lo emite o lo almacena → `Canvas` reacciona y dibuja → el resultado vuelve al usuario en el lienzo**. Esta circulación cerrada y de sentido único facilita razonar sobre el sistema y depurarlo, y permite que componentes nuevos se sumen sin tocar a los existentes. Este flujo es, precisamente, el que reflejan los diagramas de secuencia presentados en los capítulos 4 y 5, donde se observa cómo el usuario, `Controls`, `PatternService` y `Canvas` colaboran en cada operación.
 
@@ -78,13 +78,13 @@ Dado que la aplicación es de página única, no se describen «pantallas» que 
 
 *(Aquí van las Figuras 6.2 y 6.3: vista principal con lienzo y panel.)*
 
-Es la disposición general de la aplicación, lo primero que ve el usuario al abrirla. La pantalla se divide en dos zonas: a la izquierda, el **lienzo**, que ocupa aproximadamente el 70 % del ancho y donde se genera la composición; a la derecha, el **panel de control** (en torno al 30 %), desde el que se ajustan todos los parámetros y se gobiernan las acciones. Sobre esta disposición conviven dos elementos flotantes fijos: el botón de ayuda que reabre el tutorial y el **selector de idioma**, situado en una esquina para no entorpecer la visualización. Esta correspondencia lado a lado entre controles y resultado es deliberada y refuerza la edición en tiempo real.
+Es la disposición general de la aplicación, lo primero que ve el usuario al abrirla. La pantalla se divide en dos zonas: a la izquierda, el **lienzo**, que ocupa aproximadamente el 70 % del ancho y donde se genera la composición, a la derecha, el **panel de control** (en torno al 30 %), desde el que se ajustan todos los parámetros y se gobiernan las acciones. Sobre esta disposición conviven dos elementos flotantes fijos: el botón de ayuda que reabre el tutorial y el **selector de idioma**, situado en una esquina para no entorpecer la visualización. Esta correspondencia lado a lado entre controles y resultado es deliberada y refuerza la edición en tiempo real.
 
 **Lienzo (`Canvas`)**
 
 *(Aquí van las Figuras 6.4 y 6.5: el lienzo con un patrón en curso y los controles de zoom.)*
 
-Es la zona donde se representa la composición. Contiene el contenedor sobre el que p5.js crea el `<canvas>` y un grupo de botones de **zoom** (acercar y alejar); además, el usuario puede ampliar o reducir con la rueda del ratón sobre el propio lienzo. En él se dibujan las trazas acumuladas del patrón, las **guías orbitales** (las elipses y radios de cada órbita) y los **planetas** (los dos puntos que se desplazan), que ayudan a comprender de dónde surge cada trazo. Estos elementos de apoyo se distinguen por color: azul para la primera órbita y rojo para la segunda, en coherencia con el panel de control.
+Es la zona donde se representa la composición. Contiene el contenedor sobre el que p5.js crea el `<canvas>` y un grupo de botones de **zoom** (acercar y alejar), además, el usuario puede ampliar o reducir con la rueda del ratón sobre el propio lienzo. En él se dibujan las trazas acumuladas del patrón, las **guías orbitales** (las elipses y radios de cada órbita) y los **planetas** (los dos puntos que se desplazan), que ayudan a comprender de dónde surge cada trazo. Estos elementos de apoyo se distinguen por color: azul para la primera órbita y rojo para la segunda, en coherencia con el panel de control.
 
 **Panel de control (`Controls`)**
 
@@ -108,11 +108,11 @@ Es una ventana modal que se muestra automáticamente la primera vez que se abre 
 
 *(Aquí van las Figuras 6.12 y 6.13: selector de idioma desplegado.)*
 
-Es un botón desplegable, fijo en una esquina, que permite cambiar el idioma de toda la interfaz sin recargar la página. Al pulsarlo se despliega la lista de idiomas disponibles (español, catalán, inglés, indonesio y checo); al seleccionar uno, todos los textos se traducen de inmediato. La lista se genera automáticamente a partir de la configuración de idiomas, de modo que añadir uno nuevo no obliga a modificar la interfaz.
+Es un botón desplegable, fijo en una esquina, que permite cambiar el idioma de toda la interfaz sin recargar la página. Al pulsarlo se despliega la lista de idiomas disponibles (español, catalán, inglés, indonesio y checo), al seleccionar uno, todos los textos se traducen de inmediato. La lista se genera automáticamente a partir de la configuración de idiomas, de modo que añadir uno nuevo no obliga a modificar la interfaz.
 
 ### 6.2.2. Componentes de la interfaz
 
-El diseño visual de la aplicación se ha estructurado mediante plantillas HTML, siguiendo el modelo de desarrollo de interfaces de Angular y apoyándose en la biblioteca de estilos Bootstrap. A lo largo de la aplicación se han empleado distintos elementos de interfaz gráfica para ofrecer una experiencia de usuario clara e intuitiva. Entre los componentes más utilizados se encuentran las etiquetas (`label`), empleadas para mostrar información estática como el nombre de cada parámetro o su unidad; los campos numéricos (`input type="number"`) y los deslizadores (`input type="range"`), que permiten al usuario introducir y ajustar los valores que definen el patrón; y los botones, que sirven para ejecutar acciones como reproducir la animación, restablecer los parámetros o exportar la composición. Además, se han utilizado contenedores y secciones plegables (`details`) para organizar estos elementos de forma jerárquica y ordenada dentro del panel. También se han incorporado componentes más dinámicos, como los desplegables (`select`), que muestran listas de opciones como los ejemplos predefinidos, y las ventanas modales, que superponen diálogos —el de exportación o el tutorial— sobre la vista principal. Por último, cabe señalar que todos estos elementos se enlazan con la lógica de la aplicación mediante la sintaxis declarativa de Angular —el enlace bidireccional `[(ngModel)]`, los manejadores de eventos como `(click)`, los bloques de control de flujo `@if` y `@for`, y el pipe de traducción `| t`—, según se irá detallando en los componentes descritos a continuación.
+El diseño visual de la aplicación se ha estructurado mediante plantillas HTML, siguiendo el modelo de desarrollo de interfaces de Angular y apoyándose en la biblioteca de estilos Bootstrap. A lo largo de la aplicación se han empleado distintos elementos de interfaz gráfica para ofrecer una experiencia de usuario clara e intuitiva. Entre los componentes más utilizados se encuentran las etiquetas (`label`), empleadas para mostrar información estática como el nombre de cada parámetro o su unidad, los campos numéricos (`input type="number"`) y los deslizadores (`input type="range"`), que permiten al usuario introducir y ajustar los valores que definen el patrón, y los botones, que sirven para ejecutar acciones como reproducir la animación, restablecer los parámetros o exportar la composición. Además, se han utilizado contenedores y secciones plegables (`details`) para organizar estos elementos de forma jerárquica y ordenada dentro del panel. También se han incorporado componentes más dinámicos, como los desplegables (`select`), que muestran listas de opciones como los ejemplos predefinidos, y las ventanas modales, que superponen diálogos, el de exportación o el tutorial, sobre la vista principal. Por último, cabe señalar que todos estos elementos se enlazan con la lógica de la aplicación mediante la sintaxis declarativa de Angular, el enlace bidireccional `[(ngModel)]`, los manejadores de eventos como `(click)`, los bloques de control de flujo `@if` y `@for`, y el pipe de traducción `| t`, según se irá detallando en los componentes descritos a continuación.
 
 **Deslizadores y campos numéricos.** Constituyen el componente predominante del panel de control. Cada parámetro numérico se presenta siguiendo un patrón uniforme, compuesto por una etiqueta (`label`), un campo numérico (`input type="number"`) que permite introducir un valor exacto y un deslizador (`input type="range"`) que permite ajustarlo de forma continua. Ambos controles están enlazados a la misma variable mediante `[(ngModel)]`, de manera que mover el deslizador actualiza el número y viceversa, y cualquiera de los dos dispara el método `onParamChange()` para redibujar el patrón al instante (RF2, RF9). Los atributos `min`, `max` y `step` definen el rango válido y la granularidad de cada control. Además, al editar el campo numérico, el evento `(change)` invoca `clampParams()` para corregir los valores que queden fuera de rango.
 
@@ -133,7 +133,7 @@ El diseño visual de la aplicación se ha estructurado mediante plantillas HTML,
 </div>
 ```
 
-*Figura 6.14: estructura HTML de un control de parámetro — etiqueta, campo numérico y deslizador (`controls.html`).*
+*Figura 6.14: estructura HTML de un control de parámetro, etiqueta, campo numérico y deslizador (`controls.html`).*
 
 **Selectores desplegables (`select`).** Se emplean para que el usuario elija entre un conjunto de opciones predefinidas. El más destacado es el desplegable de ejemplos, cuyas opciones se generan dinámicamente mediante el bloque `@for` a partir del catálogo de ejemplos, y cuyo nombre visible se traduce con una clave dinámica. Al cambiar la selección, el componente invoca el método `applyPreset()`, que carga la configuración elegida.
 
@@ -151,7 +151,7 @@ El diseño visual de la aplicación se ha estructurado mediante plantillas HTML,
 
 *Figura 6.15: desplegable de ejemplos generado dinámicamente con `@for` (`controls.html`).*
 
-**Botones.** Se encargan de ejecutar las acciones de la aplicación. Para ello se ha utilizado el sistema de estilos de Bootstrap (`btn`), con variantes de color coherentes con el significado de cada acción: verde para reproducir, ámbar para pausar o rojo para restablecer. Cabe destacar que algunos botones se deshabilitan de forma condicional mediante `[disabled]`; por ejemplo, los parámetros y el botón de reproducir quedan inhabilitados mientras la animación está en marcha, lo que impide interacciones que dejarían el sistema en un estado inconsistente. Por último, el propio botón de modo de visualización cambia de estilo y de texto según el modo activo, ofreciendo retroalimentación visual inmediata.
+**Botones.** Se encargan de ejecutar las acciones de la aplicación. Para ello se ha utilizado el sistema de estilos de Bootstrap (`btn`), con variantes de color coherentes con el significado de cada acción: verde para reproducir, ámbar para pausar o rojo para restablecer. Cabe destacar que algunos botones se deshabilitan de forma condicional mediante `[disabled]`, por ejemplo, los parámetros y el botón de reproducir quedan inhabilitados mientras la animación está en marcha, lo que impide interacciones que dejarían el sistema en un estado inconsistente. Por último, el propio botón de modo de visualización cambia de estilo y de texto según el modo activo, ofreciendo retroalimentación visual inmediata.
 
 ```html
 <button class="btn btn-info btn-sm fw-semibold"
@@ -199,7 +199,7 @@ El diseño visual de la aplicación se ha estructurado mediante plantillas HTML,
 
 *Figura 6.17: sección de parámetros avanzados, plegable con el elemento nativo `details`/`summary` (`controls.html`).*
 
-**Ventanas modales y superposiciones.** Tanto el diálogo de exportación como el tutorial se implementan como superposiciones, mostradas de forma condicional mediante el bloque `@if`. Una capa semitransparente cubre la vista y centra una tarjeta con el contenido; al pulsar fuera de ella o en el botón de cierre, la superposición se oculta. Este mismo mecanismo se emplea también para cerrar el menú del selector de idioma.
+**Ventanas modales y superposiciones.** Tanto el diálogo de exportación como el tutorial se implementan como superposiciones, mostradas de forma condicional mediante el bloque `@if`. Una capa semitransparente cubre la vista y centra una tarjeta con el contenido, al pulsar fuera de ella o en el botón de cierre, la superposición se oculta. Este mismo mecanismo se emplea también para cerrar el menú del selector de idioma.
 
 **Lienzo (`canvas`).** Por último, cabe comentar el lienzo, un componente singular dentro de la interfaz. A diferencia del resto de elementos, no se rellena con marcado declarativo, sino que es p5.js quien crea y gobierna sobre él el dibujo en tiempo real. Se trata, por tanto, del elemento central pero único de la interfaz, directamente ligado a la representación gráfica de la composición.
 
@@ -207,7 +207,7 @@ El diseño visual de la aplicación se ha estructurado mediante plantillas HTML,
 
 Una vez descrita la interfaz, este apartado detalla el comportamiento lógico que hay detrás de cada componente. Se expone componente por componente, comenzando por el servicio que coordina a todos los demás.
 
-#### Servicio central — `PatternService`
+#### Servicio central, `PatternService`
 
 `PatternService` es el núcleo de la aplicación: actúa como única fuente de verdad y centraliza tanto los parámetros del patrón como el historial de trazas y las sesiones de animación. Al ser un servicio compartido, desacopla por completo el panel de control del lienzo, de modo que ninguno de los dos componentes necesita conocer al otro: ambos se comunican exclusivamente a través de él. De esta forma, cualquier cambio en los parámetros o cualquier acción del usuario fluye por un único punto, lo que mantiene el estado coherente y facilita la mantenibilidad y la ampliación del sistema.
 
@@ -227,9 +227,9 @@ dispatch(action: CanvasAction): void {
 }
 ```
 
-*Figura 6.18: puntos de entrada del servicio — `updateParams` (canal `params$`) y `dispatch` (canal `action$`) (`pattern.service.ts`).*
+*Figura 6.18: puntos de entrada del servicio, `updateParams` (canal `params$`) y `dispatch` (canal `action$`) (`pattern.service.ts`).*
 
-**Gestión de sesiones — `beginSession`, `endSession`, `snapshotActiveSession`.** Este conjunto de métodos se encarga de gestionar el ciclo de vida de una sesión de animación, entendida como un bloque que graba los parámetros empleados y el número de fotogramas dibujados. Primero, cada vez que el usuario reproduce, `beginSession()` inicia la grabación. A continuación, mientras la animación avanza, `incrementSessionFrame()` actualiza el contador de fotogramas. Finalmente, al pausar, `endSession()` cierra el bloque y lo añade a la lista de sesiones, registrando además su estado final —los ángulos y el último punto dibujado— para poder retomar el dibujo más adelante. Asimismo, el método `snapshotActiveSession()` devuelve una copia de la sesión en curso, lo que permite exportar la composición aunque la animación no se haya detenido.
+**Gestión de sesiones, `beginSession`, `endSession`, `snapshotActiveSession`.** Este conjunto de métodos se encarga de gestionar el ciclo de vida de una sesión de animación, entendida como un bloque que graba los parámetros empleados y el número de fotogramas dibujados. Primero, cada vez que el usuario reproduce, `beginSession()` inicia la grabación. A continuación, mientras la animación avanza, `incrementSessionFrame()` actualiza el contador de fotogramas. Finalmente, al pausar, `endSession()` cierra el bloque y lo añade a la lista de sesiones, registrando además su estado final, los ángulos y el último punto dibujado, para poder retomar el dibujo más adelante. Asimismo, el método `snapshotActiveSession()` devuelve una copia de la sesión en curso, lo que permite exportar la composición aunque la animación no se haya detenido.
 
 ```ts
 beginSession(params: PatternParams): void {
@@ -261,9 +261,9 @@ endSession(): void {
 }
 ```
 
-*Figura 6.19: ciclo de vida de una sesión de animación — `beginSession`, `incrementSessionFrame` y `endSession` (`pattern.service.ts`).*
+*Figura 6.19: ciclo de vida de una sesión de animación, `beginSession`, `incrementSessionFrame` y `endSession` (`pattern.service.ts`).*
 
-**Deshacer y reconstrucción — `removeLastSession`, `replaySessionsToLines`.** Estas dos funciones implementan el deshacer incremental de la composición. Primero, el método `removeLastSession()` cierra la sesión activa si la hubiera, retira la última de la lista y reconstruye el historial reproduciendo las restantes. Esa reconstrucción la realiza `replaySessionsToLines()`, que recorre cada sesión fotograma a fotograma aplicando la misma fórmula que el lienzo y regenera así la lista completa de segmentos. Cabe destacar que esta segunda función se reutiliza también al importar un patrón, de modo que una única rutina garantiza que tanto deshacer como importar produzcan exactamente el mismo resultado que el dibujo original.
+**Deshacer y reconstrucción, `removeLastSession`, `replaySessionsToLines`.** Estas dos funciones implementan el deshacer incremental de la composición. Primero, el método `removeLastSession()` cierra la sesión activa si la hubiera, retira la última de la lista y reconstruye el historial reproduciendo las restantes. Esa reconstrucción la realiza `replaySessionsToLines()`, que recorre cada sesión fotograma a fotograma aplicando la misma fórmula que el lienzo y regenera así la lista completa de segmentos. Cabe destacar que esta segunda función se reutiliza también al importar un patrón, de modo que una única rutina garantiza que tanto deshacer como importar produzcan exactamente el mismo resultado que el dibujo original.
 
 ```ts
 removeLastSession(): SimulationSession | null {
@@ -295,11 +295,11 @@ replaySessionsToLines(sessions: SimulationSession[]): LineRecord[] {
 }
 ```
 
-*Figura 6.20: deshacer y reconstrucción del dibujo — `removeLastSession` y `replaySessionsToLines` (`pattern.service.ts`). El cálculo trigonométrico interno se ha omitido por brevedad.*
+*Figura 6.20: deshacer y reconstrucción del dibujo, `removeLastSession` y `replaySessionsToLines` (`pattern.service.ts`). El cálculo trigonométrico interno se ha omitido por brevedad.*
 
-#### Lienzo — `Canvas`
+#### Lienzo, `Canvas`
 
-**`initSketch` y el bucle de dibujo (`draw`).** El método `initSketch()` crea una instancia de p5.js en modo instancia, con su propio bucle de dibujo a 60 fotogramas por segundo. Dentro de ese bucle, la función `draw()` constituye el corazón de la aplicación, pues en ella se materializa la generación de la composición epicicloidal a partir de los parámetros (RF1). En cada fotograma, primero calcula la posición de los dos planetas mediante los algoritmos paramétricos; a continuación, traza la nueva línea entre ellos —o, en modo curva, el segmento que une el punto anterior con el actual—; seguidamente dibuja las guías orbitales y los planetas; y, por último, avanza los ángulos para el siguiente fotograma. Si la animación está activa, además registra cada nuevo segmento en el historial del servicio.
+**`initSketch` y el bucle de dibujo (`draw`).** El método `initSketch()` crea una instancia de p5.js en modo instancia, con su propio bucle de dibujo a 60 fotogramas por segundo. Dentro de ese bucle, la función `draw()` constituye el corazón de la aplicación, pues en ella se materializa la generación de la composición epicicloidal a partir de los parámetros (RF1). En cada fotograma, primero calcula la posición de los dos planetas mediante los algoritmos paramétricos, a continuación, traza la nueva línea entre ellos, o, en modo curva, el segmento que une el punto anterior con el actual, seguidamente dibuja las guías orbitales y los planetas, y, por último, avanza los ángulos para el siguiente fotograma. Si la animación está activa, además registra cada nuevo segmento en el historial del servicio.
 
 ```ts
 let x1: number, y1: number, x2: number, y2: number;
@@ -390,7 +390,7 @@ if (this.trailDirty || history.length < this.renderedLineCount) {
 }
 ```
 
-*Figura 6.23: pintado incremental sobre la capa fuera de pantalla `trailLayer` — solo se repintan los segmentos nuevos salvo que `trailDirty` fuerce la reconstrucción (`canvas.ts`).*
+*Figura 6.23: pintado incremental sobre la capa fuera de pantalla `trailLayer`, solo se repintan los segmentos nuevos salvo que `trailDirty` fuerce la reconstrucción (`canvas.ts`).*
 
 **`onAction` y zoom.** El método `onAction()` se encarga de traducir cada acción recibida del servicio en un cambio de estado del lienzo: iniciar o pausar la animación, marcar como pendiente una limpieza o un restablecimiento, o restaurar el estado de dibujo tras un deshacer o una importación. Por su parte, los métodos `zoomIn()` y `zoomOut()` ajustan el factor de zoom dentro de unos límites establecidos y marcan la estela para que se vuelva a rasterizar a la nueva escala, conservando así la nitidez del trazo vectorial al ampliar.
 
@@ -427,9 +427,9 @@ private onAction(action: CanvasAction): void {
 
 *Figura 6.24: `onAction` traduce cada acción recibida del servicio en un cambio de estado del lienzo (`canvas.ts`).*
 
-#### Panel de control — `Controls`
+#### Panel de control, `Controls`
 
-**`onParamChange`, `applyPreset` y `toggleMode`.** Este conjunto de métodos gestiona la interacción del usuario con los parámetros. El método `onParamChange()` se ejecuta cada vez que se modifica un parámetro y envía la nueva configuración al servicio, lo que redibuja el patrón al instante. Por su parte, `applyPreset()` carga un ejemplo predefinido (RF7), fusionando sus valores sobre los valores por defecto para dejar el panel en un estado completo y reproducible. Finalmente, `toggleMode()` permite alternar entre los dos modos de visualización —curva e intersección de líneas— (RF8).
+**`onParamChange`, `applyPreset` y `toggleMode`.** Este conjunto de métodos gestiona la interacción del usuario con los parámetros. El método `onParamChange()` se ejecuta cada vez que se modifica un parámetro y envía la nueva configuración al servicio, lo que redibuja el patrón al instante. Por su parte, `applyPreset()` carga un ejemplo predefinido (RF7), fusionando sus valores sobre los valores por defecto para dejar el panel en un estado completo y reproducible. Finalmente, `toggleMode()` permite alternar entre los dos modos de visualización, curva e intersección de líneas, (RF8).
 
 ```ts
 onParamChange(): void {
@@ -449,7 +449,7 @@ applyPreset(): void {
 
 *Figura 6.25: `onParamChange` (edición manual) y `applyPreset` (carga de un ejemplo) (`controls.ts`).*
 
-**Acciones de animación — `play`, `pause`, `clear`, `reset`.** Estas funciones gobiernan la animación delegando en el servicio. Los métodos `play()` y `pause()` inician y detienen el dibujo (RF4). El método `clear()` implementa el deshacer incremental, retirando la última sesión y restaurando los parámetros previos. Por último, `reset()` reinicia la animación, vacía el lienzo para empezar de cero (RF5) y restablece toda la configuración a sus valores por defecto (RF13). Asimismo, la marca interna `isPlaying` controla el bloqueo de los parámetros mientras la animación está en curso, evitando estados inconsistentes.
+**Acciones de animación, `play`, `pause`, `clear`, `reset`.** Estas funciones gobiernan la animación delegando en el servicio. Los métodos `play()` y `pause()` inician y detienen el dibujo (RF4). El método `clear()` implementa el deshacer incremental, retirando la última sesión y restaurando los parámetros previos. Por último, `reset()` reinicia la animación, vacía el lienzo para empezar de cero (RF5) y restablece toda la configuración a sus valores por defecto (RF13). Asimismo, la marca interna `isPlaying` controla el bloqueo de los parámetros mientras la animación está en curso, evitando estados inconsistentes.
 
 ```ts
 play(): void {
@@ -482,7 +482,7 @@ reset(): void {
 }
 ```
 
-*Figura 6.26: acciones de animación — `play`, `pause`, `clear` (deshacer) y `reset` (`controls.ts`).*
+*Figura 6.26: acciones de animación, `play`, `pause`, `clear` (deshacer) y `reset` (`controls.ts`).*
 
 **`randomize` y `clampParams`.** El método `randomize()` genera una variación aleatoria del patrón (RF12). Para ello, asigna a cada parámetro un valor al azar dentro de su rango válido y respetando su paso, además de un color aleatorio, de modo que el resultado sea siempre reproducible de forma manual por el usuario. Por su parte, `clampParams()` se encarga de la validación de la entrada: tras editar un campo, comprueba cada valor y, si se ha salido del rango permitido o no es numérico, lo ajusta al mínimo o al máximo correspondiente, evitando así configuraciones inválidas (RNF10).
 
@@ -517,7 +517,7 @@ clampParams(): void {
 
 *Figura 6.27: `randomize` (variación aleatoria dentro de rango, RF12) y `clampParams` (validación de entrada, RNF10) (`controls.ts`).*
 
-**Exportación e importación de patrones — `exportJson`, `triggerImport`, `onFileSelected`.** Estas funciones permiten guardar y recuperar composiciones sin necesidad de una base de datos (RF7). El método `exportJson()` serializa las sesiones grabadas —incluida la activa, si la hubiera— en un archivo JSON descargable. Para la importación, `triggerImport()` abre el selector de archivos del navegador y, una vez elegido uno, `onFileSelected()` lo lee y valida su estructura. Si el archivo es correcto, reconstruye el dibujo mediante `replaySessionsToLines()` y restaura los parámetros del patrón; en caso contrario, la importación se descarta de forma silenciosa para no interrumpir la experiencia del usuario.
+**Exportación e importación de patrones, `exportJson`, `triggerImport`, `onFileSelected`.** Estas funciones permiten guardar y recuperar composiciones sin necesidad de una base de datos (RF7). El método `exportJson()` serializa las sesiones grabadas, incluida la activa, si la hubiera, en un archivo JSON descargable. Para la importación, `triggerImport()` abre el selector de archivos del navegador y, una vez elegido uno, `onFileSelected()` lo lee y valida su estructura. Si el archivo es correcto, reconstruye el dibujo mediante `replaySessionsToLines()` y restaura los parámetros del patrón, en caso contrario, la importación se descarta de forma silenciosa para no interrumpir la experiencia del usuario.
 
 ```ts
 exportJson(): void {
@@ -551,9 +551,9 @@ private onFileSelected(event: Event): void {
 
 *Figura 6.28: exportación (`exportJson`) e importación con validación (`onFileSelected`) de composiciones en formato JSON (`controls.ts`).*
 
-#### Diálogo de exportación — `ExportModal`
+#### Diálogo de exportación, `ExportModal`
 
-**`buildExportCanvas`, `renderPreview`, `save`.** Este conjunto de métodos se encarga de generar la imagen final de la composición (RF6). El método `buildExportCanvas()` construye, sobre un lienzo auxiliar en memoria, la imagen de exportación: primero pinta el fondo —o lo deja transparente—, a continuación dibuja todas las líneas del historial a calidad vectorial y, opcionalmente, añade las guías orbitales y el punto central, aplicando el zoom y el factor de resolución elegidos. Por su parte, `renderPreview()` reutiliza ese mismo lienzo para mostrar una previsualización escalada, y se vuelve a invocar cada vez que el usuario cambia una opción, de modo que la vista previa refleje siempre el resultado real. Finalmente, el método `save()` genera la imagen a partir del lienzo de exportación y la descarga como archivo PNG.
+**`buildExportCanvas`, `renderPreview`, `save`.** Este conjunto de métodos se encarga de generar la imagen final de la composición (RF6). El método `buildExportCanvas()` construye, sobre un lienzo auxiliar en memoria, la imagen de exportación: primero pinta el fondo, o lo deja transparente, a continuación dibuja todas las líneas del historial a calidad vectorial y, opcionalmente, añade las guías orbitales y el punto central, aplicando el zoom y el factor de resolución elegidos. Por su parte, `renderPreview()` reutiliza ese mismo lienzo para mostrar una previsualización escalada, y se vuelve a invocar cada vez que el usuario cambia una opción, de modo que la vista previa refleje siempre el resultado real. Finalmente, el método `save()` genera la imagen a partir del lienzo de exportación y la descarga como archivo PNG.
 
 ```ts
 private buildExportCanvas(): HTMLCanvasElement {
@@ -602,7 +602,7 @@ save(): void {
 
 *Figura 6.30: `save` genera la imagen final y la descarga como archivo PNG (`export-modal.ts`).*
 
-#### Internacionalización — `I18nService` y `TranslatePipe`
+#### Internacionalización, `I18nService` y `TranslatePipe`
 
 El soporte multilingüe (RF14) se ha resuelto mediante un sistema de internacionalización propio que funciona en tiempo de ejecución. El servicio `I18nService` mantiene el idioma activo en una señal reactiva y ofrece los métodos `setLang()`, que cambia y persiste el idioma, y `translate()`, que resuelve una clave de texto al idioma actual. Asimismo, el método `detectInitialLang()` se encarga de elegir el idioma al arrancar la aplicación, tomando primero la preferencia guardada del usuario y, en su defecto, el idioma del navegador. Los textos se almacenan en diccionarios JSON anidados, uno por idioma. Por último, cabe destacar que el `TranslatePipe` (empleado en las plantillas como `| t`) es un pipe impuro a propósito: al reevaluarse en cada ciclo de detección de cambios, consigue que al cambiar de idioma toda la interfaz se traduzca de forma instantánea, sin necesidad de recargar la página.
 
@@ -632,7 +632,7 @@ private detectInitialLang(): Lang {
 }
 ```
 
-*Figura 6.31: `I18nService` — cambio de idioma (`setLang`), resolución de claves (`translate`) y detección inicial (`detectInitialLang`) (`i18n.service.ts`).*
+*Figura 6.31: `I18nService`, cambio de idioma (`setLang`), resolución de claves (`translate`) y detección inicial (`detectInitialLang`) (`i18n.service.ts`).*
 
 ```ts
 @Pipe({ name: 't', standalone: true, pure: false })
@@ -653,7 +653,7 @@ A diferencia de una aplicación que se apoya en servicios externos como una base
 
 **Persistencia local con `localStorage`.** Las preferencias que deben sobrevivir entre visitas se guardan en el **almacenamiento local del navegador**: el idioma elegido, que `I18nService` recupera al arrancar, y la marca «No volver a mostrar» del tutorial, que evita que la ventana de bienvenida reaparezca. Es un almacenamiento sencillo, sin sesión ni servidor, suficiente para el alcance de la aplicación.
 
-**Entrada y salida de composiciones (JSON).** En lugar de almacenar las composiciones en una base de datos remota, la aplicación permite **exportarlas e importarlas como archivos JSON**. Al exportar, las sesiones se serializan en un archivo que el usuario descarga; al importar, ese archivo se valida y se reconstruye fielmente el dibujo. Este enfoque otorga al usuario el control total de sus creaciones —puede guardarlas, archivarlas o compartirlas— sin necesidad de registro ni de infraestructura de servidor.
+**Entrada y salida de composiciones (JSON).** En lugar de almacenar las composiciones en una base de datos remota, la aplicación permite **exportarlas e importarlas como archivos JSON**. Al exportar, las sesiones se serializan en un archivo que el usuario descarga, al importar, ese archivo se valida y se reconstruye fielmente el dibujo. Este enfoque otorga al usuario el control total de sus creaciones, puede guardarlas, archivarlas o compartirlas, sin necesidad de registro ni de infraestructura de servidor.
 
 **Exportación de imágenes (PNG).** La composición puede guardarse también como imagen PNG mediante el diálogo de exportación. La imagen se genera en el navegador, a resolución configurable y con calidad vectorial, y se descarga directamente.
 
