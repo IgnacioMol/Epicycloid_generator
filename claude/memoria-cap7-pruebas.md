@@ -1,3 +1,37 @@
+<!--
+INDICACIÓN PARA OTRO CLAUDE (esto no forma parte de la memoria, no se entrega al tribunal).
+
+Para rellenar las características de hardware del apartado 7.2.1 con los datos REALES del
+equipo del usuario, ejecutar estos comandos de PowerShell (Windows) y usar su salida tal cual:
+
+  # CPU (nombre, núcleos, hilos)
+  Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors
+  # RAM en GB
+  [math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory/1GB, 1)
+  # GPU (omitir monitores o adaptadores virtuales, p. ej. "Meta Virtual Monitor")
+  Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name
+  # Sistema operativo
+  Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version
+
+ANTES de rellenar el campo "Navegador / SO", PREGUNTAR SIEMPRE al usuario en qué navegador
+realizará las pruebas (Google Chrome, Microsoft Edge, Opera, Mozilla Firefox, etc.).
+Una vez sepas cuál, obtener la versión de ESE navegador con el comando que corresponda:
+
+  # Chrome
+  (Get-Item "$env:ProgramFiles\Google\Chrome\Application\chrome.exe").VersionInfo.ProductVersion
+  # Edge
+  (Get-Item "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe").VersionInfo.ProductVersion
+  # Firefox
+  (Get-Item "$env:ProgramFiles\Mozilla Firefox\firefox.exe").VersionInfo.ProductVersion
+  # Opera
+  (Get-Item "$env:LOCALAPPDATA\Programs\Opera\opera.exe").VersionInfo.ProductVersion
+
+En Linux o macOS usar los equivalentes (lscpu, free -h, lspci | grep VGA, uname -a, o
+system_profiler SPHardwareDataType en macOS).
+
+Recordatorio de estilo de la memoria: no usar rayas ni puntos y coma en la prosa.
+-->
+
 # Capítulo 7: Pruebas y resultados
 
 > Borrador del capítulo de pruebas de la memoria del TFG *Epicycloid Generator*.
@@ -206,7 +240,7 @@ Para la monitorización se han utilizado las **herramientas para desarrolladores
 
 A continuación se presentan las principales características de los dos equipos empleados en las pruebas, para tenerlas en cuenta a la hora de comparar los resultados.
 
-> **⚠️ Sustituir por las características reales de los equipos del alumno.**
+> **⚠️ El Equipo 2 contiene las características reales del equipo de desarrollo. El Equipo 1 (gama media) queda como plantilla, completar con un segundo dispositivo o eliminarlo si las pruebas se realizan en un solo equipo.**
 
 **Equipo 1 (gama media).**
 
@@ -217,10 +251,10 @@ A continuación se presentan las principales características de los dos equipos
 
 **Equipo 2 (gama alta).**
 
-- **CPU:** *[p. ej. Intel Core i7 / AMD Ryzen de sobremesa]*
-- **GPU:** *[gráfica dedicada]*
-- **RAM:** *[p. ej. 16 GB]*
-- **Navegador / SO:** *[p. ej. Google Chrome sobre Windows 11]*
+- **CPU:** Intel Core i7-12700H (14 núcleos, 20 hilos)
+- **GPU:** Intel Iris Xe Graphics (integrada) y NVIDIA GeForce RTX 4060 Laptop GPU (dedicada)
+- **RAM:** 16 GB
+- **Navegador / SO:** Google Chrome 149 sobre Windows 11 Home (build 26200)
 
 Dado que *Epicycloid Generator* es una aplicación ligera que se ejecuta en el navegador y no realiza cálculos masivos ni renderizado 3D, no es especialmente exigente a nivel de hardware. La diferencia de potencia entre ambos equipos se aprecia, sobre todo, en la capacidad de mantener la tasa de 60 fps cuando el número de líneas acumuladas es muy elevado.
 
