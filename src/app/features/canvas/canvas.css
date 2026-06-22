@@ -13,6 +13,9 @@
 .canvas-host {
   width: 100%;
   height: 100%;
+  /* Evita que el navegador interprete gestos tactiles sobre el lienzo
+     (scroll/zoom de pagina) en movil; los gestos quedan para el canvas. */
+  touch-action: none;
 }
 
 .zoom-controls {
@@ -48,4 +51,13 @@
 
 .zoom-btn:active {
   background: rgba(80, 80, 140, 0.95);
+}
+
+/* En movil agrandamos los botones de zoom para que sean comodos al tacto. */
+@media (max-width: 820px) and (orientation: portrait) {
+  .zoom-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
 }
