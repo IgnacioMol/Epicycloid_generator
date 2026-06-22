@@ -29,7 +29,11 @@
       "Bash(sed -i '1s/^# Capítulo \\\\\\([0-9]\\\\\\), /# Capítulo \\\\1: /' claude/memoria-cap4-analisis.md claude/memoria-cap5-diseno.md claude/memoria-cap6-implementacion.md claude/memoria-cap7-pruebas.md)",
       "Bash(sed -i 's/^\\\\\\(## A\\\\.[0-9]\\\\. Figura 5\\\\.[0-9]\\\\\\), Función/\\\\1: Función/' claude/memoria-cap5-diseno.md)",
       "Bash(awk 'END{print NR}' claude/memoria-cap7-pruebas.md)",
-      "Bash(node -e \"const t=require\\('fs'\\).readFileSync\\('claude/memoria-cap7-pruebas.md','utf8'\\); const m=t.match\\(/[—–;]/g\\)||[]; console.log\\('rayas/punto y coma en cap7:', m.length\\);\")"
+      "Bash(node -e \"const t=require\\('fs'\\).readFileSync\\('claude/memoria-cap7-pruebas.md','utf8'\\); const m=t.match\\(/[—–;]/g\\)||[]; console.log\\('rayas/punto y coma en cap7:', m.length\\);\")",
+      "Bash(git commit -q -m ' *)",
+      "Bash(git reset *)",
+      "Bash(git restore *)",
+      "Bash(git branch *)"
     ]
   }
 }

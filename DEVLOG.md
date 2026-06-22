@@ -4,6 +4,23 @@ Registro cronológico de sesiones de trabajo y cambios relevantes del proyecto.
 
 ---
 
+## 2026-06-22 (sesión 10) — Comportamiento de parámetros y experimentos de móvil / edición en vivo
+
+### Análisis
+- Se confirmó **en el código** que los parámetros de la composición **se bloquean durante la ejecución**: la zona de controles va envuelta en `[class.params-locked]="isPlaying"` (que aplica `pointer-events: none` y opacidad), más un banner 🔒. El modelo real es editar en pausa y aplicar al reanudar, **no** edición "en tiempo real".
+
+### Cambios en la memoria
+- **`claude/memoria-cap7-pruebas.md`**: corregida la ficha **PF3**, que describía erróneamente una modificación "en tiempo real" durante la animación. Ahora refleja el comportamiento real (edición con la simulación en pausa, aplicación al reanudar sin recargar, bloqueo de controles durante la ejecución). Ajustado también el título del Cuadro 7.3.
+
+### Ramas de experimento (fuera de `main`, sin fusionar)
+- **`experimento/movil-responsive`** *(se conserva)*: layout responsive para teléfono. Media query que pasa a columna en pantallas estrechas en vertical (lienzo arriba a 52vh, controles debajo con scroll), `touch-action: none` en el lienzo y botones de zoom más grandes al tacto. Solo CSS, sin tocar la lógica del sketch p5.
+- **`experimento/parametros-en-vivo`** *(creada y luego eliminada)*: prueba de quitar el bloqueo para editar parámetros en marcha. Sirvió para valorar el efecto (al cambiar radios o velocidades a media animación aparece un salto geométrico en el trazado, que es justo lo que el bloqueo evita).
+
+### Estado al cierre
+- `main` intacta (los cambios de la memoria quedan en el árbol de trabajo, sin commitear). Pendiente menor: el nombre del requisito **RF2** sigue diciendo "Modificación de parámetros en tiempo real" en la tabla de trazabilidad del cap. 7, conviene alinearlo con el comportamiento real.
+
+---
+
 ## 2026-06-20 (sesión 9) — Redacción del Capítulo 7 (Pruebas y resultados) de la memoria
 
 ### Objetivo

@@ -46,14 +46,14 @@ Para cada funcionalidad se ha definido una ficha de prueba que detalla el escena
 | **Resultado esperado** | El sistema cambia el modo de trazado y representa el patrón según el modo seleccionado, sin recargar la página. |
 | **Resultado obtenido** | El cambio de modo se aplicó de forma inmediata, el lienzo pasó a representar el patrón en el modo elegido. |
 
-*Cuadro 7.3: Prueba funcional 3: Modificación de parámetros en tiempo real*
+*Cuadro 7.3: Prueba funcional 3: Modificación de parámetros entre ejecuciones*
 
-| **Prueba funcional** | PF3: El usuario modificará los parámetros del patrón (radios, velocidades, fases, color, grosor, etc.) y verá reflejado el cambio sin recargar. |
+| **Prueba funcional** | PF3: El usuario modificará los parámetros del patrón (radios, velocidades, fases, color, grosor, etc.) con la simulación en pausa y comprobará que, al reanudar, el cambio se aplica sin recargar la aplicación. |
 |---|---|
 | **Requisito cumplido** | RF2, RF3 |
-| **Prueba realizada** | Durante la animación se modificaron varios parámetros desde el panel de control. |
-| **Resultado esperado** | La representación gráfica se actualiza dinámicamente conforme se cambian los valores, sin necesidad de recargar la página. |
-| **Resultado obtenido** | Los cambios se reflejaron inmediatamente en el trazado, la aplicación reaccionó en tiempo real a cada modificación. |
+| **Prueba realizada** | Con la simulación en pausa se modificaron varios parámetros desde el panel de control y a continuación se reanudó la animación. Se comprobó además que, mientras la simulación está en marcha, los controles permanecen bloqueados. |
+| **Resultado esperado** | Los parámetros solo pueden editarse con la simulación en pausa. Al reanudar, la representación gráfica incorpora los nuevos valores sin necesidad de recargar la página. Durante la ejecución los controles se muestran deshabilitados. |
+| **Resultado obtenido** | Los cambios realizados en pausa se aplicaron al reanudar sin recargar la aplicación. Durante la animación los controles quedaron bloqueados con un aviso visual, tal como se esperaba. |
 
 *Cuadro 7.4: Prueba funcional 4: Visualización de los valores actuales*
 
