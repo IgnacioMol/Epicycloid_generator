@@ -26,7 +26,7 @@ Esta ausencia de soluciones específicas pone de manifiesto una oportunidad tant
 
 De forma complementaria, otra de las motivaciones fundamentales de este trabajo radica en la necesidad de adquirir competencias en el uso de tecnologías ampliamente demandadas en el ámbito profesional del desarrollo web. En particular, el framework Angular representa una de las soluciones más consolidadas para la construcción de aplicaciones frontend de gran escala, caracterizándose por su enfoque estructurado, su arquitectura basada en componentes y su integración con el lenguaje TypeScript. Partiendo de un conocimiento inicial limitado sobre esta tecnología, el desarrollo de la aplicación se plantea como una oportunidad para abordar un proceso de aprendizaje progresivo, aplicado a un caso práctico real. 
 
-En este contexto, el trabajo no solo responde a una inquietud técnica relacionada con la generación de contenido visual, sino también a un objetivo formativo orientado a la adquisición de competencias en desarrollo web moderno. La combinación de ambos factores, la exploración de modelos matemáticos aplicados al arte generativo y el aprendizaje de un framework consolidado, configura una motivación sólida que justifica el desarrollo de la propuesta planteada. 
+En este contexto, el trabajo no solo responde a una inquietud técnica relacionada con la generación de contenido visual, sino también a un objetivo formativo orientado a la adquisición de competencias en desarrollo web moderno. La combinación de ambos factores —la exploración de modelos matemáticos aplicados al arte generativo y el aprendizaje de un framework consolidado— configura una motivación sólida que justifica el desarrollo de la propuesta planteada. 
 
 ## 1.3. Objetivos 
 
@@ -400,7 +400,7 @@ Se han establecido los siguientes requisitos funcionales y no funcionales que ha
 
 - **RF1** La aplicación web deberá permitir la generación de composiciones visuales basadas en curvas epicicloidales mediante algoritmos matemáticos parametrizables. 
 
-- **RF2** El usuario deberá poder modificar en tiempo real los parámetros que definen los patrones (radios, velocidades angulares, número de ciclos, fase, color, grosor de trazo, etc.). 
+- **RF2** El usuario deberá poder modificar entre ejecuciones los parámetros que definen los patrones (radios, velocidades angulares, número de ciclos, fase, color, grosor de trazo, etc.). 
 
 - **RF3** El sistema deberá actualizar dinámicamente la representación gráfica sin necesidad de recargar la página al modificarse los parámetros. 
 
@@ -692,11 +692,11 @@ En este proyecto se consideran tres perfiles profesionales:
 
 - Tester: encargado de la realización de pruebas funcionales, pruebas de compatibilidad y validación de requisitos. 
 
-Para el **Jefe de Proyecto** se considera un salario bruto anual de **45.000 €**, valor habitual para perfiles con experiencia en gestión de proyectos software. 
+Para el **Jefe de Proyecto** se considera un salario bruto anual de **45.000 €** , valor habitual para perfiles con experiencia en gestión de proyectos software. 
 
-Para el **Ingeniero Multimedia** se considera un salario bruto anual de **37.000 €**, correspondiente a un desarrollador web junior o de nivel intermedio especializado en tecnologías frontend modernas. 
+Para el **Ingeniero Multimedia** se considera un salario bruto anual de **37.000 €** , correspondiente a un desarrollador web junior o de nivel intermedio especializado en tecnologías frontend modernas. 
 
-Finalmente, para el perfil de **Tester** se considera un salario bruto anual de **38.000 €**, valor representativo para perfiles de aseguramiento de calidad en proyectos software. 
+Finalmente, para el perfil de **Tester** se considera un salario bruto anual de **38.000 €** , valor representativo para perfiles de aseguramiento de calidad en proyectos software. 
 
 Teniendo en cuenta las horas estimadas durante la planificación temporal del proyecto, se obtiene la estimación mostrada en la Tabla X. 
 
@@ -752,7 +752,7 @@ Finalmente, la estimación económica total del proyecto se resume en la Tabla X
 
 
 
-Por tanto, el coste total estimado para el desarrollo profesional de la aplicación asciende a **10.087,76 €**, incluyendo los costes de personal, la amortización de los equipos utilizados y los gastos indirectos asociados al desarrollo del proyecto. 
+Por tanto, el coste total estimado para el desarrollo profesional de la aplicación asciende a **10.087,76 €** , incluyendo los costes de personal, la amortización de los equipos utilizados y los gastos indirectos asociados al desarrollo del proyecto. 
 
 ## 3.4. Riesgos 
 
@@ -799,7 +799,7 @@ impacto estimado, el nivel de riesgo calculado y su correspondiente categoría s
 
 
 
-Si se identifica algún riesgo de nivel inaceptable la prioridad es solucionarlo, para ello, es imprescindible implementar medidas de mitigación para reducirlo. 
+Si se identifica algún riesgo de nivel inaceptable la prioridad es solucionarlo; para ello, es imprescindible implementar medidas de mitigación para reducirlo. 
 
 ## **Riesgo 1: Problemas de integración entre Angular y p5.js** 
 
@@ -959,7 +959,7 @@ A diferencia de otras aplicaciones web, Epicycloid Generator se ejecuta íntegra
 
 Esta herramienta se emplea principalmente durante las etapas de análisis y diseño de un sistema, ya que ayuda a organizar y comprender mejor su funcionamiento. El diagrama de casos de uso es una representación gráfica que muestra cómo los usuarios interactúan con el sistema, identificando las distintas funcionalidades que pueden ejecutar. 
 
-En el caso de Epicycloid Generator existe un único actor, denominado **Usuario**, que interactúa con la aplicación web para generar composiciones visuales basadas en patrones orbitales paramétricos. 
+En el caso de Epicycloid Generator existe un único actor, denominado **Usuario** , que interactúa con la aplicación web para generar composiciones visuales basadas en patrones orbitales paramétricos. 
 
 Las principales acciones que puede realizar el usuario son las siguientes: 
 
@@ -1001,9 +1001,9 @@ Los flujos de eventos permiten describir el comportamiento de cada caso de uso, 
 
 Se distinguen dos tipos de flujo: 
 
-- **Flujo principal**, que representa el comportamiento habitual esperado durante la ejecución del caso de uso. 
+- **Flujo principal** , que representa el comportamiento habitual esperado durante la ejecución del caso de uso. 
 
-- **Flujos alternativos**, que describen situaciones excepcionales o comportamientos diferentes al flujo principal. 
+- **Flujos alternativos** , que describen situaciones excepcionales o comportamientos diferentes al flujo principal. 
 
 A continuación, se presentan las tablas correspondientes a cada uno de los casos de uso identificados. 
 
@@ -1011,14 +1011,14 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU1, Configurar parámetros|
+|**ID del caso de uso**|CU1 — Configurar parámetros|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario ajusta los parámetros matemáticos y visuales de la<br>composición (radios, velocidades, fases, factores elípticos,<br>inclinación, color, opacidad, grosor e intervalo).|
 |**Requisitos cumplidos**|RF2, RF9, RF10|
 |**Precondiciones**|La animación está pausada.|
 |**Flujo de eventos**|1. El usuario abre uno de los grupos de parámetros (Órbita 1, Órbita<br>2, Visual, Avanzados). 2. El usuario modifica el valor de un control.<br>3. El sistema registra el nuevo valor y lo refleja inmediatamente en<br>la vista.|
 |**Postcondiciones**|Los parámetros activos quedan actualizados y reflejados en el<br>lienzo.|
-|**Flujo alternativo**|2a. Si la animación está en curso, los controles no están disponibles, <br>el usuario debe pausar antes de poder modificar parámetros. 2b. Si<br>el usuario introduce un valor fuera del rango permitido, el sistema<br>lo ajusta automáticamente al límite más cercano (mínimo o<br>máximo).|
+|**Flujo alternativo**|2a. Si la animación está en curso, los controles no están disponibles;<br>el usuario debe pausar antes de poder modificar parámetros. 2b. Si<br>el usuario introduce un valor fuera del rango permitido, el sistema<br>lo ajusta automáticamente al límite más cercano (mínimo o<br>máximo).|
 
 
 
@@ -1026,9 +1026,9 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU2, Reproducir animación|
+|**ID del caso de uso**|CU2 — Reproducir animación|
 |**Actor principal**|Usuario|
-|**Descripción**|El usuario inicia la animación, el sistema comienza a acumular<br>trazas según los parámetros activos.|
+|**Descripción**|El usuario inicia la animación; el sistema comienza a acumular<br>trazas según los parámetros activos.|
 |**Requisitos cumplidos**|RF1, RF3, RF4|
 |**Precondiciones**|Existen parámetros válidos (siempre los hay, por defecto).|
 |**Flujo de eventos**|1. El usuario pulsa “Play”. 2. El sistema anima la geometría y va<br>añadiendo las trazas resultantes al lienzo. 3. Los controles se<br>bloquean mientras la animación está activa.|
@@ -1040,7 +1040,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU3, Pausar animación|
+|**ID del caso de uso**|CU3 — Pausar animación|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario detiene la animación en curso.|
 |**Requisitos cumplidos**|RF4|
@@ -1054,7 +1054,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU4, Alternar modo de visualización|
+|**ID del caso de uso**|CU4 — Alternar modo de visualización|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario cambia entre el modo “intersección de líneas” y el modo|
 
@@ -1073,13 +1073,13 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU5, Deshacer última sesión|
+|**ID del caso de uso**|CU5 — Deshacer última sesión|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario elimina la última sesión (bloque de animación) dibujada.<br>Cada pulsación sucesiva retira un bloque más, sin afectar al resto de<br>la composición.|
 |**Requisitos cumplidos**|RF5|
 |**Precondiciones**|Existe al menos una sesión dibujada o una en curso.|
 |**Flujo de eventos**|1. El usuario solicita deshacer la última sesión. 2. Si hay una<br>animación en curso, el sistema la detiene y la toma como la sesión a<br>eliminar. 3. El sistema elimina la última sesión y reconstruye el<br>dibujo con las sesiones restantes. 4. El sistema restaura los<br>parámetros al estado previo a esa sesión (los de la sesión anterior<br>que permanece en el lienzo).|
-|**Postcondiciones**|La última sesión desaparece del lienzo, las anteriores se conservan<br>y los parámetros reflejan el estado previo a la sesión eliminada.|
+|**Postcondiciones**|La última sesión desaparece del lienzo; las anteriores se conservan<br>y los parámetros reflejan el estado previo a la sesión eliminada.|
 
 
 
@@ -1087,7 +1087,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU6, Restablecer parámetros|
+|**ID del caso de uso**|CU6 — Restablecer parámetros|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario restaura todos los parámetros a sus valores por defecto.|
 |**Requisitos cumplidos**|RF4, RF13|
@@ -1105,13 +1105,13 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU7, Ajustar zoom|
+|**ID del caso de uso**|CU7 — Ajustar zoom|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario acerca o aleja la vista del lienzo.|
 |**Requisitos cumplidos**|RF11|
 |**Precondiciones**|Ninguna.|
 |**Flujo de eventos**|1. El usuario usa la rueda del ratón sobre el lienzo o los botones<br>＋/−. 2. El sistema acerca o aleja la vista dentro del rango<br>permitido.|
-|**Postcondiciones**|La vista se reescala, la composición no se altera.|
+|**Postcondiciones**|La vista se reescala; la composición no se altera.|
 
 
 
@@ -1119,7 +1119,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU8, Exportar imagen|
+|**ID del caso de uso**|CU8 — Exportar imagen|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario guarda la composición actual como una<br>imagen.**Incluye**”Configurar opciones de exportación”.|
 |**Requisitos cumplidos**|RF6|
@@ -1133,7 +1133,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU9, Exportar patrón|
+|**ID del caso de uso**|CU9 — Exportar patrón|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario guarda el estado completo del dibujo en un archivo, para<br>poder recuperarlo más adelante.|
 |**Requisitos cumplidos**|RF7|
@@ -1147,7 +1147,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU10, Importar patrón|
+|**ID del caso de uso**|CU10 — Importar patrón|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario carga un archivo de patrón previamente exportado y<br>recupera el dibujo.**Incluye**”Reconstruir el dibujo”.|
 |**Requisitos cumplidos**|RF7|
@@ -1162,7 +1162,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU11, Consultar tutorial|
+|**ID del caso de uso**|CU11—Consultar tutorial|
 
 
 
@@ -1181,14 +1181,14 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU12, Generar variación aleatoria|
+|**ID del caso de uso**|CU12 — Generar variación aleatoria|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario solicita generar una composición “única” asignando de<br>forma automática valores aleatorios al conjunto de parámetros que<br>definen el patrón, conservando el modo de visualización elegido.|
 |**Requisitos cumplidos**|RF12|
 |**Precondiciones**|La animación está pausada.|
 |**Flujo de eventos**|1. El usuario solicita aleatorizar los parámetros. 2. El sistema asigna<br>a cada parámetro un valor aleatorio comprendido dentro de su rango<br>permitido (variación_controlada_). 3. El sistema refleja<br>inmediatamente la nueva configuración en la vista.|
 |**Postcondiciones**|Los parámetros quedan actualizados con valores aleatorios válidos,<br>listos para reproducirse.|
-|**Flujo alternativo**|1a. Si la animación está en curso, la acción no está disponible, el<br>usuario debe pausar antes de generar una variación.|
+|**Flujo alternativo**|1a. Si la animación está en curso, la acción no está disponible; el<br>usuario debe pausar antes de generar una variación.|
 
 
 
@@ -1196,7 +1196,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU13, Cambiar idioma|
+|**ID del caso de uso**|CU13 — Cambiar idioma|
 
 
 
@@ -1207,7 +1207,7 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 |**Precondiciones**|Ninguna.|
 |**Flujo de eventos**|1. El usuario abre el selector de idioma. 2. El usuario elige uno de<br>los idiomas disponibles. 3. El sistema actualiza inmediatamente<br>todos los textos de la interfaz al idioma seleccionado y conserva la<br>preferencia para futuras visitas.|
 |**Postcondiciones**|La interfaz se muestra en el idioma elegido, que queda recordado.|
-|**Flujo alternativo**|1a.**Detección automática:**en el primer acceso, antes de cualquier<br>elección manual, el sistema determina el idioma a partir de la<br>configuración del navegador del usuario y muestra la interfaz en ese<br>idioma, si el idioma del navegador no está disponible, utiliza el<br>idioma predeterminado (inglés).|
+|**Flujo alternativo**|1a.**Detección automática:**en el primer acceso, antes de cualquier<br>elección manual, el sistema determina el idioma a partir de la<br>configuración del navegador del usuario y muestra la interfaz en ese<br>idioma; si el idioma del navegador no está disponible, utiliza el<br>idioma predeterminado (inglés).|
 
 
 
@@ -1215,14 +1215,14 @@ A continuación, se presentan las tablas correspondientes a cada uno de los caso
 
 |**Campo**|**Contenido**|
 |---|---|
-|**ID del caso de uso**|CU14, Aplicar ejemplo predefinido|
+|**ID del caso de uso**|CU14 — Aplicar ejemplo predefinido|
 |**Actor principal**|Usuario|
 |**Descripción**|El usuario selecciona uno de los ejemplos de patrones predefinidos<br>que ofrece la aplicación y el sistema ajusta automáticamente todos<br>los parámetros a esa configuración, dejando la composición lista<br>para reproducirse.|
 |**Requisitos cumplidos**|RF7|
 |**Precondiciones**|Ninguna. La animación no debe estar en curso.|
 |**Flujo de eventos**|1. El usuario abre el desplegable de ejemplos. 2. El usuario elige<br>uno de los ejemplos disponibles. 3. El sistema ajusta todos los<br>parámetros del panel a la configuración guardada del ejemplo. 4. El<br>usuario pulsa “Play” y el sistema dibuja el patrón correspondiente.|
 |**Postcondiciones**|Los parámetros del panel reflejan el ejemplo elegido y la<br>composición se genera al reproducir.|
-|**Flujo alternativo**|2a.**Lienzo en blanco:**el desplegable parte de una opción vacía, si<br>el usuario la mantiene o la vuelve a elegir, el sistema restablece los<br>parámetros por defecto. 3a. Si la animación está en curso, la acción<br>no está disponible, el usuario debe pausar antes de aplicar un<br>ejemplo. 4a. Si tras aplicar el ejemplo el usuario modifica|
+|**Flujo alternativo**|2a.**Lienzo en blanco:**el desplegable parte de una opción vacía; si<br>el usuario la mantiene o la vuelve a elegir, el sistema restablece los<br>parámetros por defecto. 3a. Si la animación está en curso, la acción<br>no está disponible; el usuario debe pausar antes de aplicar un<br>ejemplo. 4a. Si tras aplicar el ejemplo el usuario modifica|
 
 
 
@@ -1240,7 +1240,35 @@ El diagrama conceptual mostrado a continuación representa dichas relaciones des
 
 ## 4.3. Diagramas de secuencia del sistema 
 
-En esta sección se presentan los diagramas de secuencia del sistema, que representan de forma ordenada cómo se desarrolla la interacción entre el usuario y la aplicación a lo largo del tiempo. Se incluye un diagrama por cada uno de los casos de uso descritos anteriormente (CU1 a CU14), de modo que toda funcionalidad analizada queda reflejada también desde el punto de vista de su flujo de ejecución. 
+En esta sección se presentan los diagramas de secuencia del sistema, que representan de forma ordenada cómo se desarrolla la interacción entre el usuario y la aplicación. Se incluye un diagrama por cada uno de los casos de uso descritos anteriormente (CU1– CU14), de modo que toda funcionalidad analizada queda reflejada también desde el punto de vista de su flujo de ejecución. 
+
+_Ilustración Análisis‑1 CU1: Configurar parámetros_ 
+
+_Ilustración Análisis‑2 CU2: Reproducir animación_ 
+
+_Ilustración Análisis‑3 CU3: Pausar animación_ 
+
+_Ilustración Análisis‑4 CU4: Alternar modo de visualización_ 
+
+_Ilustración Análisis‑5 CU5: Deshacer última sesión_ 
+
+_Ilustración Análisis‑6 CU6: Restablecer parámetros_ 
+
+_Ilustración Análisis‑7 CU7: Ajustar zoom_ 
+
+_Ilustración Análisis‑8 CU8: Exportar imagen_ 
+
+_Ilustración Análisis‑9 CU9: Exportar patrón_ 
+
+_Ilustración Análisis‑10 CU10: Importar patrón_ 
+
+_Ilustración Análisis‑11 CU11: Consultar tutorial_ 
+
+_Ilustración Análisis‑12 CU12: Generar variación aleatoria_ 
+
+_Ilustración Análisis‑13 CU13: Cambiar idioma_ 
+
+_Ilustración Análisis‑6 CU: Aplicar ejemplo predefinido_ 
 
 ## 4.4. Trazabilidad entre requisitos funcionales y casos de uso 
 
@@ -1248,16 +1276,16 @@ La siguiente tabla establece la relación de trazabilidad entre los requisitos f
 
 |**Requisito**|**Descripción**|**Casos de uso relacionados**|
 |---|---|---|
-|RF1|Generación de<br>composiciones epicicloidales|CU2|
-
-
-
-||mediante algoritmos<br>parametrizables||
-|---|---|---|
+|RF1|Generación de<br>composiciones epicicloidales<br>mediante algoritmos<br>parametrizables|CU2|
 |RF2|Modificar en tiempo real los<br>parámetros que definen los<br>patrones|CU1|
 |RF3|Actualizar dinámicamente la<br>representación gráfica sin<br>recargar la página|CU1, CU2|
 |RF4|Iniciar, pausar y reiniciar la<br>animación|CU2, CU3, CU6|
-|RF5|Limpiar el lienzo y generar<br>una nueva composición<br>desde cero (mediante el<br>deshacer incremental de<br>sesiones)|CU5|
+|RF5|Limpiar el lienzo y generar<br>una nueva composición<br>desde cero (mediante el|CU5|
+
+
+
+||deshacer incremental de<br>sesiones)||
+|---|---|---|
 |RF6|Guardar la composición<br>como imagen|CU8|
 |RF7|Almacenar configuraciones<br>de parámetros predefinidas y<br>recuperarlas posteriormente|CU14, CU9, CU10|
 |RF8|Alternar entre modos de<br>visualización (curva e<br>intersección de líneas)|CU4|
@@ -1274,45 +1302,35 @@ Como se observa en la tabla, todos los requisitos funcionales tienen al menos un
 
 ## 5. Diseño 
 
-Tras definir los requisitos del sistema y analizar las funcionalidades que debe ofrecer la aplicación, es necesario establecer cómo se organizará su implementación. Este capítulo describe el diseño adoptado para _Epicycloid Generator_, mostrando tanto el comportamiento dinámico de la aplicación durante las operaciones principales como las decisiones tomadas para construir su interfaz de usuario. 
+Tras el análisis de los requisitos del proyecto y la elaboración de los correspondientes casos de uso, se ha definido el diseño que seguirá la aplicación durante su implementación. 
 
-En primer lugar, se presentan los diagramas de secuencia que detallan la interacción entre las distintas clases que componen el sistema cuando el usuario ejecuta las funcionalidades más relevantes. A diferencia de los diagramas del capítulo anterior, centrados en la visión conceptual de los casos de uso, los que se muestran aquí representan la implementación real del software mediante las clases y métodos utilizados durante el desarrollo. 
+En este capítulo se presentan los diagramas de secuencia que describen el comportamiento interno de las principales funcionalidades del sistema, mostrando cómo colaboran las distintas clases y componentes para llevar a cabo cada operación. A diferencia de los diagramas del capítulo anterior, centrados en la visión funcional de los casos de uso, los que se muestran a continuación representan la implementación real de la aplicación y las interacciones entre los elementos que la componen. 
 
-Posteriormente se describen los criterios seguidos para el diseño de la interfaz gráfica, justificando la distribución de los elementos, la organización de los controles y las decisiones adoptadas para mejorar la experiencia de uso, la accesibilidad y la consistencia visual. 
+Asimismo, se describen las decisiones adoptadas en el diseño de la interfaz de usuario, justificando la distribución de los elementos y la organización de los controles con el objetivo de ofrecer una aplicación clara, accesible y visualmente coherente. 
 
-Dado que _Epicycloid Generator_ es una aplicación web de página única (Single Page Application), todas las operaciones se realizan sobre una única interfaz, sin cambios de pantalla ni procesos de navegación internos. En consecuencia, los diagramas de secuencia representan las distintas interacciones que el usuario puede realizar sobre el lienzo de dibujo y el panel de control. 
+Epicycloid Generator es una aplicación web de página única ( _Single Page Application_ ), sin autenticación ni navegación entre distintas pantallas. Por este motivo, los diagramas de secuencia no representan transiciones entre vistas, sino el flujo interno de las operaciones que sustentan las principales interacciones del usuario sobre la única interfaz disponible, formada por el lienzo de dibujo y el panel de control. 
 
 ## 5.1. Diagrama de secuencia de operaciones del sistema 
 
-## **Diagrama de secuencia de la operación “Generar y reproducir el patrón”** 
+## **Diagrama de secuencia de la función onFileSelected()** 
 
-Este diagrama representa la operación central de la aplicación. El usuario ajusta los parámetros en el panel de control y el sistema actualiza al instante la representación en el lienzo. Al reproducir, el sistema inicia una sesión de animación y, mediante un bucle (loop), dibuja la composición fotograma a fotograma acumulando las trazas resultantes. Cuando el usuario pausa, el sistema cierra la sesión y la registra como un bloque, conservando el dibujo acumulado. 
+Esta función representa al panel de control, cuya responsabilidad es traducir las acciones del usuario en órdenes para el resto del sistema. Recupera una composición guardada a partir de un archivo JSON, incorporando la validación de la entrada. El diagrama muestra cómo, tras leer y parsear el archivo, un bloque alt distingue dos rutas. Si el archivo es válido, se comprueba que contenga sesiones y que cada una tenga sus parámetros y su número de fotogramas (loop de validación), reconstruye el dibujo con replaySessionsToLines(), actualiza los parámetros mostrados al estado del patrón cargado y ordena al lienzo que restaure ese estado. Si no lo es, la importación se descarta de forma silenciosa para no interrumpir la experiencia del usuario. 
 
-_(Aquí va la Figura 5.1: Diagrama de secuencia “Generar y reproducir el patrón”, ver anexo.)_ 
+## **Diagrama de secuencia de la función draw()** 
 
-## **Diagrama de secuencia de la operación “Deshacer última sesión”** 
+Es la función más importante de la aplicación y la más interesante de analizar, pues en ella se materializa la generación del patrón. El diagrama detalla su recorrido en cada fotograma: primero lee los parámetros vigentes y atiende cualquier acción pendiente, limpieza, restablecimiento o cambio de modo, (opt), a continuación calcula la posición de los dos planetas, cuyo origen difiere según el modo de visualización (un bloque alt distingue el modo curva del modo líneas), después actualiza la capa de estela fuera de pantalla, repintando solo los segmentos nuevos salvo que sea necesaria una reconstrucción completa (segundo alt), y, por último, si la animación está activa (opt), registra el nuevo segmento en el historial, incrementa el contador de la sesión y avanza los ángulos para el siguiente fotograma. 
 
-Este diagrama ilustra el deshacer incremental de la composición. Al solicitar deshacer, un primer bloque condicional (alt) contempla que, si hay una animación en curso, el sistema la pausa primero para tomarla como la sesión a eliminar. A continuación, un segundo bloque alternativo distingue dos casos: si quedan sesiones anteriores, el sistema retira la última, reconstruye el dibujo con las restantes y restaura los parámetros previos, si no queda ninguna, el lienzo se vacía. En ambos casos, la estela se actualiza para reflejar el resultado. 
+## **Diagrama de secuencia de la función removeLastSession()** 
 
-_(Aquí va la Figura 5.2: Diagrama de secuencia “Deshacer última sesión”, ver anexo.)_ 
+Esta función representa al servicio que coordina los parámetros, las sesiones y el historial de trazas. Implementa el deshacer incremental de la composición y es un buen ejemplo de colaboración entre el panel de control, el servicio y el lienzo. Invocada desde clear(), comienza cerrando la sesión activa si la hubiera (opt). A continuación, un bloque alt distingue dos casos: si no quedan sesiones anteriores, vacía el historial de trazas, si quedan, retira la última y reconstruye el dibujo completo con las restantes mediante replaySessionsToLines(), que recorre cada sesión fotograma a fotograma regenerando los segmentos. Tras ello, el panel restaura los parámetros de la sesión previa y ordena al lienzo (dispatch('undo')) que reconstruya la estela y muestre el resultado. Conviene destacar que esa misma rutina de reconstrucción se reutiliza en la importación, lo que garantiza un resultado idéntico al dibujo original. 
 
-## **Diagrama de secuencia de la operación “Exportar imagen”** 
+## **Diagrama de secuencia de la función buildExportCanvas()** 
 
-Este diagrama describe el guardado de la composición como imagen. El usuario abre el diálogo de exportación y el sistema genera una previsualización a partir de la composición actual. Un bloque opcional (opt) recoge el ajuste de las opciones de exportación, fondo, zoom, resolución y elementos visibles, que actualizan la previsualización. Al confirmar, el sistema genera la imagen final y la descarga. 
+Esta función representa al diálogo de exportación. Genera la imagen final de la composición sobre un lienzo auxiliar en memoria, independiente del lienzo principal. El diagrama detalla su construcción: crea el lienzo a la resolución elegida (las dimensiones del lienzo multiplicadas por el factor de escala), pinta el fondo solo si no se ha pedido transparente (opt), recorre todo el historial de líneas dibujándolas a calidad vectorial (loop), y, opcionalmente, superpone las guías orbitales y el punto central (opt), aplicando el zoom y la resolución seleccionados. La función la reutilizan tanto renderPreview(), para la previsualización en tiempo real, como save(), para la descarga del PNG, de modo que lo que el usuario ve en la vista previa coincide exactamente con el archivo obtenido. 
 
-_(Aquí va la Figura 5.3: Diagrama de secuencia “Exportar imagen”, ver anexo.)_ 
+## **Diagrama de secuencia de la función setLang()** 
 
-## **Diagrama de secuencia de la operación “Importar patrón”** 
-
-Este diagrama representa la recuperación de una composición guardada. El usuario selecciona un archivo, que el sistema lee y valida. Un bloque condicional (alt) distingue dos rutas: si el archivo es válido, el sistema reconstruye el dibujo y actualiza los parámetros mostrados al estado del patrón cargado, si no lo es, la importación se descarta. 
-
-_(Aquí va la Figura 5.4: Diagrama de secuencia “Importar patrón”, ver anexo.)_ 
-
-## **Diagrama de secuencia de la operación “Cambiar idioma”** 
-
-Este diagrama refleja la detección automática y el cambio manual de idioma. Un bloque condicional (alt) contempla que, en el primer acceso, el sistema detecta el idioma del navegador. Para el cambio manual, el usuario abre el selector y elige un idioma, el sistema actualiza de inmediato todos los textos de la interfaz y recuerda la preferencia para futuras visitas, sin recargar la página. 
-
-_(Aquí va la Figura 5.5: Diagrama de secuencia “Cambiar idioma”, ver anexo.)_ 
+Esta función representa al servicio de internacionalización. El diagrama refleja tanto la detección inicial del idioma como el cambio manual. Al arrancar la aplicación, detectInitialLang() elige el idioma mediante un bloque alt: si existe una preferencia guardada del usuario, la respeta, en su defecto, deriva el idioma de la configuración del navegador o recurre al idioma por defecto. Para el cambio manual, cuando el usuario selecciona un idioma en el selector, setLang() actualiza la señal reactiva del idioma, guarda la preferencia y fija el atributo de idioma del documento. Como el TranslatePipe (| t) es un pipe impuro, se reevalúa en el siguiente ciclo de detección de cambios: un bloque loop recorre cada texto visible invocando translate(), de modo que toda la interfaz queda traducida de forma inmediata. 
 
 ## 5.2. Diseño visual 
 
@@ -1326,13 +1344,13 @@ Se ha mantenido una coherencia visual en toda la aplicación, utilizando los mis
 
 ## **Paleta de colores** 
 
-Se ha optado por una paleta equilibrada, en la que predominan los tonos oscuros y neutros para el fondo, combinados con colores vivos para los elementos interactivos. El fondo oscuro realza los trazos luminosos del patrón, favorece la legibilidad en entornos con poca luz y reduce la fatiga visual en sesiones prolongadas. Se ha incorporado además una **codificación cromática semántica** : el azul identifica a la primera órbita y el rojo a la segunda, de forma coherente entre los controles, las guías del lienzo y los planetas, lo que permite al usuario asociar de un vistazo cada control con su elemento. Los botones de acción siguen también un código de color coherente (por ejemplo, verde para reproducir o rojo para restablecer). 
+Se ha optado por una paleta equilibrada, en la que predominan los tonos oscuros y neutros para el fondo, combinados con colores vivos para los elementos interactivos. El fondo oscuro realza los trazos luminosos del patrón, favorece la legibilidad en entornos con poca luz y reduce la fatiga visual en sesiones prolongadas. Se ha incorporado además una codificación cromática semántica: el azul identifica a la primera órbita y el rojo a la segunda, de forma coherente entre los controles, las guías del lienzo y los planetas, lo que permite al usuario asociar de un vistazo cada control con su elemento. Los botones de acción siguen también un código de color coherente (por ejemplo, verde para reproducir o rojo para restablecer). 
 
 ## **Tipografía** 
 
 En lo relativo a la tipografía, se ha optado por una fuente sans-serif estándar del sistema, lo que garantiza una buena legibilidad y una apariencia coherente en diferentes dispositivos y navegadores sin necesidad de cargar recursos externos adicionales. Esta decisión contribuye también a mantener un rendimiento óptimo y una mayor simplicidad en el desarrollo. 
 
-Distribución de la interfaz 
+## **Distribución de la interfaz** 
 
 La organización de la interfaz responde a una estructura jerárquica clara, dividida en dos áreas principales dentro de una única vista. El lienzo de visualización ocupa aproximadamente dos tercios del espacio disponible, situándose en la zona izquierda, mientras que el panel de control se dispone a la derecha. 
 
@@ -1350,9 +1368,21 @@ También se han incorporado mecanismos de validación de entradas para evitar es
 
 ## 5.2.2. Mockups 
 
-Se presentan las principales vistas de la aplicación, con el objetivo de mostrar cómo se ha plasmado gráficamente la experiencia de usuario planteada durante las fases de diseño. Los mockups se han elaborado con la herramienta de diseño en línea Figma. Entre las vistas representadas destacan: la vista principal con el lienzo y el panel de control, el panel con sus secciones de parámetros (incluida la de parámetros avanzados desplegada), el desplegable de ejemplos predefinidos, el diálogo de exportación de imagen con su previsualización y opciones, el tutorial de bienvenida, y el selector de idioma desplegado. 
+Se presentan las principales vistas de la aplicación, con el objetivo de mostrar cómo se ha plasmado gráficamente la experiencia de usuario planteada durante las fases de diseño. Los mockups se han elaborado con la herramienta de diseño en línea Figma. Entre las vistas representadas destacan: la vista principal con el lienzo y el panel de 
 
-_(Aquí van las Figuras 5.5 y siguientes: capturas/mockups de las vistas de la aplicación.)_ 
+control; el lienzo en ambos modos de visualización; el panel con sus secciones de parámetros; el diálogo de exportación de imagen con su previsualización y opciones; y el tutorial de bienvenida. 
+
+**==> picture [162 x 267] intentionally omitted <==**
+
+**----- Start of picture text -----**<br>
+Panel de Control<br>Examples<br>Radio 35<br>fT<br>rr<br>ee<br>Radic rid<br>a<br>are<br>Fasa inicial d4<br>Sr<br>Opacicad 26<br>eee<br>ee<br>Pinay<br>**----- End of picture text -----**<br>
+
+
+**==> picture [126 x 397] intentionally omitted <==**
+
+**----- Start of picture text -----**<br>
+Generador de Epicicloides<br>© Elige e| modo de visualizacion<br>@ Ajusta las orbitas<br>var tha.<br>Aleatoriza para insplrarte<br>* Play —y observa como se dibuja<br>“ Zoom en ellienzo<br>*, Pardmatros avanzadas<br>ano orbital<br>* Exporta tu obra como imagen<br>? Guardar y cargar patrones<br>@ Cambia el idioma<br>**----- End of picture text -----**<br>
+
 
 ## 6. Implementación 
 
@@ -1366,7 +1396,9 @@ El proyecto se ha construido sobre **Angular** utilizando **componentes independ
 
 El código fuente se reparte en tres áreas claramente diferenciadas dentro de src/app: 
 
-- **models** : las **interfaces** que definen el modelo de datos. La principal es PatternParams, que reúne todos los parámetros configurables del patrón (radios, velocidades en RPM, fases iniciales, factores de elipse, inclinaciones, color, opacidad, grosor de trazo, intervalo entre líneas y modo de visualización). Junto a ella se definen ExportOptions (opciones de exportación), LineRecord (un segmento dibujado, con sus coordenadas y color) y SimulationSession (un bloque de animación grabado, base del deshacer y de la exportación a JSON). 
+- **models** : las **interfaces** que definen el modelo de datos. La principal es PatternParams, que reúne todos los parámetros configurables del patrón (radios, velocidades en RPM, fases iniciales, factores de elipse, inclinaciones, 
+
+color, opacidad, grosor de trazo, intervalo entre líneas y modo de visualización). Junto a ella se definen ExportOptions (opciones de exportación), LineRecord (un segmento dibujado, con sus coordenadas y color) y SimulationSession (un bloque de animación grabado, base del deshacer y de la exportación a JSON). 
 
 - **core** : la lógica transversal. Contiene el servicio central PatternService, que coordina los parámetros, el historial de trazas y las sesiones de animación, y el subsistema de internacionalización (I18nService y TranslatePipe). 
 
@@ -1398,11 +1430,13 @@ Es la estructura general de la aplicación y lo primero que percibe el usuario a
 
 ## **Lienzo** 
 
-Es la zona donde se representa la composición. Contiene el contenedor sobre el que p5.js crea el <canvas> y un grupo de botones de **zoom** (acercar y alejar), además, el usuario puede ampliar o reducir con la rueda del ratón sobre el propio lienzo. En él se dibujan las trazas acumuladas del patrón, las **guías orbitales** (las elipses y radios de cada órbita) y los **planetas** (los dos puntos que se desplazan), que ayudan a comprender de dónde surge cada trazo. Estos elementos de apoyo se distinguen por color: azul para la primera órbita y rojo para la segunda, en coherencia con el panel de control. 
+Es la zona donde se representa la composición. Contiene el contenedor sobre el que p5.js crea el <canvas> y un grupo de botones de **zoom** (acercar y alejar); además, el usuario puede ampliar o reducir con la rueda del ratón sobre el propio lienzo. En él se dibujan las trazas acumuladas del patrón, las **guías orbitales** (las elipses y radios de cada órbita) y los **planetas** (los dos puntos que se desplazan), que ayudan a comprender de dónde surge cada trazo. Estos elementos de apoyo se distinguen por color: azul para la primera órbita y rojo para la segunda, en coherencia con el panel de control. 
 
 ## **Panel de control** 
 
-Es el centro de interacción de la aplicación. Reúne, ordenados de lo general a lo específico, todos los parámetros del patrón: un **desplegable de ejemplos** predefinidos como punto de partida opcional, el **modo de visualización**, las secciones de **órbita 1** y **órbita 2** (radio, velocidad y fase inicial), los **ajustes visuales** (color, opacidad, grosor e intervalo entre líneas) y, plegada por defecto, una sección de **parámetros avanzados** (factores de elipse e inclinación de cada órbita). En la parte inferior, siempre accesibles, se sitúan las **acciones** : aleatorizar, reproducir, pausar, deshacer la última sesión, restablecer, exportar imagen, exportar patrón e importar patrón. Mientras la animación está en marcha, los parámetros se bloquean visualmente y un aviso informa de ello, evitando estados inconsistentes. 
+Es el centro de interacción de la aplicación. Reúne, ordenados de lo general a lo específico, todos los parámetros del patrón: un **desplegable de ejemplos** predefinidos 
+
+como punto de partida opcional, el **modo de visualización** , las secciones de **órbita 1** y **órbita 2** (radio, velocidad y fase inicial), los **ajustes visuales** (color, opacidad, grosor e intervalo entre líneas) y, plegada por defecto, una sección de **parámetros avanzados** (factores de elipse e inclinación de cada órbita). En la parte inferior, siempre accesibles, se sitúan las **acciones** : aleatorizar, reproducir, pausar, deshacer la última sesión, restablecer, exportar imagen, exportar patrón e importar patrón. Mientras la animación está en marcha, los parámetros se bloquean visualmente y un aviso informa de ello, evitando estados inconsistentes. 
 
 ## **Diálogo de exportación de imagen** 
 
@@ -1410,19 +1444,15 @@ Es una ventana modal que se superpone a la vista principal cuando el usuario dec
 
 ## **Tutorial de bienvenida** 
 
-Es una ventana modal que se muestra automáticamente la primera vez que se abre la aplicación y que puede reabrirse en cualquier momento mediante el botón de ayuda. Presenta, en una lista de pasos numerados con iconos, las acciones principales de la 
-
-aplicación. Incluye una casilla “No volver a mostrar” que, al marcarse, recuerda la preferencia para futuras visitas. 
+Es una ventana modal que se muestra automáticamente la primera vez que se abre la aplicación y que puede reabrirse en cualquier momento mediante el botón de ayuda. Presenta, en una lista de pasos numerados con iconos, las acciones principales de la aplicación. Incluye una casilla “No volver a mostrar” que, al marcarse, recuerda la preferencia para futuras visitas. 
 
 ## **Selector de idioma** 
 
-Es un botón desplegable, fijo en una esquina, que permite cambiar el idioma de toda la interfaz sin recargar la página. Al pulsarlo se despliega la lista de idiomas disponibles (español, catalán, inglés, indonesio y checo), al seleccionar uno, todos los textos se traducen de inmediato. La lista se genera automáticamente a partir de la configuración de idiomas, de modo que añadir uno nuevo no obliga a modificar la interfaz. 
+Es un botón desplegable, fijo en una esquina, que permite cambiar el idioma de toda la interfaz sin recargar la página. Al pulsarlo se despliega la lista de idiomas disponibles (español, catalán, inglés, indonesio y checo); al seleccionar uno, todos los textos se traducen de inmediato. La lista se genera automáticamente a partir de la configuración de idiomas, de modo que añadir uno nuevo no obliga a modificar la interfaz. 
 
 ## 6.2.2. Componentes de la interfaz 
 
-El diseño visual de la aplicación se ha estructurado mediante plantillas HTML, siguiendo el modelo de desarrollo de interfaces de Angular y apoyándose en la biblioteca de estilos Bootstrap. A lo largo de la aplicación se han empleado distintos 
-
-elementos de interfaz gráfica para ofrecer una experiencia de usuario clara e intuitiva. Entre los componentes más utilizados se encuentran las etiquetas, empleadas para mostrar información estática como el nombre de cada parámetro o su unidad, los campos numéricos y los deslizadores, que permiten al usuario introducir y ajustar los valores que definen el patrón, y los botones, que sirven para ejecutar acciones como reproducir la animación, restablecer los parámetros o exportar la composición. Además, se han utilizado contenedores y secciones plegables para organizar estos elementos de forma jerárquica y ordenada dentro del panel. También se han incorporado componentes más dinámicos, como los desplegables, que muestran listas de opciones como los ejemplos predefinidos, y las ventanas modales, que superponen diálogos sobre la vista principal. 
+El diseño visual de la aplicación se ha estructurado mediante plantillas HTML, siguiendo el modelo de desarrollo de interfaces de Angular y apoyándose en la biblioteca de estilos Bootstrap. A lo largo de la aplicación se han empleado distintos elementos de interfaz gráfica para ofrecer una experiencia de usuario clara e intuitiva. Entre los componentes más utilizados se encuentran las etiquetas, empleadas para mostrar información estática como el nombre de cada parámetro o su unidad; los campos numéricos y los deslizadores, que permiten al usuario introducir y ajustar los valores que definen el patrón; y los botones, que sirven para ejecutar acciones como reproducir la animación, restablecer los parámetros o exportar la composición. Además, se han utilizado contenedores y secciones plegables para organizar estos elementos de forma jerárquica y ordenada dentro del panel. También se han incorporado componentes más dinámicos, como los desplegables, que muestran listas de opciones como los ejemplos predefinidos, y las ventanas modales, que superponen diálogos sobre la vista principal. 
 
 ## **Deslizadores y campos numéricos** 
 
@@ -1440,7 +1470,7 @@ _Figura 6.15: desplegable de ejemplos generado dinámicamente con @for (controls
 
 ## **Botones** 
 
-Se encargan de ejecutar las acciones de la aplicación. Para ello se ha utilizado el sistema de estilos de Bootstrap (btn), con variantes de color coherentes con el significado de cada acción: verde para reproducir, ámbar para pausar o rojo para restablecer. Cabe destacar que algunos botones se deshabilitan de forma condicional mediante [disabled], por ejemplo, los parámetros y el botón de reproducir quedan inhabilitados mientras la animación está en marcha, lo que impide interacciones que dejarían el sistema en un estado inconsistente. Por último, el propio botón de modo de visualización cambia de estilo y de texto según el modo activo, ofreciendo retroalimentación visual inmediata 
+Se encargan de ejecutar las acciones de la aplicación. Para ello se ha utilizado el sistema de estilos de Bootstrap (btn), con variantes de color coherentes con el significado de cada acción: verde para reproducir, ámbar para pausar o rojo para restablecer. Cabe destacar que algunos botones se deshabilitan de forma condicional mediante [disabled]; por ejemplo, los parámetros y el botón de reproducir quedan inhabilitados mientras la animación está en marcha, lo que impide interacciones que dejarían el sistema en un estado inconsistente. Por último, el propio botón de modo de visualización cambia de estilo y de texto según el modo activo, ofreciendo retroalimentación visual inmediata 
 
 _Figura 6.16: botones de acción, con bloqueo condicional mediante [disabled] (controls.html)._ 
 
@@ -1452,7 +1482,7 @@ _Figura 6.17: sección de parámetros avanzados, plegable con el elemento nativo
 
 ## **Ventanas modales y superposiciones** 
 
-Tanto el diálogo de exportación como el tutorial se implementan como superposiciones, mostradas de forma condicional mediante el bloque @if. Una capa semitransparente cubre la vista y centra una tarjeta con el contenido, al pulsar fuera de ella o en el botón de cierre, la superposición se oculta. Este mismo mecanismo se emplea también para cerrar el menú del selector de idioma. 
+Tanto el diálogo de exportación como el tutorial se implementan como superposiciones, mostradas de forma condicional mediante el bloque @if. Una capa semitransparente cubre la vista y centra una tarjeta con el contenido; al pulsar fuera de ella o en el botón de cierre, la superposición se oculta. Este mismo mecanismo se emplea también para cerrar el menú del selector de idioma. 
 
 ## **Lienzo** 
 
@@ -1474,7 +1504,7 @@ Este conjunto de métodos se encarga de gestionar el ciclo de vida de una sesió
 
 reproduce, beginSession() inicia la grabación. A continuación, mientras la animación avanza, incrementSessionFrame() actualiza el contador de fotogramas. Finalmente, al pausar, endSession() cierra el bloque y lo añade a la lista de sesiones, registrando además su estado final para poder retomar el dibujo más adelante. Asimismo, el método snapshotActiveSession() devuelve una copia de la sesión en curso, lo que permite exportar la composición aunque la animación no se haya detenido. 
 
-## **Deshacer y reconstruir: removeLastSession, replaySessionsToLines** 
+## **Deshacer y reconstruir: removeLastSession,  replaySessionsToLines** 
 
 Estas dos funciones implementan el borrado de las sesiones de forma individual de la composición. Primero, el método removeLastSession() cierra la sesión activa si la hubiera, retira la última de la lista y reconstruye el historial reproduciendo las restantes. Esa reconstrucción la realiza replaySessionsToLines(), que recorre cada sesión fotograma a fotograma aplicando la misma fórmula que el lienzo y regenera así la lista completa de segmentos. Cabe destacar que esta segunda función se reutiliza también al importar un patrón, de modo que una única rutina garantiza que tanto deshacer como importar produzcan exactamente el mismo resultado que el dibujo original. 
 
@@ -1484,7 +1514,7 @@ Estas dos funciones implementan el borrado de las sesiones de forma individual d
 
 El método initSketch() crea una instancia de p5.js en modo instancia, con su propio bucle de dibujo a 60 fotogramas por segundo. Dentro de ese bucle, la función draw() constituye el corazón de la aplicación, pues en ella se materializa la generación de la composición epicicloidal a partir de los parámetros. En cada fotograma, primero calcula la posición de los dos planetas mediante las ecuaciones 
 
-paramétricas. A continuación, traza la nueva línea entre ellos. Seguidamente dibuja las guías orbitales y los planetas, y, por último, avanza los ángulos para el siguiente fotograma. Si la animación está activa, además registra cada nuevo segmento en el historial del servicio. 
+paramétricas. A continuación, traza la nueva línea entre ellos. Seguidamente dibuja las guías orbitales y los planetas; y, por último, avanza los ángulos para el siguiente fotograma. Si la animación está activa, además registra cada nuevo segmento en el historial del servicio. 
 
 ## **Renderizado optimizado de la estela (capa trailLayer)** 
 
@@ -1512,7 +1542,7 @@ El método randomize() genera una variación aleatoria del patrón. Para ello, a
 
 ## **Exportación e importación de patrones: exportJson, triggerImport, onFileSelected** 
 
-Estas funciones permiten guardar y recuperar composiciones sin necesidad de una base de datos. El método exportJson() serializa las sesiones grabadas en un archivo JSON descargable. Para la importación, triggerImport() abre el selector de archivos del navegador y, una vez elegido uno, onFileSelected() lo lee y valida su estructura. Si el archivo es correcto, reconstruye el dibujo mediante replaySessionsToLines() y restaura los parámetros del patrón, en caso contrario, la importación se descarta de forma silenciosa para no interrumpir la experiencia del usuario. 
+Estas funciones permiten guardar y recuperar composiciones sin necesidad de una base de datos. El método exportJson() serializa las sesiones grabadas en un archivo JSON descargable. Para la importación, triggerImport() abre el selector de archivos del navegador y, una vez elegido uno, onFileSelected() lo lee y valida su estructura. Si el archivo es correcto, reconstruye el dibujo mediante replaySessionsToLines() y restaura los parámetros del patrón; en caso contrario, la importación se descarta de forma silenciosa para no interrumpir la experiencia del usuario. 
 
 **==> picture [392 x 670] intentionally omitted <==**
 
@@ -1538,31 +1568,407 @@ A diferencia de una aplicación que se apoya en servicios externos como una base
 
 - **Entrada y salida de composiciones.** En lugar de guardar los patrones en una base de datos externa, la aplicación permite al usuario exportar e importar patrones ya generados como archivos JSON. Cuando se exporta, las diferentes sesiones de dibujado se guardan en un único archivo JSON y es descargado automáticamente por el navegador. Al importar, el archivo es validado y se reconstruye el patrón descrito en el archivo. Este punto de vista permite al usuario un control total de sus creaciones sin la necesidad de estar registrado. 
 
-   - **Exportación de imágenes en PNG.** Al igual que se puede exportar el patron como JSON para ser reconstruido más adelante, el programa también permite al usuario exportar el patrón como imagen PNG. El usuario puede configurar si desea el fondo transparente o no, la resolución, el tamaño y el nombre. También puede añadir las circunferencias de referencia y el punto central. 
+- **Exportación de imágenes en PNG.** Al igual que se puede exportar el patron como JSON para ser reconstruido más adelante, el programa también permite al usuario exportar el patrón como imagen PNG. El usuario puede configurar si desea el fondo transparente o no, la resolución, el tamaño y el nombre. También puede añadir las circunferencias de referencia y el punto central. 
 
-   - - **Despliegue.** Al ser un SPA sin componente de servidor, su despliegue se reduce a un servicio de alojamiento estático gratuito (Netlify), el cual es accesible desde cualquier navegador moderno. Esto simplifica la puesta en producción y elimina los costes y la complejidad de mantener una infraestructura de backend. Pruebas y resultados 
+- - **Despliegue.** Al ser un SPA sin componente de servidor, su despliegue se reduce a un servicio de alojamiento estático gratuito (Netlify), el cual es accesible desde cualquier navegador moderno. Esto simplifica la puesta en producción y elimina los costes y la complejidad de mantener una infraestructura de backend. Pruebas y resultados 
 
-- 6.3. Pruebas funcionales 
+## 7. Pruebas y resultados 
 
-- 6.4. Pruebas de rendimiento 
+## 7.1. Pruebas funcionales 
 
-- 6.5. Pruebas de usabilidad 
+Las pruebas funcionales tienen como objetivo verificar que cada una de las funcionalidades de la aplicación opera correctamente y cumple con los requisitos funcionales definidos previamente. Este tipo de pruebas se aborda desde el punto de vista del usuario, comprobando que las acciones realizadas sobre la interfaz, modificar parámetros, generar composiciones, exportar imágenes, cambiar de idioma, etc., producen el resultado esperado sobre el lienzo y el estado de la aplicación. 
 
-## 7. Conclusiones 
+Para cada funcionalidad se ha definido una ficha de prueba que detalla el escenario evaluado, el requisito funcional cubierto, los pasos seguidos, el resultado esperado y el resultado realmente obtenido. La validación se llevó a cabo mediante pruebas manuales sobre la aplicación, comprobando el comportamiento de cada funcionalidad frente a los escenarios definidos. 
 
-- 7.1. Revisión de objetivos 
+## **PF1: Generación de una composición** 
 
-- 7.2. Trabajo futuro 
+|**Prueba funcional**|**PF1: El usuario generará una composición visual basada en**<br>**curvas epicicloidales a partir de los parámetros del panel.**|
+|---|---|
+|**Requisito cumplido**|RF1|
+|**Prueba realizada**|Con la aplicación en modo curva, se ajustaron los radios, las<br>velocidades y las fases de ambas órbitas y se inició la animación.|
+|**Resultado esperado**|El lienzo dibuja progresivamente una curva epicicloidal coherente<br>con los parámetros introducidos.|
+|**Resultado obtenido**|La composición se generó correctamente, trazándose el patrón de<br>forma continua y acumulando la estela sobre el lienzo.|
 
-- 7.3. Conclusiones 
 
-A. Apéndice 
+
+## **PF2: Alternar modo de visualización** 
+
+|**Prueba funcional**|**PF2: El usuario alternará entre el modo curva epicicloidal y el**<br>**modo intersección de líneas.**|
+|---|---|
+|**Requisito cumplido**|RF8|
+
+
+
+Se pulsó el control de cambio de modo de visualización con una **Prueba realizada** composición ya en curso. El sistema cambia el modo de trazado y representa el patrón según **Resultado esperado** el modo seleccionado, sin recargar la página. El cambio de modo se aplicó de forma inmediata, el lienzo pasó a **Resultado obtenido** representar el patrón en el modo elegido. 
+
+## **PF3: Modificación de parametros** 
+
+|**Prueba funcional**|**PF3: El usuario modificará los parámetros del patrón (radios,**<br>**velocidades, fases, color, grosor, etc.) con la simulación en pausa**<br>**y comprobará que, al reanudar, el cambio se aplica sin recargar**<br>**la aplicación.**|
+|---|---|
+|**Requisito cumplido**|RF2, RF3|
+|**Prueba realizada**|Con la simulación en pausa se modificaron varios parámetros desde<br>el panel de control y a continuación se reanudó la animación. Se<br>comprobó además que, mientras la simulación está en marcha, los<br>controles permanecen bloqueados.|
+|**Resultado esperado**|Los parámetros solo pueden editarse con la simulación en pausa. Al<br>reanudar, la representación gráfica incorpora los nuevos valores sin<br>necesidad de recargar la página. Durante la ejecución los controles<br>se muestran deshabilitados.|
+|**Resultado obtenido**|Los cambios realizados en pausa se aplicaron al reanudar sin<br>recargar la aplicación. Durante la animación los controles quedaron<br>bloqueados con un aviso visual, tal como se esperaba.|
+
+
+
+## **PF4: Visualización de los valores actuales** 
+
+|**PF4: Visualización**|**de los valores actuales**|
+|---|---|
+|**Prueba funcional**|**PF4: El usuario consultará en pantalla los valores actuales de**<br>**los parámetros utilizados.**|
+|**Requisito cumplido**|RF10|
+|**Prueba realizada**|Se modificaron varios parámetros y se observaron los campos<br>numéricos y los sliders del panel.|
+|**Resultado esperado**|Cada control muestra en todo momento el valor vigente del<br>parámetro correspondiente.|
+|**Resultado obtenido**|Los campos numéricos y deslizadores reflejaron con exactitud el<br>valor actual de cada parámetro.|
+
+
+
+## **PF5: Uso de los controles interactivos** 
+
+|**Prueba funcional**|**PF5: El usuario manipulará los parámetros mediante sliders,**<br>**campos numéricos y el selector de color.**|
+|---|---|
+|**Requisito cumplido**|RF9|
+|**Prueba realizada**|Se ajustaron las fases y la inclinación con los deslizadores, los<br>radios y velocidades con los campos numéricos, y el color con el<br>selector nativo.|
+|**Resultado esperado**|Todos los controles permiten introducir y ajustar valores con<br>comodidad, repercutiendo en el patrón.|
+|**Resultado obtenido**|Los distintos tipos de control funcionaron correctamente y cada uno<br>afectó al patrón de forma esperada.|
+
+
+
+## **PF6: Iniciar y pausar la animación** 
+
+|**Prueba funcional**|**PF6: El usuario iniciará y pausará la animación del patrón.**|
+|---|---|
+|**Requisito cumplido**|RF4|
+|**Prueba realizada**|Se pulsó el botón de reproducción para iniciar la animación y,<br>posteriormente, el de pausa.|
+|**Resultado esperado**|La animación comienza al pulsar reproducir y se detiene al pulsar<br>pausa, conservando lo dibujado.|
+|**Resultado obtenido**|La animación se inició y se pausó correctamente, al reanudar, el<br>trazado continuó desde el punto en que se detuvo.|
+
+
+
+## **PF7: Deshacer la última sesión de dibujado** 
+
+|**Prueba funcional**|**PF7: El usuario deshará la última sesión de dibujado para**<br>**retirar el último bloque de la composición sin perder el resto.**|
+|---|---|
+|**Requisito cumplido**|RF5|
+|**Prueba realizada**|Con varias sesiones dibujadas en pantalla, se pulsó el botón de<br>deshacer la última sesión.|
+|**Resultado esperado**|Se elimina del lienzo únicamente la última sesión dibujada, las<br>sesiones anteriores se conservan y los parámetros del panel se<br>restauran a los de esa sesión.|
+|**Resultado obtenido**|La última sesión desapareció del lienzo conservándose las<br>anteriores, y los parámetros se restauraron al estado de esa sesión.|
+
+
+
+## **PF8: Restablecer parámetros por defecto** 
+
+**PF8: El usuario restablecerá todos los parámetros a sus valores Prueba funcional predeterminados.** 
+
+|**Requisito cumplido**|RF13|
+|---|---|
+|**Prueba realizada**|Tras modificar varios parámetros, se pulsó el botón de restablecer<br>(reset).|
+|**Resultado esperado**|Los parámetros vuelven a sus valores por defecto y el lienzo se<br>limpia.|
+|**Resultado obtenido**|Todos los controles recuperaron los valores predeterminados y el<br>lienzo quedó limpio.|
+
+
+
+## **PF9: Generación de variaciones aleatorias** 
+
+|**Prueba funcional**|**PF9: El usuario generará una variación aleatoria del patrón**<br>**mediante valores aleatorios controlados.**|
+|---|---|
+|**Requisito cumplido**|RF12|
+|**Prueba realizada**|Se pulsó el botón de aleatorizar parámetros y se observaron los<br>valores resultantes y el patrón generado.|
+|**Resultado esperado**|Los parámetros se fijan en valores aleatorios dentro de los rangos<br>válidos (mínimo, máximo y paso) y se obtiene una composición<br>distinta.|
+|**Resultado obtenido**|Los parámetros se aleatorizaron dentro de sus rangos permitidos y<br>se generó una composición nueva y coherente.|
+
+
+
+## **PF10: Aplicar un ejemplo predefinido** 
+
+|**Prueba funcional**|**PF10: El usuario seleccionará una configuración predefinida**<br>**del catálogo de ejemplos.**|
+|---|---|
+|**Requisito cumplido**|RF7|
+|**Prueba realizada**|Se desplegó la lista de ejemplos y se seleccionó uno de los presets<br>disponibles.|
+|**Resultado esperado**|Los parámetros del panel se ajustan automáticamente a los del<br>ejemplo elegido y el patrón se genera en consecuencia.|
+|**Resultado obtenido**|Al elegir el ejemplo, los parámetros se cargaron correctamente y el<br>patrón asociado se reprodujo en el lienzo.|
+
+
+
+## **PF11: Exportar imagen** 
+
+|**Prueba funcional**|**PF11: El usuario guardará la composición generada como**<br>**imagen en formato PNG.**|
+|---|---|
+|**Requisito cumplido**|RF6|
+
+
+
+|**Prueba realizada**|Se abrió el diálogo de exportación, se configuraron el fondo, el<br>zoom, la resolución y el nombre de archivo, y se confirmó la<br>descarga.|
+|---|---|
+|**Resultado esperado**|Se descarga un archivo de imagen PNG que reproduce fielmente la<br>composición con las opciones elegidas.|
+|**Resultado obtenido**|Se generó y descargó correctamente el archivo PNG con la<br>composición y la resolución seleccionadas.|
+
+
+
+## **PF12: Exportar e importar patrón** 
+
+|**Prueba funcional**|**PF12: El usuario exportará la configuración de parámetros a**<br>**un archivo y la recuperará posteriormente importándola.**|
+|---|---|
+|**Requisito cumplido**|RF7|
+|**Prueba realizada**|Se exportó la configuración actual a un archivo JSON y, tras<br>modificar los parámetros, se importó dicho archivo.|
+|**Resultado esperado**|El archivo exportado almacena los parámetros y, al importarlo, la<br>aplicación restaura exactamente esa configuración.|
+|**Resultado obtenido**|La configuración se exportó y se recuperó correctamente,<br>restaurándose los parámetros guardados al importar el archivo.|
+
+
+
+## **PF13: Adaptación responsiva del lienzo** 
+
+|**Prueba funcional**|**PF13: El usuario redimensionará la ventana del navegador y**<br>**comprobará la adaptación del lienzo.**|
+|---|---|
+|**Requisito cumplido**|RF11|
+|**Prueba realizada**|Se modificó el tamaño de la ventana del navegador y se observó el<br>comportamiento del lienzo y del panel de control.|
+|**Resultado esperado**|El lienzo y la interfaz se reajustan al nuevo tamaño de la ventana<br>manteniendo la usabilidad.|
+|**Resultado obtenido**|El lienzo se redimensionó correctamente y la interfaz se adaptó al<br>nuevo tamaño de ventana.|
+
+
+
+## **PF14: Cambio dinámico de idioma** 
+
+|**Prueba funcional**|**PF14: El usuario cambiará el idioma de la interfaz mediante el**<br>**selector de idioma.**|
+|---|---|
+|**Requisito cumplido**|RF14|
+|**Prueba realizada**|Se abrió el selector de idioma y se cambió entre los idiomas<br>disponibles con la aplicación en uso.|
+
+
+
+Todos los textos de la interfaz se actualizan al idioma seleccionado **Resultado esperado** de forma instantánea y sin recargar la página. El idioma de la interfaz cambió al instante en todos los textos, **Resultado obtenido** conservándose el estado de la composición. 
+
+## **PF15: Gestión de valores inválidos** 
+
+|**Prueba funcional**|**PF15: El usuario introducirá valores fuera de rango o no**<br>**numéricos en los campos de parámetros.**|
+|---|---|
+|**Requisito cumplido**|RF2 (validación), valida también RNF10|
+|**Prueba realizada**|Se introdujeron valores por debajo del mínimo, por encima del<br>máximo y campos vacíos o no numéricos, confirmando la edición.|
+|**Resultado esperado**|El sistema corrige automáticamente los valores fuera de rango<br>ajustándolos al límite más próximo, evitando estados inválidos.|
+|**Resultado obtenido**|Los valores incorrectos se ajustaron automáticamente a su mínimo<br>o máximo válido, sin que la aplicación dejara de funcionar.|
+
+
+
+## 7.1.1. Trazabilidad entre requisitos y pruebas funcionales 
+
+A continuación, se presenta la trazabilidad entre los requisitos funcionales definidos en las etapas iniciales del proyecto y las pruebas funcionales realizadas. El objetivo de esta tabla es verificar que cada requisito ha sido implementado y validado mediante, al menos, una prueba funcional asociada. 
+
+|**Requisito**<br>**funcional**|**Descripción**|**Pruebas funcionales**<br>**asociadas**|
+|---|---|---|
+|RF1|Generación de composiciones epicicloidales|PF1|
+|RF2|Modificación de parámetros en tiempo real|PF3, PF15|
+|RF3|Actualización dinámica sin recargar|PF3|
+|RF4|Iniciar, pausar y reiniciar la animación|PF6|
+|RF5|Limpiar el lienzo (deshacer incremental por sesiones)|PF7|
+|RF6|Guardar la composición como imagen|PF11|
+|RF7|Almacenar y recuperar configuraciones (ejemplos e<br>importación/exportación)|PF10, PF12|
+|RF8|Alternar entre modos de visualización|PF2|
+|RF9|Controles interactivos|PF5|
+|RF10|Mostrar los valores actuales de los parámetros|PF4|
+|RF11|Visualización responsiva del lienzo|PF13|
+|RF12|Generación de variaciones aleatorias controladas|PF9|
+|RF13|Restablecer los parámetros por defecto|PF8|
+|RF14|Soporte multilingüe (cambio dinámico de idioma)|PF14|
+
+
+
+Tras la ejecución de las pruebas funcionales definidas, se puede concluir que la aplicación cumple satisfactoriamente con los requisitos funcionales establecidos en las fases iniciales del proyecto. Todas las funcionalidades principales, la generación de composiciones epicicloidales, la manipulación de parámetros en tiempo real, el control 
+
+de la animación, la exportación de imágenes y configuraciones, la generación de variaciones aleatorias y el cambio dinámico de idioma, se han verificado y validado con resultados positivos. 
+
+Las pruebas también han evidenciado que la interacción del usuario con la aplicación es fluida e inmediata: cualquier cambio sobre los parámetros se refleja al instante en el lienzo, sin necesidad de recargar la página. Asimismo, la prueba de gestión de valores inválidos confirma la robustez del sistema ante entradas incorrectas, en línea con el requisito no funcional de gestión básica de errores. 
+
+La tabla de trazabilidad confirma una cobertura completa de los requisitos funcionales: cada requisito ha sido validado al menos una vez mediante su prueba correspondiente, lo que respalda la alineación entre lo diseñado y lo implementado, y avala que la aplicación está preparada para su uso por parte de los usuarios finales. 
+
+## 7.2. Pruebas de rendimiento 
+
+Para evaluar el comportamiento de la aplicación en términos de consumo de recursos, se han realizado pruebas de rendimiento centradas en el uso de CPU, memoria y, especialmente, en la fluidez de la animación (medida en cuadros por segundo, _fps_ ). Estas pruebas permiten identificar posibles cuellos de botella y verificar que la aplicación mantiene una experiencia fluida incluso en el escenario más exigente. 
+
+El escenario de prueba más representativo es la animación continua con una estela densa, es decir, una composición que acumula miles de segmentos de línea sobre el lienzo mientras la animación sigue en curso (modo curva, con un intervalo entre líneas reducido). Este caso es el que más exige al motor de dibujo, ya que requiere repintar el lienzo en cada cuadro a 60 fps. Cabe recordar que, como se describió en el capítulo de implementación, el trazado se apoya en una capa de dibujo independiente (offscreen) sobre la que solo se pintan los segmentos nuevos de cada cuadro, evitando rehacer todo el historial en cada fotograma, esta optimización es determinante en los resultados que se exponen a continuación. 
+
+Para la monitorización se han utilizado las herramientas para desarrolladores del navegador (el panel de _Rendimiento_ y el _Administrador de tareas_ de Google Chrome), que proporcionan información en tiempo real sobre la tasa de cuadros, el uso de CPU y el consumo de memoria de la pestaña. Las pruebas se llevaron a cabo en dos equipos de distintas características de hardware, con el objetivo de comparar el comportamiento de la aplicación en máquinas de diferente potencia. 
+
+## 7.2.1. Análisis de características principales 
+
+A continuación se presentan las principales características de los dos equipos empleados en las pruebas, para tenerlas en cuenta a la hora de comparar los resultados. 
+
+## **Equipo 1 (gama media).** 
+
+- **CPU:** Intel Core i5-1135G7 
+
+- **GPU:** Intel Iris Xe Graphics (integrada) 
+
+- **RAM:** 8GB 
+
+- **Navegador y SO:** Google Chrome 148 sobre Windows 11 Home 
+
+## **Equipo 2 (gama alta).** 
+
+- **CPU:** Intel Core i7-12700H 
+
+- **GPU:** Intel Iris Xe Graphics (integrada) y NVIDIA GeForce RTX 4060 Laptop GPU (dedicada) 
+
+- **RAM:** 16GB 
+
+- **Navegador y SO:** Google Chrome 149 sobre Windows 11 Home 
+
+## 7.2.2. Análisis de resultados 
+
+Las mediciones se han tomado sobre los dos equipos descritos en el apartado anterior, con las herramientas de desarrollo del navegador y la aplicación en ejecución en modo curva, con la animación continua acumulando una estela densa. El equipo de gama media (Equipo 1) representa el caso más limitado y, por tanto, el más exigente para validar el rendimiento, mientras que el de gama alta (Equipo 2) ofrece un margen mayor. La siguiente tabla resume los valores típicos obtenidos en cada uno. 
+
+|**Métrica**|**Equipo 1 (gama media)**|**Equipo 2 (gama alta)**|
+|---|---|---|
+|**Tasa de cuadros**|57 fps estables|57 fps estables|
+|**CPU en reposo**|0%|0%|
+|**CPU en marcha**|entre el 14 % y el 18 %|entre el 9 % y el 12 %|
+|**Memoria de la pestaña**|unos 92 MB en reposo, 105 a<br>115 MB en marcha|unos 98 MB en reposo, 112 a<br>120 MB en marcha|
+|**Memoria (JS Heap)**|crece de 16 a 90 MB según<br>se acumula la estela|crece de 17,2 a 94,5 MB<br>según se acumula la estela|
+|**GPU**|sin actividad apreciable|sin actividad apreciable|
+
+
+
+## **Fluidez (fps)** 
+
+Ambos equipos sostienen la tasa objetivo de la aplicación, en el entorno de los 60 fps. El equipo de gama media se mantiene en torno a 57 fps de forma constante, tanto en reposo como durante la animación continua, incluso tras acumular varios miles de segmentos. El de gama alta también se mantiene en 57 fps estables. En ambos casos la fluidez no decae al crecer el historial, ya que el coste de cada cuadro es prácticamente constante gracias al pintado incremental de la estela sobre una capa independiente. 
+
+## **CPU** 
+
+El consumo de CPU es bajo y estable en los dos equipos, y no aumenta al acumularse más líneas. En reposo es prácticamente nulo en ambos (en torno al 0 %). Durante la animación continua, el equipo de gama media se sitúa entre el 14 % y el 18 % de la CPU total, algo por encima del de gama alta, que se mantiene entre el 9 % y el 12 %, una diferencia coherente con su menor potencia. En los dos casos el consumo permaneció constante a lo largo del tiempo, incluso tras una ejecución prolongada, lo que indica que el coste añadido por dibujar cada nuevo segmento es despreciable y confirma la eficacia del modelo de renderizado incremental. 
+
+## **Memoria** 
+
+El consumo de memoria depende del tamaño de la estela acumulada, ya que la composición se conserva como datos (la lista de segmentos), pero en ningún caso revela fugas, pues se libera al deshacer sesiones o reiniciar la composición. En el equipo de gama media, la memoria de la pestaña parte de unos 92 MB en reposo y asciende a un rango de 105 a 115 MB con la animación en marcha, mientras que la memoria dinámica de JavaScript (JS Heap) crece de forma progresiva desde unos 16 MB hasta unos 90 MB a medida que se acumulan los segmentos. En el equipo de gama alta el comportamiento es muy similar, con la memoria de la pestaña entre unos 98 MB en reposo y 112 a 120 MB en marcha, y el JS Heap creciendo desde 17,2 MB hasta unos 94,5 MB. 
+
+## **GPU** 
+
+En ambos equipos el uso de la GPU es reducido, sin actividad apreciable en la gráfica detallada, algo coherente con que la aplicación dibuja sobre un lienzo 2D y no realiza tareas gráficas complejas. 
+
+## 7.3. Pruebas de usabilidad 
+
+La usabilidad es un aspecto fundamental en cualquier aplicación interactiva, y especialmente en una herramienta creativa como Epicycloid Generator, cuyo público objetivo incluye a personas sin conocimientos técnicos avanzados. En este proyecto se ha priorizado que la aplicación sea intuitiva, accesible y agradable de usar, de modo que cualquier usuario pueda experimentar con los parámetros y generar composiciones atractivas sin necesidad de comprender el modelo matemático subyacente. 
+
+Para garantizar una experiencia de usuario satisfactoria, se han tenido en cuenta los siguientes principios de usabilidad durante el diseño y el desarrollo de la aplicación: 
+
+- **Facilidad de uso** : la interfaz se ha diseñado de forma clara y ordenada, agrupando los parámetros en secciones plegables (órbita 1, órbita 2, ajustes visuales y parámetros avanzados) para no abrumar al usuario. Las acciones principales, reproducir, pausar, deshacer la última sesión y restablecer, están siempre visibles y accesibles. 
+
+- **Accesibilidad e iniciación guiada** : la aplicación incluye un breve tutorial de bienvenida que orienta al usuario en su primer acceso, así como un catálogo de ejemplos predefinidos que permiten obtener resultados llamativos de inmediato y servir como punto de partida para la experimentación. 
+
+- **Retroalimentación inmediata** : cualquier cambio sobre un parámetro se refleja al instante en el lienzo, lo que ofrece al usuario una respuesta visual continua y refuerza la comprensión de cómo cada control afecta al patrón generado. 
+
+- **Consistencia visual** : la interfaz mantiene una estética coherente en cuanto a colores, tipografía y disposición de los controles, basándose en patrones de diseño conocidos (sliders, campos numéricos, selectores) que reducen la curva de aprendizaje. 
+
+- **Adaptabilidad e internacionalización** : la interfaz se adapta a distintos tamaños de pantalla (escritorio y tabletas) y ofrece soporte multilingüe, de modo que el usuario puede utilizar la aplicación en su idioma y en el dispositivo que prefiera. 
+
+Además, se ha realizado una validación preliminar de la usabilidad mediante pruebas informales con un grupo reducido de usuarios, a partir de las cuales se identificaron y corrigieron elementos que generaban confusión, optimizando así la experiencia global. 
+
+## 7.3.1. Evaluación de la usabilidad 
+
+Para valorar la usabilidad y la experiencia general ofrecida por la aplicación, se diseñó un cuestionario que abarca distintos aspectos clave de la interacción del usuario. Este cuestionario se entregó a un grupo de 38 participantes tras una sesión de prueba libre con la aplicación. 
+
+El cuestionario evalúa dimensiones como la utilidad percibida, la facilidad de uso, la experiencia subjetiva, el rendimiento, la accesibilidad de las funciones, el atractivo visual de los resultados y la probabilidad de uso futuro. Cada ítem ofrece tres opciones 
+
+de respuesta que permiten obtener una visión general de la percepción del usuario. A continuación se presenta el cuestionario aplicado: 
+
+## **Utilidad de la aplicación** 
+
+- La utilizaría para crear composiciones de forma habitual: 37% 
+
+- Me resultaría útil de forma puntual: 58% 
+
+- No le veo gran utilidad: 5% 
+
+## **Usabilidad** 
+
+- Tiene una interfaz intuitiva: 66% 
+
+- No resulta excesivamente intuitiva, pero tampoco presenta grandes dificultades de manejo: 34% 
+
+- Tiene una interfaz compleja: 0% 
+
+## **Experiencia de uso** 
+
+- Me sentí cómodo/a usando la aplicación: 92% 
+
+- La experiencia fue aceptable, pero podría mejorar: 8% 
+
+- La aplicación me resultó incómoda o poco amigable: 0% 
+
+## **Rendimiento** 
+
+La aplicación funcionó con fluidez y sin errores: 89% 
+
+- Tuvo algún pequeño fallo, pero fue utilizable: 11% 
+
+- Tuvo problemas graves de funcionamiento o lentitud: 0% 
+
+## **Accesibilidad de las funciones** 
+
+- 
+
+- 
+
+   - Encontré rápidamente las funciones que necesitaba: 82% 
+
+   - Algunas funciones fueron fáciles de encontrar, otras no tanto: 18% 
+
+- Tuve dificultades para encontrar las funciones principales: 0% 
+
+- **Comprensión de los parámetros** 
+
+- Entendí con facilidad cómo afectaba cada parámetro al resultado: 61% 
+
+- Comprendí el efecto de algunos parámetros, pero no de todos: 39% 
+
+- Me costó entender el efecto de los parámetros: 0% 
+
+- **Atractivo visual de los resultados** 
+
+- Las composiciones generadas me resultan atractivas y vistosas: 84% 
+
+- 
+
+   - Los resultados son aceptables, pero mejorables: 16% 
+
+- Los resultados me parecen poco atractivos: 0% 
+
+- **Probabilidad de uso futuro** 
+
+- Volvería a utilizar la aplicación en el futuro: 92% 
+
+- Solo la usaría si no tengo otra opción: 8% 
+
+- No la volvería a utilizar: 0% 
+
+## **Conclusiones** 
+
+Los resultados reflejan una valoración muy positiva de la aplicación. La experiencia de uso fue cómoda para el 92 % de los participantes, el rendimiento se percibió fluido y sin errores en el 89 % y un 92 % afirmó que volvería a utilizarla. El atractivo visual de las composiciones obtuvo también una valoración alta, así lo demuestran el 84% de los usuarios. Estos datos confirman que la aplicación cumple su objetivo de ofrecer una herramienta agradable y fluida, en línea con los requisitos de interfaz intuitiva y rendimiento. 
+
+En cuanto a la usabilidad, el 66 % consideró la interfaz directamente intuitiva y el 34 % restante la situó en un nivel intermedio, sin que ningún participante la calificara como compleja. La accesibilidad de las funciones también fue buena, ya que el 82 % encontró con rapidez lo que necesitaba. Esto respalda el diseño centrado en el usuario y una curva 
+
+de aprendizaje contenida, apoyada en el tutorial de bienvenida y en los ejemplos predefinidos. 
+
+El aspecto con mayor margen de mejora es la comprensión de los parámetros. Aunque el 61 % entendió con facilidad el efecto de cada control, un 39 % comprendió solo algunos, sobre todo los más avanzados. En la misma línea, las respuestas libres recogieron una sugerencia recurrente, la posibilidad de acelerar el dibujo o el paso del tiempo para obtener los resultados con mayor rapidez, mientras que otro participante señaló que no echaba en falta ninguna función. 
+
+Respecto a la utilidad percibida, un 58% la considera una herramienta de uso puntual y un 37 % la usaría de forma habitual, una distribución coherente con su carácter de herramienta creativa de nicho. Solo un 5 % no le encontró utilidad. 
+
+En conjunto, los resultados validan el enfoque de diseño y sitúan las líneas de mejora futura en dos puntos, reforzar la comprensión de los parámetros avanzados (por ejemplo, mediante ayudas contextuales) y ofrecer un control para acelerar el trazado. Ambos aspectos se retoman en el capítulo de conclusiones. 
+
+## 8. Conclusiones 
+
+8.1. Revisión de objetivos 
+
+8.2. Trabajo futuro 
+
+8.3. Conclusiones 
+
+## A. Apéndice 
 
 ## Bibliografía 
 
 [1] _Desmos | Preciosas matemáticas gratuitas._ (s. f.). Recuperado 8 de abril de 2026, de https://www.desmos.com/?lang=es 
 
-[2] _GeoGebra, The world’s favorite, free math tools used by over 100 million students and teachers_ . (s. f.). GeoGebra. Recuperado 8 de abril de 2026, de https://www.geogebra.org 
+[2] _GeoGebra—The world’s favorite, free math tools used by over 100 million students and teachers_ . (s. f.). GeoGebra. Recuperado 8 de abril de 2026, de https://www.geogebra.org 
 
 [3] Welcome to Processing! (s. f.). Processing. Recuperado 8 de abril de 2026, de https://processing.org// 
 
