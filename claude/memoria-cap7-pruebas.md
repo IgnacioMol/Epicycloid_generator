@@ -239,14 +239,14 @@ Para la monitorización se han utilizado las **herramientas para desarrolladores
 
 A continuación se presentan las principales características de los dos equipos empleados en las pruebas, para tenerlas en cuenta a la hora de comparar los resultados.
 
-> **⚠️ El Equipo 2 contiene las características reales del equipo de desarrollo. El Equipo 1 (gama media) queda como plantilla, completar con un segundo dispositivo o eliminarlo si las pruebas se realizan en un solo equipo.**
+> **⚠️ Ambos equipos contienen características reales. El Equipo 1 (gama media) corresponde al portátil con Intel Core i5-1135G7 y gráfica integrada Iris Xe, y el Equipo 2 (gama alta) al equipo de desarrollo con Intel Core i7-12700H y NVIDIA GeForce RTX 4060.**
 
 **Equipo 1 (gama media).**
 
-- **CPU:** *[p. ej. Intel Core i5 de portátil]*
-- **GPU:** *[gráfica integrada]*
-- **RAM:** *[p. ej. 8 GB]*
-- **Navegador / SO:** *[p. ej. Google Chrome sobre Windows 11]*
+- **CPU:** Intel Core i5-1135G7 (4 núcleos, 8 hilos)
+- **GPU:** Intel Iris Xe Graphics (integrada)
+- **RAM:** 8 GB
+- **Navegador / SO:** Google Chrome 148 sobre Windows 11 Home (build 26200)
 
 **Equipo 2 (gama alta).**
 
