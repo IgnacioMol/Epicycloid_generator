@@ -45,9 +45,7 @@ Recordatorio de estilo de la memoria: no usar rayas ni puntos y coma en la prosa
 > de rendimiento se miden con las herramientas para desarrolladores del navegador (no con CPU-Z sobre
 > móviles Android), y las de usabilidad se adaptan a una herramienta creativa de uso libre.
 >
-> **⚠️ AVISO sobre las cifras del apartado 7.2.** Los valores numéricos de rendimiento (fps, % de CPU,
-> memoria) son **representativos y deben sustituirse por las mediciones reales** tomadas por el alumno
-> en sus equipos. Van marcados en el texto para localizarlos con facilidad.
+> **⚠️ Las cifras de rendimiento del apartado 7.2 corresponden a mediciones reales tomadas sobre los dos equipos de prueba (gama media y gama alta).**
 
 ---
 
@@ -259,19 +257,28 @@ Dado que *Epicycloid Generator* es una aplicación ligera que se ejecuta en el n
 
 ### 7.2.2. Análisis de resultados
 
-> **⚠️ Las cifras de este apartado corresponden a las mediciones reales del equipo de gama alta (Equipo 2). Las del equipo de gama media (Equipo 1) están pendientes de incorporar.**
+Las mediciones se han tomado sobre los dos equipos descritos en el apartado anterior, con las herramientas de desarrollo del navegador y la aplicación en ejecución en modo curva, con la animación continua acumulando una estela densa. El equipo de gama media (Equipo 1) representa el caso más limitado y, por tanto, el más exigente para validar el rendimiento, mientras que el de gama alta (Equipo 2) ofrece un margen mayor. La siguiente tabla resume los valores típicos obtenidos en cada uno.
 
-**Fluidez (fps).** Durante la animación continua, la tasa de cuadros se mantiene estable en torno a los **57,6 fps**, muy próxima al límite de 60 fps que fija la aplicación, gracias al pintado incremental de la estela. Al pausar la animación se observa un pico puntual de la tasa cercano a **120 fps**, que vuelve a estabilizarse en 57,6 fps al reanudar. Incluso con varios miles de segmentos acumulados, la fluidez se mantiene sin caídas perceptibles, ya que el coste de cada cuadro es prácticamente constante y no crece con el tamaño del historial.
+| Métrica | Equipo 1 (gama media) | Equipo 2 (gama alta) |
+|---|---|---|
+| Tasa de cuadros | 60 fps sostenidos | 57,6 fps estables (pico de unos 120 al pausar) |
+| CPU en marcha | en torno al 25 % de un núcleo (unos 3 % del total) | entre el 9 % y el 12 % |
+| CPU en reposo | similar al de marcha | 0 % |
+| Memoria (JS Heap) | entre 8 y 20 MB, en patrón de sierra | crece de 17,2 a 94,5 MB según se acumula la estela |
+| Nodos del DOM | unos 450, constantes | no medido |
+| GPU | uso reducido | sin actividad apreciable |
 
-**CPU.** En reposo, el uso de CPU de la pestaña es nulo (**0 %**). Durante la animación continua, mantenida durante media hora de prueba, el consumo se mantuvo estable entre el **9 % y el 12 %**, correspondiente al bucle de dibujo de p5.js. Es relevante que este consumo permaneció constante a lo largo del tiempo y no se disparó al acumularse más líneas, lo que confirma la eficacia del modelo de renderizado incremental.
+**Fluidez (fps).** Ambos equipos sostienen la tasa objetivo de la aplicación. El equipo de gama media se mantiene en 60 fps de forma constante, tanto en reposo como durante la animación continua, incluso tras acumular varios miles de segmentos. El de gama alta se mantiene en 57,6 fps estables, con un pico puntual cercano a 120 fps al pausar la animación que vuelve a estabilizarse al reanudar. En ambos casos la fluidez no decae al crecer el historial, ya que el coste de cada cuadro es prácticamente constante gracias al pintado incremental de la estela sobre una capa independiente.
 
-**Memoria.** Medida con el administrador de tareas del navegador, la memoria de la pestaña parte de unos **98 MB** en reposo y asciende a un rango de **112 a 120 MB** con la animación en marcha. En la gráfica detallada del panel de rendimiento, la memoria de JavaScript (JS Heap) crece de forma progresiva desde **17,2 MB** hasta **94,5 MB** a medida que se acumulan los segmentos del historial. Este crecimiento es esperable, ya que la composición se conserva como datos (la lista de segmentos dibujados), y la memoria se libera al deshacer sesiones o reiniciar la composición.
+**CPU.** El consumo de CPU es bajo y estable en los dos equipos, y no aumenta al acumularse más líneas. En el equipo de gama media se mantiene en torno al 25 % de un núcleo (aproximadamente un 3 % de la CPU total, que dispone de ocho hilos lógicos), un valor prácticamente igual con la animación en marcha y detenida, ya que el bucle de p5.js repinta las guías y los planetas en cada cuadro aunque no se trace la estela. En el de gama alta el uso se sitúa entre el 9 % y el 12 % en marcha y baja al 0 % en reposo, manteniéndose constante incluso tras media hora de ejecución continua. El coste añadido por dibujar cada nuevo segmento es, por tanto, despreciable, lo que confirma la eficacia del modelo de renderizado incremental.
 
-**GPU.** En la gráfica detallada del panel de rendimiento, la sección de GPU no registra actividad apreciable, algo coherente con que la aplicación dibuja sobre un lienzo 2D y no realiza tareas gráficas complejas.
+**Memoria.** El consumo de memoria depende del tamaño de la estela acumulada, ya que la composición se conserva como datos (la lista de segmentos), pero en ningún caso revela fugas. En el equipo de gama media la memoria dinámica de JavaScript se mantiene reducida, oscilando entre 8 y 20 MB con el patrón de sierra característico del recolector de basura, sin una tendencia creciente sostenida, y el número de nodos del DOM permanece constante en torno a 450, lo que confirma que la estela se dibuja sobre el lienzo y no genera elementos nuevos en la página. En el equipo de gama alta, en sesiones largas y densas la memoria de JavaScript crece de forma progresiva desde 17,2 MB hasta unos 94,5 MB a medida que se acumulan los segmentos, y se libera al deshacer sesiones o reiniciar la composición.
+
+**GPU.** En ambos equipos el uso de la GPU es reducido, sin actividad apreciable en la gráfica detallada, algo coherente con que la aplicación dibuja sobre un lienzo 2D y no realiza tareas gráficas complejas.
 
 #### Conclusiones
 
-Los resultados obtenidos permiten concluir que la aplicación está correctamente optimizada. En el equipo de gama alta, la animación se mantiene fluida y estable (en torno a 57,6 fps) con un consumo de CPU contenido y constante (entre el 9 % y el 12 %), que no aumenta al acumularse más líneas, ni siquiera tras media hora de ejecución continua. La memoria sí crece de forma moderada durante la sesión, ya que el historial de segmentos se conserva como datos, pero se libera al deshacer o reiniciar la composición. Este comportamiento valida las decisiones de diseño adoptadas en la implementación, en especial el renderizado incremental de la estela sobre una capa independiente y la ejecución del bucle de animación fuera del ciclo de detección de cambios de Angular, que mantienen el coste por cuadro prácticamente constante. En conjunto, la aplicación garantiza una experiencia fluida en tiempo real, cumpliendo los requisitos de rendimiento (RNF5) y de minimización del consumo de recursos (RNF8). Queda pendiente incorporar las mediciones del equipo de gama media para completar la comparación entre ambos.
+Los resultados obtenidos en los dos equipos permiten concluir que la aplicación está correctamente optimizada. En el equipo de gama media, que representa el caso más limitado, la aplicación mantiene los 60 fps de forma sostenida con un consumo de CPU y de memoria reducido y estable que no crece con el número de líneas dibujadas. En el equipo de gama alta el comportamiento es igualmente fluido, con la tasa de cuadros en el entorno de los 60 fps y un coste por cuadro constante a lo largo del tiempo. La memoria crece de forma moderada cuando la estela se vuelve muy densa, ya que el historial se guarda como datos, pero se libera al deshacer o reiniciar, sin indicios de fugas. Este comportamiento valida las decisiones de diseño adoptadas en la implementación, en especial el renderizado incremental de la estela sobre una capa independiente y la ejecución del bucle de animación fuera del ciclo de detección de cambios de Angular, que mantienen el coste por cuadro prácticamente constante. En conjunto, la aplicación garantiza una experiencia fluida en tiempo real incluso en equipos de gama media, cumpliendo los requisitos de rendimiento (RNF5) y de minimización del consumo de recursos (RNF8).
 
 ## 7.3. Pruebas de usabilidad
 
