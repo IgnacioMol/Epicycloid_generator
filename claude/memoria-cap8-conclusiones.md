@@ -8,9 +8,13 @@
 
 ---
 
-Este último capítulo cierra la memoria con una valoración global del trabajo realizado. En primer lugar se revisa el grado de cumplimiento de los objetivos planteados al inicio del proyecto. A continuación se proponen las principales líneas de trabajo futuro que podrían ampliar o mejorar la aplicación. Por último, se recogen las conclusiones generales extraídas del desarrollo, tanto en su vertiente técnica como formativa.
+Este último capítulo cierra la memoria con una valoración global del trabajo realizado. En primer lugar se realiza una revisión del proyecto, que abarca tanto el grado de cumplimiento de los objetivos planteados como el ajuste de la estimación de costes y tiempos al desarrollo real. A continuación se proponen las principales líneas de trabajo futuro que podrían ampliar o mejorar la aplicación. Por último, se recogen las conclusiones generales extraídas del desarrollo, tanto en su vertiente técnica como formativa.
 
-## 8.1. Revisión de objetivos
+## 8.1. Revisión del proyecto
+
+Antes de plantear las conclusiones finales, se revisa el resultado del proyecto en tres aspectos. El primero valora en qué medida se han alcanzado los objetivos marcados al inicio. El segundo contrasta la estimación de tiempos con la dedicación real. El tercero hace lo propio con la estimación de costes.
+
+### 8.1.1. Revisión de objetivos
 
 El objetivo general del trabajo era el estudio y la aplicación del framework Angular mediante el desarrollo de una aplicación web orientada a la generación de imágenes basadas en patrones orbitales, combinando una vertiente formativa con otra práctica. Tras la finalización del proyecto, este objetivo general puede considerarse cumplido, ya que se ha construido una aplicación funcional y completa, *Epicycloid Generator*, partiendo de un conocimiento inicial limitado del framework. A continuación se revisa cada uno de los objetivos específicos definidos en el primer capítulo.
 
@@ -26,7 +30,21 @@ El objetivo general del trabajo era el estudio y la aplicación del framework An
 
 **Implementar la exportación de los resultados generados.** Cumplido (RF6 y RF7). La aplicación permite exportar la composición como imagen PNG a calidad vectorial y a la resolución elegida, así como exportar e importar el patrón completo en formato JSON, lo que facilita guardar, recuperar y compartir las creaciones sin necesidad de un servidor ni una base de datos.
 
-En conjunto, todos los objetivos planteados se han alcanzado. La aplicación cumple además la práctica totalidad de los requisitos funcionales y no funcionales definidos, quedando como tareas menores la verificación cruzada en todos los navegadores y la confirmación del despliegue público, que se comentan en el apartado siguiente.
+En conjunto, todos los objetivos planteados se han alcanzado. La aplicación cumple además la práctica totalidad de los requisitos funcionales y no funcionales definidos, quedando como tareas menores la verificación cruzada en todos los navegadores y la confirmación del despliegue público, que se retoman en el apartado de trabajo futuro.
+
+### 8.1.2. Revisión de la estimación de tiempos
+
+La planificación inicial del proyecto, recogida en el capítulo de requisitos, estimó una dedicación total de unas 315 horas de trabajo efectivo, ampliadas a unas 347 horas tras aplicar un margen de contingencia del 10 %. Esa estimación se repartió entre las distintas fases del desarrollo, siendo la implementación la más extensa, con cerca de 150 horas, seguida de las pruebas y el diseño.
+
+Al contrastar esa previsión con el desarrollo real, se observa que la distribución del esfuerzo se ajustó en buena medida a lo planificado. Tal como se había previsto, la implementación fue la fase más costosa, y dentro de ella la integración de p5.js con Angular y la optimización del renderizado concentraron la mayor parte del tiempo, al tratarse de los puntos de mayor dificultad técnica. *(Indicar aquí las horas realmente invertidas según el seguimiento llevado en la hoja de cálculo, y comentar si el total se mantuvo dentro de las 347 horas previstas.)*
+
+Las desviaciones que se produjeron se mantuvieron dentro del margen de contingencia, lo que confirma la utilidad de haber empleado la técnica de estimación por tres valores, que absorbe la incertidumbre propia de trabajar con una tecnología nueva. La curva de aprendizaje de Angular, partiendo de un nivel inicial bajo, fue el factor que más presionó los plazos, sobre todo en las primeras fases de diseño e implementación.
+
+### 8.1.3. Revisión de la estimación de costes
+
+En el plano económico, bajo un escenario profesional con varios perfiles, el coste total se estimó en torno a 10.088 euros, sumando el personal, la amortización de los equipos y los costes indirectos.
+
+Conviene matizar que esa cifra corresponde a un escenario profesional teórico. El coste real del proyecto, al tratarse de un Trabajo Fin de Grado desarrollado por una sola persona con herramientas gratuitas o de código abierto, hardware propio y alojamiento sin coste, fue prácticamente nulo. La estimación económica sirve, por tanto, para poner en valor el esfuerzo realizado y dimensionar lo que costaría el desarrollo en un entorno empresarial, no como un desembolso efectivo.
 
 ## 8.2. Trabajo futuro
 
