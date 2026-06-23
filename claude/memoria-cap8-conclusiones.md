@@ -42,9 +42,13 @@ Las desviaciones que se produjeron se mantuvieron dentro del margen de contingen
 
 ### 8.1.3. Revisión de la estimación de costes
 
-En el plano económico, bajo un escenario profesional con varios perfiles, el coste total se estimó en torno a 10.088 euros, sumando el personal, la amortización de los equipos y los costes indirectos.
+En el plano económico, bajo un escenario profesional con varios perfiles, el coste total se estimó en torno a 10.088 euros. Esta cantidad se reparte en tres partidas. La más relevante con diferencia es el coste de personal, de unos 8.204 euros, seguida de los costes indirectos, cercanos a 1.681 euros, y de la amortización de los equipos utilizados, de unos 203 euros.
 
-Conviene matizar que esa cifra corresponde a un escenario profesional teórico. El coste real del proyecto, al tratarse de un Trabajo Fin de Grado desarrollado por una sola persona con herramientas gratuitas o de código abierto, hardware propio y alojamiento sin coste, fue prácticamente nulo. La estimación económica sirve, por tanto, para poner en valor el esfuerzo realizado y dimensionar lo que costaría el desarrollo en un entorno empresarial, no como un desembolso efectivo.
+Dado que el grueso del coste corresponde al personal, la fiabilidad de la estimación económica depende directamente de la estimación de horas revisada en el apartado anterior. Como la dedicación real se mantuvo dentro de lo previsto, la cifra económica estimada puede considerarse igualmente representativa, sin desviaciones significativas respecto a la planificación inicial.
+
+Conviene matizar, además, que esa cifra corresponde a un escenario profesional teórico. El coste real del proyecto, al tratarse de un Trabajo Fin de Grado desarrollado por una sola persona con herramientas gratuitas o de código abierto, hardware propio y alojamiento sin coste, fue prácticamente nulo. La estimación económica sirve, por tanto, para poner en valor el esfuerzo realizado y dimensionar lo que costaría el desarrollo en un entorno empresarial, no como un desembolso efectivo.
+
+En conjunto, el ejercicio de planificación de costes y tiempos cumplió su función. Aportó una referencia realista del valor profesional del trabajo y permitió organizar el desarrollo por fases, aunque su traducción a un gasto efectivo quedara reducida, en la práctica, al tiempo y al equipo aportados por el autor.
 
 ## 8.2. Trabajo futuro
 
