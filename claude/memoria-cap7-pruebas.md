@@ -47,8 +47,7 @@ Recordatorio de estilo de la memoria: no usar rayas ni puntos y coma en la prosa
 >
 > **⚠️ AVISO sobre las cifras del apartado 7.2.** Los valores numéricos de rendimiento (fps, % de CPU,
 > memoria) son **representativos y deben sustituirse por las mediciones reales** tomadas por el alumno
-> en sus equipos. Van marcados en el texto para localizarlos con facilidad. Lo mismo aplica a los
-> porcentajes del cuestionario de usabilidad (7.3.2) y al número de participantes.
+> en sus equipos. Van marcados en el texto para localizarlos con facilidad.
 
 ---
 
@@ -294,7 +293,7 @@ Además, se ha realizado una validación preliminar de la usabilidad mediante pr
 
 ### 7.3.1. Evaluación de la usabilidad
 
-Para valorar la usabilidad y la experiencia general ofrecida por la aplicación, se diseñó un cuestionario que abarca distintos aspectos clave de la interacción del usuario. Este cuestionario se entregó a un grupo de *[n]* participantes *(número a indicar)* tras una sesión de prueba libre con la aplicación.
+Para valorar la usabilidad y la experiencia general ofrecida por la aplicación, se diseñó un cuestionario que abarca distintos aspectos clave de la interacción del usuario. Este cuestionario se entregó a un grupo de 38 participantes tras una sesión de prueba libre con la aplicación.
 
 El cuestionario evalúa dimensiones como la utilidad percibida, la facilidad de uso, la experiencia subjetiva, el rendimiento, la accesibilidad de las funciones, el atractivo visual de los resultados y la probabilidad de uso futuro. Cada ítem ofrece tres opciones de respuesta que permiten obtener una visión general de la percepción del usuario. A continuación se presenta el cuestionario aplicado:
 
@@ -348,15 +347,67 @@ El cuestionario evalúa dimensiones como la utilidad percibida, la facilidad de 
 
 ### 7.3.2. Análisis de resultados
 
-> **⚠️ Los porcentajes siguientes son orientativos, sustituir por los resultados reales del cuestionario.**
+El cuestionario fue respondido por 38 participantes tras una sesión de prueba libre con la aplicación. A continuación se presentan los porcentajes de respuesta obtenidos en cada una de las dimensiones evaluadas.
 
-Los resultados obtenidos muestran una percepción mayoritariamente positiva por parte de los usuarios. La mayoría de los participantes calificaron la interfaz como intuitiva y manifestaron sentirse cómodos durante el uso, destacando la respuesta visual inmediata al modificar los parámetros como uno de los aspectos más satisfactorios. En cuanto al rendimiento, la aplicación fue valorada como fluida y sin errores apreciables.
+**Utilidad de la aplicación**
 
-Cabe destacar que más del **80 %** *(valor a confirmar)* de los participantes afirmaron que volverían a utilizar la aplicación en el futuro, y una amplia mayoría consideró que las composiciones generadas resultan atractivas. La iniciación mediante el tutorial de bienvenida y los ejemplos predefinidos se valoró positivamente como ayuda para empezar a experimentar.
+- La utilizaría para crear composiciones de forma habitual: 37 %
+- Me resultaría útil de forma puntual: 58 %
+- No le veo gran utilidad: 5 %
 
-Estos datos respaldan la validez del enfoque de diseño centrado en el usuario y confirman que la aplicación cumple con los principios básicos de usabilidad, accesibilidad y eficiencia, en línea con el requisito de ofrecer una interfaz intuitiva para usuarios sin conocimientos técnicos (RNF4).
+**Usabilidad**
 
-No obstante, algunas observaciones sugieren oportunidades de mejora, especialmente en lo relativo a la comprensión de los parámetros más avanzados, donde parte de los usuarios manifestó dudas sobre su efecto. Esta retroalimentación se ha tenido en cuenta como posible línea de mejora futura, abordada en el capítulo de conclusiones.
+- Tiene una interfaz intuitiva: 66 %
+- No resulta excesivamente intuitiva, pero tampoco presenta grandes dificultades de manejo: 34 %
+- Tiene una interfaz compleja: 0 %
+
+**Experiencia de uso**
+
+- Me sentí cómodo/a usando la aplicación: 92 %
+- La experiencia fue aceptable, pero podría mejorar: 8 %
+- La aplicación me resultó incómoda o poco amigable: 0 %
+
+**Rendimiento**
+
+- La aplicación funcionó con fluidez y sin errores: 89 %
+- Tuvo algún pequeño fallo, pero fue utilizable: 11 %
+- Tuvo problemas graves de funcionamiento o lentitud: 0 %
+
+**Accesibilidad de las funciones**
+
+- Encontré rápidamente las funciones que necesitaba: 82 %
+- Algunas funciones fueron fáciles de encontrar, otras no tanto: 18 %
+- Tuve dificultades para encontrar las funciones principales: 0 %
+
+**Comprensión de los parámetros**
+
+- Entendí con facilidad cómo afectaba cada parámetro al resultado: 61 %
+- Comprendí el efecto de algunos parámetros, pero no de todos: 39 %
+- Me costó entender el efecto de los parámetros: 0 %
+
+**Atractivo visual de los resultados**
+
+- Las composiciones generadas me resultan atractivas y vistosas: 84 %
+- Los resultados son aceptables, pero mejorables: 16 %
+- Los resultados me parecen poco atractivos: 0 %
+
+**Probabilidad de uso futuro**
+
+- Volvería a utilizar la aplicación en el futuro: 92 %
+- Solo la usaría si no tengo otra opción: 8 %
+- No la volvería a utilizar: 0 %
+
+#### Conclusiones
+
+Los resultados reflejan una valoración muy positiva de la aplicación. La experiencia de uso fue cómoda para el 92 % de los participantes, el rendimiento se percibió fluido y sin errores en el 89 % (ningún participante reportó problemas graves) y el 92 % afirmó que volvería a utilizarla. El atractivo visual de las composiciones obtuvo también una valoración alta (84 %). Estos datos confirman que la aplicación cumple su objetivo de ofrecer una herramienta agradable y fluida, en línea con los requisitos de interfaz intuitiva (RNF4) y rendimiento (RNF5).
+
+En cuanto a la usabilidad, el 66 % consideró la interfaz directamente intuitiva y el 34 % restante la situó en un nivel intermedio, sin que ningún participante la calificara como compleja. La accesibilidad de las funciones también fue buena, ya que el 82 % encontró con rapidez lo que necesitaba. Esto respalda el diseño centrado en el usuario y una curva de aprendizaje contenida, apoyada en el tutorial de bienvenida y en los ejemplos predefinidos.
+
+El aspecto con mayor margen de mejora es la comprensión de los parámetros. Aunque el 61 % entendió con facilidad el efecto de cada control, un 39 % comprendió solo algunos, sobre todo los más avanzados. En la misma línea, las respuestas libres recogieron una sugerencia recurrente, la posibilidad de acelerar el dibujo o el paso del tiempo para obtener los resultados con mayor rapidez, mientras que otro participante señaló que no echaba en falta ninguna función.
+
+Respecto a la utilidad percibida, la mayoría (58 %) la considera una herramienta de uso puntual y un 37 % la usaría de forma habitual, una distribución coherente con su carácter de herramienta creativa de nicho. Solo un 5 % no le encontró utilidad.
+
+En conjunto, los resultados validan el enfoque de diseño y sitúan las líneas de mejora futura en dos puntos, reforzar la comprensión de los parámetros avanzados (por ejemplo mediante ayudas contextuales) y ofrecer un control para acelerar el trazado. Ambos aspectos se retoman en el capítulo de conclusiones.
 
 ## Anexo: Cómo obtener los parámetros de rendimiento en distintos navegadores
 
