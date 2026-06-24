@@ -53,3 +53,9 @@ Thumbs.db
 
 # Apuntes de preparación (no forman parte del proyecto entregable)
 claude/estructura/13-preguntas-tribunal.md
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
