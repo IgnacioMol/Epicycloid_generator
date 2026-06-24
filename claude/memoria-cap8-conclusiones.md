@@ -36,7 +36,21 @@ En conjunto, todos los objetivos planteados se han alcanzado. La aplicación cum
 
 La planificación inicial del proyecto, recogida en el capítulo de requisitos, estimó una dedicación total de unas 315 horas de trabajo efectivo, ampliadas a unas 347 horas tras aplicar un margen de contingencia del 10 %. Esa estimación se repartió entre las distintas fases del desarrollo, siendo la implementación la más extensa, con cerca de 150 horas, seguida de las pruebas y el diseño.
 
-Al contrastar esa previsión con el desarrollo real, se observa que la distribución del esfuerzo se ajustó en buena medida a lo planificado. Tal como se había previsto, la implementación fue la fase más costosa, y dentro de ella la integración de p5.js con Angular y la optimización del renderizado concentraron la mayor parte del tiempo, al tratarse de los puntos de mayor dificultad técnica. *(Indicar aquí las horas realmente invertidas según el seguimiento llevado en la hoja de cálculo, y comentar si el total se mantuvo dentro de las 347 horas previstas.)*
+Al contrastar esa previsión con el desarrollo real, se observa que la distribución del esfuerzo se ajustó en buena medida a lo planificado. La siguiente tabla recoge, fase a fase, las horas estimadas frente a las realmente invertidas según el seguimiento llevado durante el proyecto.
+
+*Cuadro 8.1: comparación entre las horas estimadas y las realmente invertidas por fase.*
+
+| Fase | Horas estimadas | Horas reales |
+|---|---|---|
+| Estado del arte | 20,33 | 20 |
+| Requisitos, especificación, costes y viabilidad | 22 | 21 |
+| Análisis | 30,17 | 32 |
+| Diseño | 42 | 45 |
+| Implementación | 151,5 | 160 |
+| Pruebas | 49,33 | 47 |
+| **Total** | **315,33** | **325** |
+
+Tal como se había previsto, la implementación fue la fase más costosa, y dentro de ella la integración de p5.js con Angular y la optimización del renderizado concentraron la mayor parte del tiempo, al tratarse de los puntos de mayor dificultad técnica. El total real se situó en 325 horas, por encima de la estimación base de 315 horas pero claramente por debajo de las 347 horas previstas tras aplicar el margen de contingencia.
 
 Las desviaciones que se produjeron se mantuvieron dentro del margen de contingencia, lo que confirma la utilidad de haber empleado la técnica de estimación por tres valores, que absorbe la incertidumbre propia de trabajar con una tecnología nueva. La curva de aprendizaje de Angular, partiendo de un nivel inicial bajo, fue el factor que más presionó los plazos, sobre todo en las primeras fases de diseño e implementación.
 
